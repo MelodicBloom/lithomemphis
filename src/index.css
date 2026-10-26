@@ -25,3 +25,17 @@ body{margin:0;background:#1a1916;color:var(--ink);font-family:var(--font-sans);
 .btn:hover{transform:translate(-1px,-1px);box-shadow:4px 4px 0 var(--ink)}.btn:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}
 .chip{font-family:var(--font-mono);font-size:11px;border:1.5px solid var(--ink);border-radius:6px;padding:2px 8px;background:var(--paper)}
 .chip.on{background:var(--ink);color:var(--paper)}
+/* v2 detailing */
+.grain{position:relative}
+.paper::before,.grain::before{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:.28;mix-blend-mode:multiply;z-index:1;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .35 0 0 0 0 .3 0 0 0 0 .25 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+.paper{box-shadow:5px 5px 0 var(--ink),0 14px 24px -12px rgba(0,0,0,.55)}
+.clip{width:30px;height:30px;background:linear-gradient(135deg,#f4dca4 0,#c9a35e 30%,#7d5a26 62%,#d9b878 100%);box-shadow:inset 0 0 0 1px rgba(255,240,200,.5)}
+.clip::after{content:"";position:absolute;width:5px;height:5px;border-radius:50%;background:#3b2c14;top:6px;left:6px}
+.clip.tr::after{left:auto;right:6px}.clip.bl::after{top:auto;bottom:6px}.clip.br::after{top:auto;bottom:6px;left:auto;right:6px}
+.tag{font-family:var(--font-mono);font-size:10px;font-weight:700;letter-spacing:.08em;padding:3px 8px;border:1.5px solid var(--ink);box-shadow:2px 2px 0 var(--ink);clip-path:polygon(0 0,100% 0,94% 50%,100% 100%,0 100%)}
+.print-frame{border-bottom:2px solid var(--ink);position:relative;overflow:hidden}
+.print-frame::after{content:"";position:absolute;inset:6px;border:1px solid rgba(14,14,14,.25);pointer-events:none}
+.registration{position:absolute;width:12px;height:12px;border:1px solid var(--ink);border-radius:50%;background:linear-gradient(var(--ink),var(--ink)) center/1px 100% no-repeat,linear-gradient(var(--ink),var(--ink)) center/100% 1px no-repeat}
+.dotgrid{background-image:radial-gradient(rgba(14,14,14,.25) 1px,transparent 1.2px);background-size:22px 22px}
+@media (max-width:1023px){.btn,.chip{min-height:44px;display:inline-flex;align-items:center;justify-content:center}}
