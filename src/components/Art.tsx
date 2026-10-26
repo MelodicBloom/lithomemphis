@@ -1,0 +1,26 @@
+const C={ink:'#0E0E0E',paper:'#F7F6F2',blue:'#3B6FF0',sun:'#EABF41',cherry:'#D54545',lime:'#9BBF49',mauve:'#9B5478',wine:'#58294B'}
+export function Flower({x=50,y=50,r=18,c=C.ink}:{x?:number;y?:number;r?:number;c?:string}){
+  return <g>{[0,45,90,135,180,225,270,315].map(a=><ellipse key={a} cx={x} cy={y-r*.6} rx={r*.32} ry={r*.62} fill="none" stroke={c} strokeWidth="1.2" transform={`rotate(${a} ${x} ${y})`}/>)}<circle cx={x} cy={y} r={r*.22} fill={c}/></g>}
+export function Halftone({id,c=C.ink}:{id:string;c?:string}){return <pattern id={id} width="6" height="6" patternUnits="userSpaceOnUse"><circle cx="3" cy="3" r="1.3" fill={c}/></pattern>}
+export default function Art({kind}:{kind:string}){
+  const v='0 0 200 150'
+  switch(kind){
+    case 'flora':return <svg viewBox={v} className="w-full h-full"><rect width="200" height="150" fill={C.paper}/><defs><Halftone id="h1"/></defs><path d="M20 20 C60 0 80 60 40 70 S10 120 60 140" stroke={C.ink} strokeWidth="6" fill="none"/><rect x="90" y="70" width="70" height="60" fill={C.blue}/><rect x="70" y="40" width="50" height="50" fill="url(#h1)"/><Flower x={130} y={55} r={26}/><circle cx="60" cy="110" r="18" fill={C.cherry} opacity=".8"/></svg>
+    case 'arches':return <svg viewBox={v} className="w-full h-full"><rect width="200" height="150" fill={C.ink}/>{[0,1,2,3].map(i=><path key={i} d={`M${30+i*12} 150 V${80+i*8} a${70-i*12} ${70-i*12} 0 0 1 ${140-i*24} 0 V150`} fill="none" stroke={C.paper} strokeWidth="5"/>)}<Flower x={150} y={40} r={16} c={C.paper}/></svg>
+    case 'notes':return <svg viewBox={v} className="w-full h-full"><rect width="200" height="150" fill={C.paper}/>{[0,1,2].map(i=><g key={i}><rect x={15+i*62} y="70" width="52" height="52" fill="none" stroke={C.ink}/>{Array.from({length:12}).map((_,k)=><line key={k} x1={15+i*62} y1={70+k*4.5} x2={67+i*62} y2={74+k*4.5+i*3} stroke={C.ink} strokeWidth=".8"/>)}</g>)}</svg>
+    case 'vessel':return <svg viewBox={v} className="w-full h-full"><rect width="200" height="150" fill="#1b1a17"/><rect x="110" y="60" width="70" height="70" fill="url(#hv)"/><defs><Halftone id="hv" c="#777"/><radialGradient id="mv"><stop offset="0" stopColor="#fff"/><stop offset="1" stopColor="#bdb9b0"/></radialGradient></defs><path d="M60 140 C30 110 40 70 75 60 C60 50 70 35 85 40 C100 35 110 50 95 60 C130 70 140 110 110 140Z" fill="url(#mv)"/><circle cx="85" cy="95" r="16" fill="#1b1a17"/>{[0,1,2].map(i=><g key={i}><line x1={95+i*8} y1="45" x2={110+i*14} y2={15+i*5} stroke={C.sun}/><circle cx={110+i*14} cy={15+i*5} r="4" fill={C.sun}/></g>)}</svg>
+    case 'signal':return <svg viewBox={v} className="w-full h-full"><rect width="200" height="150" fill={C.paper}/><defs><Halftone id="hs"/></defs><circle cx="90" cy="70" r="55" fill="url(#hs)"/><path d="M40 150 A60 60 0 0 1 160 150" fill={C.ink}/><circle cx="130" cy="40" r="16" fill={C.blue}/><rect x="20" y="20" width="30" height="30" fill={C.ink}/></svg>
+    case 'book':return <svg viewBox={v} className="w-full h-full"><rect width="200" height="150" fill="#2a2925"/><path d="M20 40 L100 30 L180 40 L180 130 L100 120 L20 130Z" fill="#e8e2d2" stroke={C.ink}/><line x1="100" y1="30" x2="100" y2="120" stroke={C.ink}/>{[0,1,2,3,4,5].map(i=><line key={i} x1="30" y1={55+i*10} x2="90" y2={52+i*10} stroke="#888"/>)}<circle cx="140" cy="75" r="22" fill={C.ink}/><path d="M120 110 a20 20 0 0 1 40 0" fill={C.ink}/></svg>
+    case 'loop':return <svg viewBox={v} className="w-full h-full"><rect width="200" height="150" fill="#d8d5cc"/>{[0,1,2,3].map(i=><path key={i} d={`M-10 ${30+i*30} q25 -25 50 0 t50 0 t50 0 t50 0 t50 0`} stroke={C.ink} strokeWidth="12" fill="none"/>)}<circle cx="100" cy="75" r="20" fill={C.paper} stroke={C.ink} strokeWidth="2"/><path d="M94 65 L110 75 L94 85Z" fill={C.ink}/></svg>
+    case 'garden':return <svg viewBox={v} className="w-full h-full"><rect width="200" height="150" fill={C.paper}/><circle cx="120" cy="100" r="40" fill={C.blue}/>{[0,1,2,3,4,5,6].map(i=><path key={i} d={`M100 140 Q${60+i*15} 80 ${40+i*22} ${20+(i%3)*10}`} stroke={C.ink} strokeWidth="2" fill="none"/>)}</svg>
+    default:return <svg viewBox={v}/>
+  }}
+export function HeroCollage(){return <svg viewBox="0 0 400 300" className="w-full h-full">
+  <defs><Halftone id="hh"/><linearGradient id="mb" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="#fdfdfb"/><stop offset=".5" stopColor="#dcd9d1"/><stop offset="1" stopColor="#b5b1a7"/></linearGradient></defs>
+  <path d="M250 10 C330 -10 400 40 390 110 C380 170 300 150 270 110 C240 70 200 30 250 10Z" fill={C.blue}/>
+  <rect x="300" y="160" width="90" height="90" fill="url(#hh)"/><path d="M60 300 L150 180 L200 300Z" fill={C.cherry}/>
+  <g transform="rotate(-8 230 160)"><rect x="140" y="70" width="180" height="180" rx="22" fill="url(#mb)" stroke={C.ink} strokeWidth="3"/><rect x="152" y="82" width="180" height="180" rx="22" fill="none" stroke={C.ink} strokeWidth="2" opacity=".3"/>
+    <circle cx="190" cy="120" r="22" fill="#f4f2ec" stroke={C.ink} strokeWidth="2"/><path d="M170 230 V200 H200 V175 H230 V150 H260 V125 H300" fill="none" stroke={C.ink} strokeWidth="5"/>
+    <path d="M240 190 a45 45 0 0 1 60 60" fill="url(#hh)" stroke={C.ink} strokeWidth="2"/></g>
+  <Flower x={110} y={60} r={34}/><Flower x={70} y={120} r={20}/><path d="M110 95 Q100 160 130 220" stroke={C.ink} strokeWidth="1.5" fill="none"/>
+</svg>}
