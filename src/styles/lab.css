@@ -1,0 +1,111 @@
+/* Lithomemphis lab — modern CSS: color-mix, container queries, backdrop-filter isolation,
+   view transitions, scroll-driven animations, reduced-motion handled per rule (nested @media). */
+@property --lm-angle { syntax: '<angle>'; inherits: true; initial-value: 135deg; }
+:root { --lm-angle: var(--lm-light-angle); --lm-spec: var(--lm-light-specular); }
+.lm-lab { color: var(--lm-color-ink); }
+
+/* ---------- primitives ---------- */
+.lm-btn { font-family: var(--font-mono); font-weight: 700; border: 2px solid var(--lm-color-ink); border-radius: 999px; box-shadow: 3px 3px 0 var(--lm-color-ink); cursor: pointer;
+  transition: translate .12s, box-shadow .12s; background: var(--lm-color-paper); color: var(--lm-color-ink); }
+.lm-btn--sm { font-size: 11px; padding: 4px 10px; } .lm-btn--md { font-size: 13px; padding: 8px 16px; }
+.lm-btn--ink { background: var(--lm-color-ink); color: var(--lm-color-paper); }
+.lm-btn--accent { background: var(--lm-color-sunflower); }
+.lm-btn:hover { translate: -1px -1px; box-shadow: 4px 4px 0 var(--lm-color-ink); } .lm-btn:active { translate: 2px 2px; box-shadow: 1px 1px 0 var(--lm-color-ink); }
+.lm-switch { width: 44px; height: 24px; border: 2px solid var(--lm-color-ink); border-radius: 999px; background: color-mix(in oklab, var(--lm-color-paper), var(--lm-color-ink) 12%); position: relative; cursor: pointer; flex: none; }
+.lm-switch[aria-checked=true] { background: var(--lm-color-lime); }
+.lm-switch__knob { position: absolute; top: 2px; left: 2px; width: 16px; height: 16px; border-radius: 50%; background: var(--lm-color-ink); transition: translate .35s linear(0, .6 18%, 1.08 38%, .98 60%, 1); }
+.lm-switch[aria-checked=true] .lm-switch__knob { translate: 20px 0; }
+.lm-tabs { display: inline-flex; border: 2px solid var(--lm-color-ink); border-radius: 10px; overflow: hidden; box-shadow: 3px 3px 0 var(--lm-color-ink); }
+.lm-tab { font: 700 11px var(--font-mono); text-transform: uppercase; padding: 6px 10px; background: var(--lm-color-paper); border: 0; cursor: pointer; }
+.lm-tab + .lm-tab { border-left: 2px solid var(--lm-color-ink); }
+.lm-tab[aria-selected=true] { background: var(--lm-color-ink); color: var(--lm-color-paper); }
+.lm-dialog { padding: 20px; max-width: min(680px, 92vw); width: 100%; border-radius: 16px; opacity: 1; scale: 1;
+  transition: opacity .25s, scale .25s, display .25s allow-discrete, overlay .25s allow-discrete;
+  @starting-style { opacity: 0; scale: .94; } }
+.lm-dialog:not([open]) { opacity: 0; scale: .94; }
+.lm-dialog::backdrop { background: color-mix(in srgb, var(--lm-color-ink) 55%, transparent); backdrop-filter: blur(4px); }
+.lm-dialog__head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+:focus-visible { outline: 3px solid var(--lm-color-cornflower); outline-offset: 3px; }
+
+/* ---------- BackdropSurface ---------- */
+.lm-backdrop { isolation: isolate; border: 2px solid var(--lm-color-ink); border-radius: var(--lm-space-radius-card);
+  background: var(--bs-tint); box-shadow: var(--lm-space-shadow-offset) var(--lm-space-shadow-offset) 0 var(--lm-color-ink);
+  -webkit-backdrop-filter: blur(var(--bs-blur)) saturate(var(--bs-saturate)) brightness(var(--bs-brightness));
+  backdrop-filter: blur(var(--bs-blur)) saturate(var(--bs-saturate)) brightness(var(--bs-brightness)); }
+.lm-backdrop[data-variant=smoke] { color: var(--lm-color-paper); }
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .lm-backdrop { background: color-mix(in srgb, var(--bs-tint), var(--lm-color-paper) 70%); } }
+
+/* ---------- LithoCard: light-angle specular + thin film ---------- */
+.lm-card { --tx: 0; --ty: 0; transform-style: preserve-3d; transition: box-shadow .2s; overflow: hidden; }
+.lm-card__sheen { position: absolute; inset: 0; border-radius: inherit; pointer-events: none; z-index: 3; mix-blend-mode: soft-light;
+  background: linear-gradient(calc(var(--lm-angle) + var(--tx) * 40deg), transparent 30%, color-mix(in srgb, var(--lm-light-key-color) calc(var(--lm-spec) * 100%), transparent) 48%, transparent 62%);
+  translate: calc(var(--tx) * 30%) calc(var(--ty) * 30%); }
+.lm-card[data-sheen=film] .lm-card__sheen { mix-blend-mode: color-dodge; opacity: .55;
+  background: conic-gradient(from calc(var(--lm-angle) + var(--tx) * 180deg) at calc(50% + var(--tx) * 60%) calc(50% + var(--ty) * 60%),
+    #ff9ad5, #9be7ff, #c9ffb0, #fff3a6, #ffb3a1, #c7a6ff, #ff9ad5); filter: blur(10px) saturate(1.2); }
+.lm-card[data-sheen=none] .lm-card__sheen { display: none; }
+.lm-card { box-shadow: calc(cos(var(--lm-angle)) * -7px) calc(sin(var(--lm-angle)) * 7px) 0 var(--lm-light-shadow-color); }
+/* Lit specimen tiles (lighting card): drop shadow cast opposite the light */
+.lm-lit { box-shadow: calc(cos(var(--lm-angle)) * -8px) calc(sin(var(--lm-angle)) * 8px) 0 var(--lm-color-ink);
+  background: linear-gradient(var(--lm-angle), color-mix(in oklab, var(--c), white 45%), var(--c) 50%, color-mix(in oklab, var(--c), black 25%)); }
+
+/* ---------- misc demos ---------- */
+.lm-pressable { touch-action: manipulation; cursor: pointer; will-change: scale; }
+.lm-riso { position: relative; font: 900 clamp(40px, 9cqi, 72px)/.9 var(--font-display); color: transparent; letter-spacing: -.02em; }
+.lm-riso span { position: absolute; inset: 0; mix-blend-mode: multiply; }
+.lm-riso .c1 { color: var(--lm-color-riso-pink); translate: var(--rx) var(--ry); } .lm-riso .c2 { color: var(--lm-color-riso-teal); translate: calc(var(--rx) * -1) 0; }
+.lm-riso .c3 { color: var(--lm-color-sunflower); translate: 0 calc(var(--ry) * -1); opacity: .9; }
+.lm-offer-chip { display: inline-flex; gap: 6px; align-items: center; font: 700 11px var(--font-mono); text-transform: uppercase; letter-spacing: .06em; padding: 4px 10px;
+  background: color-mix(in oklab, var(--tone), var(--lm-color-paper) 35%); border: 2px solid var(--lm-color-ink); border-radius: 6px; box-shadow: 2px 2px 0 var(--lm-color-ink); rotate: -1.5deg; }
+.lm-shader { width: 100%; height: 100%; display: block; border-radius: 10px; }
+.lm-score { font: 700 12px var(--font-mono); background: var(--lm-color-ink); color: var(--lm-color-sunflower); padding: 4px 10px; border-radius: 999px; }
+.lm-plus { position: absolute; font: 900 18px var(--font-display); color: var(--lm-color-cherry); pointer-events: none; animation: lm-float .8s ease-out forwards;
+  @media (prefers-reduced-motion: reduce) { animation-duration: .01s; } }
+@keyframes lm-float { to { translate: 0 -48px; opacity: 0; } }
+@keyframes lm-stamp-in { 0% { scale: 1.8; opacity: 0; rotate: -14deg } 60% { scale: .92; opacity: 1 } 100% { scale: 1; rotate: -6deg } }
+.lm-stamped { animation: lm-stamp-in .45s cubic-bezier(.2,1.4,.4,1) both; }
+
+/* scroll-driven reveal: CSS where supported, JS IntersectionObserver fallback adds .is-in */
+.lm-reveal-scroller { overflow-y: auto; height: 220px; scroll-snap-type: y proximity; }
+.lm-reveal { opacity: 0; translate: 0 24px; scale: .96; transition: opacity .5s, translate .5s, scale .5s; }
+.lm-reveal.is-in { opacity: 1; translate: 0 0; scale: 1; }
+@supports (animation-timeline: view()) {
+  .lm-reveal { opacity: 1; translate: none; scale: 1; transition: none; animation: lm-reveal linear both; animation-timeline: view(); animation-range: entry 0% cover 35%; }
+  @keyframes lm-reveal { from { opacity: 0; translate: 0 32px; scale: .94; rotate: -2deg } } }
+@media (prefers-reduced-motion: reduce) { .lm-reveal { animation: none !important; opacity: 1 !important; translate: none !important; scale: 1 !important; } }
+
+/* container-query bento */
+.lm-bento { container-type: inline-size; resize: horizontal; overflow: auto; min-width: 180px; max-width: 100%; border: 2px dashed color-mix(in srgb, var(--lm-color-ink) 40%, transparent); padding: 6px; border-radius: 10px; }
+.lm-bento__grid { display: grid; gap: 6px; grid-template-columns: 1fr; }
+.lm-bento__grid > * { border: 2px solid var(--lm-color-ink); border-radius: 8px; padding: 8px; font: 700 11px var(--font-mono); min-height: 44px; }
+@container (min-width: 260px) { .lm-bento__grid { grid-template-columns: 2fr 1fr; } .lm-bento__grid > :first-child { grid-row: span 2; } }
+@container (min-width: 380px) { .lm-bento__grid { grid-template-columns: 2fr 1fr 1fr; } .lm-bento__grid > :first-child { font-size: 16px; } }
+
+/* peel sticker */
+.lm-peel { position: relative; width: 120px; height: 120px; cursor: grab; }
+.lm-peel__face, .lm-peel__back { position: absolute; inset: 0; border-radius: 50%; border: 2px solid var(--lm-color-ink); }
+.lm-peel__face { background: var(--lm-color-sunflower); display: grid; place-items: center; font: 900 20px var(--font-display);
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - var(--p)), calc(100% - var(--p)) 100%, 0 100%); }
+.lm-peel__back { background: linear-gradient(135deg, #fff, #d9d6cc); clip-path: polygon(100% calc(100% - var(--p)), calc(100% - var(--p)) 100%, calc(100% - var(--p)) calc(100% - var(--p)));
+  filter: drop-shadow(-3px -3px 2px rgba(0,0,0,.3)); }
+
+/* liquid blob — CSS border-radius morph + goo */
+.lm-blob { width: 110px; aspect-ratio: 1; background: var(--lm-color-mauve); border: 2px solid var(--lm-color-ink); animation: lm-morph 6s ease-in-out infinite;
+  @media (prefers-reduced-motion: reduce) { animation: none; border-radius: 40% 60% 55% 45%; } }
+@keyframes lm-morph { 0%,100% { border-radius: 42% 58% 63% 37% / 41% 44% 56% 59% } 33% { border-radius: 70% 30% 46% 54% / 30% 62% 38% 70% } 66% { border-radius: 30% 70% 70% 30% / 60% 30% 70% 40% } }
+
+/* focus choreography */
+.lm-focus-row button:focus-visible { outline: none; box-shadow: 0 0 0 3px var(--lm-color-paper), 0 0 0 6px var(--lm-color-cornflower), 4px 4px 0 6px var(--lm-color-ink); translate: 0 -3px; }
+.lm-focus-row button { transition: translate .2s cubic-bezier(.3,1.6,.5,1), box-shadow .2s; }
+
+/* view transitions */
+::view-transition-group(*) { animation-duration: .45s; animation-timing-function: cubic-bezier(.2,1.1,.3,1); }
+@media (prefers-reduced-motion: reduce) { ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none !important; } }
+
+/* lab card on/off */
+.lm-demo[data-off=true] .lm-demo__stage { filter: grayscale(1) contrast(.9); opacity: .45; pointer-events: none; }
+.lm-demo[data-picked=true] { outline: 3px solid var(--lm-color-cherry); outline-offset: 3px; }
+.lm-demo__stage { container-type: inline-size; min-height: 170px; display: grid; place-items: center; border: 2px solid var(--lm-color-ink); border-radius: 10px; position: relative; overflow: hidden;
+  background: color-mix(in oklab, var(--lm-color-paper), var(--lm-color-ink) 4%); }
+:root[data-motion=safe] .lm-blob, :root[data-motion=safe] .lm-stamped { animation: none; }
