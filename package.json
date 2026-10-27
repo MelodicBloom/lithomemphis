@@ -5,9 +5,14 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "npm run tokens:audit && tsc -b && vite build",
     "lint": "oxlint",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "tokens:sync": "node scripts/tokens-audit.mjs --write-css",
+    "tokens:audit": "node scripts/tokens-audit.mjs",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build -o storybook-static",
+    "build:all": "npm run build && storybook build -o dist/storybook --quiet"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.3.3",
@@ -17,11 +22,14 @@
     "tailwindcss": "^4.3.3"
   },
   "devDependencies": {
+    "@storybook/react-vite": "^10.6.4",
     "@types/node": "^24.19.2",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
     "@vitejs/plugin-react": "^6.1.2",
+    "ajv": "^8.20.0",
     "oxlint": "^1.88.0",
+    "storybook": "^10.6.4",
     "typescript": "~6.0.3",
     "vite": "^8.3.4"
   }

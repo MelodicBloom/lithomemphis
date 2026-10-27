@@ -1,0 +1,15 @@
+{
+  "pass": true,
+  "auditedAt": "2026-10-27T13:41:52.496Z",
+  "commit": "0b80820",
+  "schema": "schema/token-drift.schema.json",
+  "tokensHash": "e0fa13282fabbc19",
+  "counts": {
+    "sets": 5,
+    "tokens": 49,
+    "schemaErrors": 0,
+    "drifted": 0
+  },
+  "schemaErrors": [],
+  "drifted": []
+}
