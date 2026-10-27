@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://lithomemphis.vercel.app/schema/token-drift.schema.json",
+  "title": "Lithomemphis design-token drift schema",
+  "description": "Every token set must match this shape. tokens:audit also checks each token is mirrored 1:1 as a --lm-* CSS custom property in src/styles/tokens.css; any mismatch is drift.",
+  "type": "object",
+  "required": ["color", "space", "spring", "backdrop", "light"],
+  "additionalProperties": false,
+  "$defs": {
+    "hex": {"type": "string", "pattern": "^#[0-9A-Fa-f]{6}$"},
+    "px": {"type": "string", "pattern": "^[0-9]+(\\.[0-9]+)?px$"},
+    "set": {"type": "object", "required": ["$tokenSet", "tokens"], "propertyNames": {"enum": ["$tokenSet", "tokens"]}}
+  },
+  "properties": {
+    "color": {"allOf": [{"$ref": "#/$defs/set"}], "properties": {"$tokenSet": {"const": "color"}, "tokens": {"type": "object", "minProperties": 8, "required": ["ink","paper","cornflower","sunflower","cherry"], "propertyNames": {"pattern": "^[a-z][a-z0-9-]*$"}, "additionalProperties": {"$ref": "#/$defs/hex"}}}},
+    "space": {"allOf": [{"$ref": "#/$defs/set"}], "properties": {"$tokenSet": {"const": "space"}, "tokens": {"type": "object", "required": ["radius-card","shadow-offset"], "additionalProperties": {"$ref": "#/$defs/px"}}}},
+    "spring": {"allOf": [{"$ref": "#/$defs/set"}], "properties": {"$tokenSet": {"const": "spring"}, "tokens": {"type": "object", "required": ["snappy","squish"], "additionalProperties": {"type": "object", "required": ["stiffness","damping","mass"], "additionalProperties": false, "properties": {"stiffness": {"type": "number", "minimum": 40, "maximum": 1200}, "damping": {"type": "number", "minimum": 4, "maximum": 80}, "mass": {"type": "number", "minimum": 0.2, "maximum": 5}}}}}},
+    "backdrop": {"allOf": [{"$ref": "#/$defs/set"}], "properties": {"$tokenSet": {"const": "backdrop"}, "tokens": {"type": "object", "required": ["frost"], "additionalProperties": {"type": "object", "required": ["blur","saturate","brightness","tint"], "additionalProperties": false, "properties": {"blur": {"$ref": "#/$defs/px"}, "saturate": {"type": "number", "minimum": 0, "maximum": 3}, "brightness": {"type": "number", "minimum": 0.5, "maximum": 1.5}, "tint": {"type": "string", "pattern": "^rgba\\("}}}}}},
+    "light": {"allOf": [{"$ref": "#/$defs/set"}], "properties": {"$tokenSet": {"const": "light"}, "tokens": {"type": "object", "required": ["angle","elevation","specular","key-color","shadow-color"], "additionalProperties": false, "properties": {"angle": {"type": "string", "pattern": "^-?[0-9]+deg$"}, "elevation": {"type": "number", "minimum": 0, "maximum": 1}, "specular": {"type": "number", "minimum": 0, "maximum": 1}, "key-color": {"$ref": "#/$defs/hex"}, "shadow-color": {"$ref": "#/$defs/hex"}}}}}
+  }
+}
