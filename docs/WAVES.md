@@ -1,7 +1,7 @@
 # LITHOMEMPHIS — Waves 2 & 3 scope
 
 > Preservative synthesis. Nothing here is decided unless marked **decided**. Everything for Wave 3 is **proposed**.
-> As of **2026-11-04 (America/New_York)**. Sources: `README.md`, PRs #1–#4 on `MelodicBloom/lithomemphis`, the live specimen at https://lithomemphis.vercel.app, and agent session context (labelled).
+> As of **2026-11-04 (America/New_York)**. Sources: `README.md`, PRs #1–#4 on `MelodicBloom/lithomemphis`, the live specimen at https://lithomemphis.vercel.app, recovered Portico design context (labelled), and agent session context (labelled).
 
 **Evidence labels:** `measured` (build output, a file or route on `main`) · `self-reported` (owner or agent statement, not independently checked) · `agent-inferred` · `proposed` · `unverified` · `blocked`.
 **Gaps** are marked **⚠ GAP**.
@@ -30,6 +30,7 @@ The runtime is a static SPA: Vite, React, TypeScript, Tailwind v4 and react-rout
 | Lab + libs | `/lab` (20 live effect picks), `/lab/icons`, component/icon libs, Storybook at `/storybook`, token drift audit (`npm run tokens:audit` inside `build`) | #2 | `2a3f9f6` | `measured` |
 | Gallery depth | Filters `?tab&tag&medium&year&q&view=list`; `/gallery/:id` detail page plus a specimen 404; `artifacts.json` gains `tags[]`, `description`, `series` | #3 | `6a62f16` | `measured` (build pass; visual proof run by the parent agent, `self-reported`) |
 | Nav routes | `/archive`, `/community`, `/shop`, `/about`; shared `src/lib/nav.ts` used by `SiteHeader`, the Home `Sidebar` and `MobileNav`; `SpecimenPage` shell | #4 | `294c330` | `measured` |
+| Portico threshold layer | `/portico`; meaningful-encounter sequence; real gates to Gallery, Community, Archive and Lab; `docs/PORTICO.md`; no persisted collaboration implied | #5 branch | current PR head | `measured` in branch; visual acceptance `unverified` |
 
 **Done vs planned (original README W2 list):**
 
@@ -40,6 +41,7 @@ The runtime is a static SPA: Vite, React, TypeScript, Tailwind v4 and react-rout
 | Mobile nav drawer from the mobile comp | ◐ partial: the drawer exists (`0b80820`, #4 links). Comp fidelity is `unverified` |
 | Dark "Tool Lab" / "Challenge Arena" templates | ◐ partial: Lab exists (#2). Challenge Arena not started |
 | Tokens / drift audit | ✅ done (#2); not in the original list, added during W2 |
+| Portico orientation / encounter grammar | ✅ implemented on #5 branch; not in the original W2 list; visual acceptance still pending |
 | Accounts/auth, profiles, XP/badges | ✗ not started |
 | Challenges, voting, timers, leaderboard | ✗ not started |
 | Live activity feed, comments | ✗ not started |
@@ -141,7 +143,19 @@ Take **3B Craft/material** as Wave 3. Keep the W2 platform items (2.7–2.9) as 
 
 ---
 
-## 4. Design language (preserve across waves)
+## 4. Portico as a cross-wave layer
+
+Portico is not a third Wave 3 framing. It is the orientation and encounter grammar that can sit over either the static craft path or a future platform path. See **[PORTICO.md](PORTICO.md)**.
+
+Current implementation is deliberately bounded: `/portico` uses the existing material system and routes as real traveling gates. It does not add accounts, messaging, live presence, persistence, or a second backend.
+
+The reusable concepts are **threshold**, **gate**, **trace**, **torch**, **stewardship**, **adjacency**, and **return path**. They should become typed data structures only when repeated implementation proves the need.
+
+Acceptance still required on the exact PR head: build, phone/desktop visual review, reduced-motion behavior, and confirmation that every gate resolves to a real route.
+
+---
+
+## 5. Design language (preserve across waves)
 - **Palette** (`measured`, `src/index.css`, tokens audit): ink `#0E0E0E`, paper `#F7F6F2`, cornflower `#3B6FF0`, sunflower `#EABF41`, cherry `#D54545`, lime `#9BBF49`, mauve `#9B5478`, wine `#58294B`, brass `#B08D57`.
 - **Type:** Fraunces (display, substituting for Canela), Instrument Serif (editorial, substituting for Noe), Space Mono (UI and data), Inter (body). `measured`, README.
 - **Tactility:** paper cards with hard offset shadows, brass corner clips, registration marks, print frames, halftone, grain, and generated SVG botanicals and marble. All original SVG/CSS; no comp or stock assets. `measured`
@@ -150,15 +164,17 @@ Take **3B Craft/material** as Wave 3. Keep the W2 platform items (2.7–2.9) as 
 
 ---
 
-## 5. Open tensions (kept, not resolved)
+## 6. Open tensions (kept, not resolved)
 1. Specimen purity against a believable product (3A against 3B).
 2. Detail page focus against nav parity (2.1).
 3. Medium as a display string against medium as a filter key (2.3).
 4. Shop as pure specimen against a real inquiry channel (2.5; owner sign-off).
 5. SPA simplicity against correct HTTP 404s (2.6).
 6. Where "real 3D marble / collage" belongs: README W2, or proposed W3B.
+7. How far Portico should remain a static orientation grammar versus gaining persisted traces/torch-passing; no persistence is approved in this PR.
 
 ---
 
-## 6. Change log
+## 7. Change log
 - **2026-11-04:** #1 visual proof (`3314f01`), #2 Lab, Storybook and tokens (`2a3f9f6`), #3 gallery filters and `/gallery/:id` (`6a62f16`), and #4 Archive, Community, Shop, About plus shared nav (`294c330`) merged to `main`. This scope document was drafted on branch `docs/w2-w3-scope`.
+- **2026-11-04:** PR #5 branch gained the recovered Portico concept as a bounded `/portico` specimen plus `docs/PORTICO.md`, shared navigation, and a Home threshold CTA. Build/visual acceptance must be re-run because the PR is no longer docs-only.
