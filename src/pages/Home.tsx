@@ -17,7 +17,7 @@ export default function Home(){
             <div className="font-mono text-[11px] uppercase tracking-widest flex items-center gap-2"><span className="text-cherry">✶</span> Specimen prompt · demo content</div>
             <h1 className="font-display font-black text-[56px] sm:text-[76px] leading-[.86] tracking-tight mt-3">PRINT<br/>THE<br/>FUTURE</h1>
             <p className="font-mono text-xs uppercase mt-4 max-w-[260px]">Envision tomorrow. Then make it unmistakably yours.</p>
-            <div className="flex flex-wrap gap-3 mt-6 items-center"><Link to="/archive" className="btn bg-cornflower text-paper px-6 py-3 text-sm">Browse the archive →</Link><span className="font-mono text-[10px] text-ink/60">Submissions open in Wave 2</span></div>
+            <div className="flex flex-wrap gap-3 mt-6 items-center"><Link to="/portico" className="btn bg-cornflower text-paper px-6 py-3 text-sm">Enter Portico →</Link><Link to="/archive" className="chip min-h-[44px] px-3">Browse archive →</Link><span className="font-mono text-[10px] text-ink/60">Portico is an orientation specimen — no live handoff state</span></div>
           </div>
         </section>
         <aside className="ink-card p-5 flex flex-col"><div className="font-mono text-xs uppercase tracking-widest flex justify-between"><span>Featured studios</span><span className="text-paper/50">sample</span></div>
