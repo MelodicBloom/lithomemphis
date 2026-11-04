@@ -36,12 +36,14 @@ All imagery is original inline SVG/CSS: marble = layered gradients, halftone = r
 ## Stack
 Vite + React + TypeScript + Tailwind v4 + react-router. `npm i && npm run dev`.
 
+## Wave 2 — specimen pages built
+- `/gallery` functional tag/medium/year/search filters (URL params) + `/gallery/:id` artifact detail pages
+- `/archive`, `/community`, `/shop`, `/about` — specimen pages with fictional content (no auth, no checkout, no challenges, metrics “—”)
+
 ## Wave 2 — NOT built yet
 - Accounts/auth, profiles, XP/badges
 - Challenges (submission, voting, timers), leaderboard computation
 - Live activity feed ("The Collective is listening"), comments
-- Archive / Community / Shop / About routes (shown disabled)
-- Artifact detail pages; functional tag/medium/year filters
 - Mobile nav drawer from the mobile comp; dark "Tool Lab" / "Challenge Arena" templates
 - Real 3D marble object, photographic collage
 

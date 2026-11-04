@@ -1,9 +1,9 @@
 import { useMemo, useState } from 'react'
-import { Link, NavLink, useSearchParams } from 'react-router-dom'
+import { Link, useSearchParams } from 'react-router-dom'
 import Clips from '../components/Clips'
 import Art, { Flower, EdgeBotanical, MarbleBlob } from '../components/Art'
 import MobileNav from '../components/MobileNav'
-import { Logo, SpecimenBadge } from '../components/Nav'
+import { SiteHeader } from '../components/Nav'
 import { artifacts, TABS, TAGS, YEARS, mediumOf, readFilters, filterArtifacts, type Filters } from '../lib/gallery'
 const tagColor:Record<string,string>={NEW:'bg-cornflower text-paper',SERIES:'bg-sunflower',ARCHIVE:'bg-wine text-paper',MOTION:'bg-lime'}
 export default function Gallery(){
@@ -18,8 +18,7 @@ export default function Gallery(){
   const mediums=Object.entries(artifacts.reduce<Record<string,number>>((m,a)=>{const k=mediumOf(a);m[k]=(m[k]||0)+1;return m},{}))
   return <><MobileNav/><div className="min-h-screen max-w-[1440px] mx-auto relative overflow-hidden">
     <svg className="hidden lg:block absolute -left-24 top-48 w-44" viewBox="0 0 100 300" aria-hidden><path d="M10 0 C90 20 100 120 60 160 C20 200 90 260 40 300 H0 V0Z" fill="#3B6FF0"/></svg><EdgeBotanical className="hidden xl:block absolute -right-10 top-28 w-36 pointer-events-none"/><MarbleBlob className="hidden lg:block absolute -left-12 bottom-40 w-32 pointer-events-none"/><div className="hidden lg:block absolute left-4 top-20 w-14 h-56 pointer-events-none" style={{backgroundImage:"repeating-linear-gradient(-45deg,#F7F6F2 0 6px,transparent 6px 14px)"}}/>
-    <header className="hidden lg:flex items-center gap-6 px-8 py-4 border-b border-paper/15 relative z-10"><Link to="/"><Logo/></Link>
-      <nav className="flex gap-2 mx-auto font-mono text-xs uppercase">{[['/','Home'],['/gallery','Gallery']].map(([to,l])=><NavLink key={to} to={to} end className={({isActive})=>`px-4 py-2 rounded-md border-2 ${isActive?'bg-paper text-ink border-ink shadow-[3px_3px_0_#000]':'text-paper border-transparent'}`}>{l}</NavLink>)}{['Archive','Community','Shop','About'].map(l=><span key={l} className="px-4 py-2 text-paper/35" title="Wave 2">{l}</span>)}</nav><SpecimenBadge/></header>
+    <SiteHeader/>
     <div className="grid grid-cols-1 lg:grid-cols-[230px_1fr] gap-6 px-4 lg:px-8 py-4 lg:py-6 relative z-10">
       <aside className={`paper p-4 self-start text-sm lg:block ${sheet?"fixed inset-x-3 bottom-3 top-24 z-50 overflow-y-auto block":"hidden"}`}><Clips/>
         <button onClick={()=>setSheet(false)} className="lg:hidden btn bg-ink text-paper w-full mb-3 text-xs uppercase">Close filters ✕</button>
