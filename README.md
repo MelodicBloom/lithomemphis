@@ -8,7 +8,10 @@ Live: https://lithomemphis.vercel.app
 
 ## Routes
 - `/` — Collective home specimen: static hero prompt card ("Print the Future"), sample featured studios (no scores), metric placeholders, archive strip.
+- `/portico` — shared-discovery threshold specimen: encounter grammar, traveling gates, torch-passing notes, and explicit non-live boundaries.
 - `/gallery` — Gallery with taxonomy sidebar, tab filters, search, and grid/list toggle over static JSON.
+- `/archive`, `/community`, `/shop`, `/about` — bounded specimen routes over fictional/static content.
+- `/lab`, `/lab/icons` — live component/effect exploration and icon browser.
 
 ## Palette (`src/index.css` CSS vars + `src/tokens.ts`)
 | Token | Hex |
@@ -36,13 +39,16 @@ All imagery is original inline SVG/CSS: marble = layered gradients, halftone = r
 ## Stack
 Vite + React + TypeScript + Tailwind v4 + react-router. `npm i && npm run dev`.
 
-## Waves
+## Portico + waves
+Portico concept, design grammar, implementation boundary, and next slices: **[docs/PORTICO.md](docs/PORTICO.md)**.
+
 Full Wave 2 remaining slices + proposed Wave 3 (two framings, decision matrix): **[docs/WAVES.md](docs/WAVES.md)**.
 
 ## Wave 2 — built
 - `/gallery` functional tag/medium/year/search filters (URL params) + `/gallery/:id` artifact detail pages
 - `/archive`, `/community`, `/shop`, `/about` — specimen pages with fictional content (no auth, no checkout, no challenges, metrics “—”)
 - `/lab`, `/lab/icons`, Storybook, token drift audit (start of Tool Lab templates)
+- `/portico` shared-discovery threshold layer using existing LITHOMEMPHIS tokens/primitives; no auth, persistence, or implied live collaboration
 
 ## Wave 2 — remaining (see docs/WAVES.md §2)
 - Accounts/auth, profiles, XP/badges
