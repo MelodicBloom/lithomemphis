@@ -1,4 +1,5 @@
 import { NavLink } from 'react-router-dom'
+import { SITE_NAV } from '../lib/nav'
 export function Logo({light=true}:{light?:boolean}){return <div className={light?'text-paper':'text-ink'}><div className="font-display font-black tracking-tight text-[22px] leading-none">LITHOMEMPHIS</div><div className="font-serif italic text-[22px] -mt-1">Collective</div></div>}
 export function SpecimenBadge(){return <span className="font-mono text-[10px] uppercase tracking-widest bg-sunflower text-ink border-2 border-ink rounded px-2 py-0.5">Specimen · static demo</span>}
 export default function Sidebar(){
@@ -11,3 +12,5 @@ export default function Sidebar(){
     <div className="mt-auto relative h-36"><svg viewBox="0 0 160 140" className="absolute inset-0 w-full h-full opacity-80">{[0,1,2,3,4,5,6].map(i=><path key={i} d={`M80 140 Q${20+i*20} 70 ${10+i*24} ${10+(i%2)*20}`} stroke="#F7F6F2" strokeWidth="1" fill="none"/>)}<circle cx="80" cy="90" r="26" fill="#B08D57" stroke="#3b2c14" strokeWidth="2"/><text x="80" y="99" textAnchor="middle" fontFamily="Fraunces" fontSize="26" fontWeight="900" fill="#1b1306">L</text></svg></div>
     <div className="paper !shadow-none p-3 text-ink"><div className="font-mono text-[10px] uppercase">Specimen build</div><div className="font-serif text-lg leading-tight">No accounts. No live data.</div></div>
   </aside>}
+export function SiteHeader(){return <header className="hidden lg:flex items-center gap-6 px-8 py-4 border-b border-paper/15 relative z-10"><NavLink to="/"><Logo/></NavLink>
+  <nav className="flex gap-2 mx-auto font-mono text-xs uppercase">{SITE_NAV.map(([to,l])=><NavLink key={to} to={to} end={to==='/'} className={({isActive})=>`px-4 py-2 rounded-md border-2 ${isActive?'bg-paper text-ink border-ink shadow-[3px_3px_0_#000]':'text-paper border-transparent hover:border-paper/40'}`}>{l}</NavLink>)}</nav><SpecimenBadge/></header>}

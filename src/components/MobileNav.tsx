@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { NavLink } from 'react-router-dom'
-const NAV=[['/','Home'],['/gallery','Gallery']] as const
+import { SITE_NAV as NAV } from '../lib/nav'
 const SOON=['Challenges','Collectives','Activity','Messages']
 const ACTIONS:[string,string][]=[['+ Create',''],['⇧ Upload',''],['Studio Live','text-cherry'],['○ Feedback',''],['∘ Invite','']]
 export default function MobileNav(){
@@ -16,7 +16,7 @@ export default function MobileNav(){
         <span className="font-mono text-[10px] mt-2 self-start bg-sunflower text-ink px-2 py-0.5 rounded">SPECIMEN · STATIC DEMO</span>
         <hr className="border-paper/20 my-5"/>
         <nav className="flex flex-col gap-1">
-          {NAV.map(([to,l])=><NavLink key={to} to={to} end onClick={()=>setOpen(false)} className={({isActive})=>`font-mono font-bold uppercase tracking-widest text-sm px-4 min-h-[48px] flex items-center gap-3 rounded-xl ${isActive?'bg-cornflower text-paper border-2 border-ink shadow-[3px_4px_0_#555]':'text-paper/90'}`}><span>✧</span>{l}</NavLink>)}
+          {NAV.map(([to,l])=><NavLink key={to} to={to} end={to==='/'} onClick={()=>setOpen(false)} className={({isActive})=>`font-mono font-bold uppercase tracking-widest text-sm px-4 min-h-[48px] flex items-center gap-3 rounded-xl ${isActive?'bg-cornflower text-paper border-2 border-ink shadow-[3px_4px_0_#555]':'text-paper/90'}`}><span>✧</span>{l}</NavLink>)}
           {SOON.map(s=><span key={s} className="font-mono uppercase tracking-widest text-sm px-4 min-h-[48px] flex items-center gap-3 text-paper/35"><span>✧</span>{s}<span className="ml-auto text-[9px] border border-paper/30 rounded px-1">W2</span></span>)}</nav>
         <div className="mt-auto pt-5"><div className="bg-[#e9e6de] border-[3px] border-[#555] rounded-[22px] p-3 grid grid-cols-2 gap-2.5 shadow-[inset_0_2px_0_#fff]">
           {ACTIONS.map(([l,c],i)=><a key={l} href="#" onClick={e=>e.preventDefault()} className={`btn bg-paper ${c||"text-ink"} min-h-[48px] text-xs font-bold uppercase tracking-widest flex items-center justify-center ${i===2?'col-span-2 ring-4 ring-cherry/20':''}`}>{l}</a>)}</div>

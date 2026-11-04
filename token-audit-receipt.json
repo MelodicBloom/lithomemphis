@@ -1,7 +1,7 @@
 {
   "pass": true,
-  "auditedAt": "2026-11-04T13:56:59.245Z",
-  "commit": "2a3f9f6",
+  "auditedAt": "2026-11-04T14:00:52.973Z",
+  "commit": "6a62f16",
   "schema": "schema/token-drift.schema.json",
   "tokensHash": "e0fa13282fabbc19",
   "counts": {
