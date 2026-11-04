@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type ReactNode } from 'react'
+import { useEffect, useId, useRef, useState, type ReactNode } from 'react'
 import { flushSync } from 'react-dom'
 import SpringPressable from '../components/SpringPressable'
 import Magnetic from '../components/Magnetic'
@@ -35,13 +35,13 @@ function GlassStage() { const [v, setV] = useState<BackdropVariant>('frost')
 function LightStage() { return <div className="flex flex-col items-center"><div className="flex gap-4 p-4">{['--lm-color-cornflower', '--lm-color-sunflower', '--lm-color-cherry'].map(c =>
   <div key={c} className="lm-lit w-16 h-20 rounded-lg border-2 border-ink" style={{ ['--c' as string]: `var(${c})` }} />)}</div><p className="font-mono text-[10px] text-center px-2 -mt-2 mb-2">☀ LIGHT slider (header) re-lights every card</p></div> }
 function FilmStage() { return <LithoCard sheen="film" className="w-[78%] p-4"><div className="font-mono text-[10px] uppercase">Nacre · thin-film</div><div className="font-display font-black text-2xl">Mother-of-pearl</div><div className="font-serif italic">tilt me</div></LithoCard> }
-function VTStage() { const [open, setOpen] = useState<number | null>(null)
+function VTStage() { const [open, setOpen] = useState<number | null>(null), vid = `vt${useId().replace(/[^a-zA-Z0-9_-]/g, '')}`
   const go = (n: number | null) => { const d = document as Document & { startViewTransition?: (cb: () => void) => unknown }
     if (d.startViewTransition && !motionSafe()) d.startViewTransition(() => flushSync(() => setOpen(n))); else setOpen(n) }
   const kinds = ['flora', 'vessel', 'arches'] as const
   return <div className="w-full p-3">{open === null
-    ? <div className="grid grid-cols-3 gap-2">{kinds.map((k, i) => <button key={k} onClick={() => go(i)} className="border-2 border-ink rounded-lg overflow-hidden h-24 bg-paper" style={{ viewTransitionName: `vt-art-${i}` }}><Art kind={k} /></button>)}</div>
-    : <div className="flex gap-3 items-start"><button onClick={() => go(null)} className="border-2 border-ink rounded-lg overflow-hidden h-36 w-36 bg-paper shrink-0" style={{ viewTransitionName: `vt-art-${open}` }}><Art kind={kinds[open]} /></button>
+    ? <div className="grid grid-cols-3 gap-2">{kinds.map((k, i) => <button key={k} onClick={() => go(i)} className="border-2 border-ink rounded-lg overflow-hidden h-24 bg-paper" style={{ viewTransitionName: `${vid}-art-${i}` }}><Art kind={k} /></button>)}</div>
+    : <div className="flex gap-3 items-start"><button onClick={() => go(null)} className="border-2 border-ink rounded-lg overflow-hidden h-36 w-36 bg-paper shrink-0" style={{ viewTransitionName: `${vid}-art-${open}` }}><Art kind={kinds[open]} /></button>
       <div><div className="font-display font-black text-xl capitalize">{kinds[open]}</div><p className="font-mono text-[10px]">{'startViewTransition' in document ? 'Morphed via View Transitions API' : 'No VT support → instant swap'}. Tap to go back.</p></div></div>}</div> }
 function RevealStage() { const ref = useRef<HTMLDivElement>(null)
   useEffect(() => { if (CSS.supports('animation-timeline: view()')) return
