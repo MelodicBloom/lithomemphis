@@ -44,3 +44,13 @@ Vite + React + TypeScript + Tailwind v4 + react-router. `npm i && npm run dev`.
 - Artifact detail pages; functional tag/medium/year filters
 - Mobile nav drawer from the mobile comp; dark "Tool Lab" / "Challenge Arena" templates
 - Real 3D marble object, photographic collage
+
+## Visual proof
+
+[![Live demo](https://img.shields.io/badge/live%20demo-lithomemphis.vercel.app-111?style=for-the-badge&logo=vercel)](https://lithomemphis.vercel.app)
+
+[![lithomemphis hero loop](docs/visual-proof/hero-poster.jpg)](docs/visual-proof/hero.mp4)
+
+Poster links to an 8 s hero loop (`docs/visual-proof/hero.mp4`); social card at `docs/visual-proof/og.png`. Generated with [visual-proof-kit](https://github.com/MelodicBloom/visual-proof-kit).
+
+Lighthouse: run locally — `npx lighthouse https://lithomemphis.vercel.app --view`
