@@ -5,7 +5,7 @@ const EDITIONS = [
   { t: 'Flora Typica No. 7 — Edition', art: 'flora', ed: 'Edition of 20 · stone lithograph', s: 'Sold out', c: 'bg-wine text-paper' },
   { t: 'Signal / Noise Poster', art: 'signal', ed: 'Edition of 50 · 2-colour screen print', s: 'Inquire', c: 'bg-sunflower' },
   { t: 'Garden of Marks', art: 'garden', ed: 'Open proof · screen print', s: 'Specimen only', c: 'bg-lime' },
-  { t: 'Field Notes Zine No. 23', art: 'notes', ed: 'Riso zine · 24pp', s: 'Specimen only', c: 'bg-lime' },
+  { t: 'Field Notes Zine No. 23', art: 'book', ed: 'Riso zine · 24pp', s: 'Specimen only', c: 'bg-lime' },
 ]
 export default function Shop() {
   return <SpecimenPage title="Shop" kicker="Editions & ephemera · specimen" intro="What a print shelf could look like. Nothing here is for sale — no cart, no checkout, no prices. Editions are fictional.">
