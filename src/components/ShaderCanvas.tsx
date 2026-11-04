@@ -29,12 +29,16 @@ export default function ShaderCanvas({ mode = 'grain', className = '', paused = 
     const a = gl.getAttribLocation(p, 'a'); gl.enableVertexAttribArray(a); gl.vertexAttribPointer(a, 2, gl.FLOAT, false, 0, 0)
     const u = (k: string) => gl.getUniformLocation(p, k)
     gl.uniform1i(u('mode'), ({ grain: 0, film: 1, dither: 2 })[mode])
-    let raf = 0; const t0 = performance.now()
-    const draw = () => { gl.viewport(0, 0, c.width, c.height); gl.uniform2f(u('r'), c.width, c.height); gl.uniform1f(u('t'), (performance.now() - t0) / 1000)
-      gl.uniform2f(u('m'), mouse.current[0], mouse.current[1]); gl.drawArrays(gl.TRIANGLES, 0, 3)
-      if (!paused && !motionSafe()) raf = requestAnimationFrame(draw) }
-    draw(); const ro = new ResizeObserver(() => { fit(); draw() }); ro.observe(c)
-    return () => { cancelAnimationFrame(raf); ro.disconnect() }
+    let raf = 0, active = true; const t0 = performance.now()
+    const render = () => { if (!active) return; gl.viewport(0, 0, c.width, c.height); gl.uniform2f(u('r'), c.width, c.height); gl.uniform1f(u('t'), (performance.now() - t0) / 1000)
+      gl.uniform2f(u('m'), mouse.current[0], mouse.current[1]); gl.drawArrays(gl.TRIANGLES, 0, 3) }
+    const loop = () => { raf = 0; if (!active) return; render(); if (!paused && !motionSafe()) raf = requestAnimationFrame(loop) }
+    loop(); const ro = new ResizeObserver(() => { if (!active) return; fit(); render() }); ro.observe(c)
+    // restart the loop when safe mode / OS reduced-motion is switched off (motionSafe() is read live)
+    const wake = () => { if (active && !raf) loop() }
+    const mo = new MutationObserver(wake); mo.observe(document.documentElement, { attributes: true, attributeFilter: ['data-motion'] })
+    const mq = matchMedia('(prefers-reduced-motion: reduce)'); mq.addEventListener('change', wake)
+    return () => { active = false; cancelAnimationFrame(raf); ro.disconnect(); mo.disconnect(); mq.removeEventListener('change', wake) }
   }, [mode, paused])
   return <canvas ref={ref} className={`lm-shader ${className}`} aria-hidden
     onPointerMove={e => { const r = e.currentTarget.getBoundingClientRect(); mouse.current = [(e.clientX - r.left) / r.width, 1 - (e.clientY - r.top) / r.height] }} />

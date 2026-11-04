@@ -7,7 +7,7 @@ import { springs, useSpring } from '../lib/spring'
 export default function LithoCard({ children, tilt = true, sheen = 'specular', className = '', style }: { children: ReactNode; tilt?: boolean; sheen?: 'specular' | 'film' | 'none'; className?: string; style?: CSSProperties }) {
   const el = useRef<HTMLDivElement>(null)
   const s = useSpring([0, 0], springs.gentle, ([x, y]) => { const n = el.current; if (!n) return
-    n.style.setProperty('--tx', String(x)); n.style.setProperty('--ty', String(y)); n.style.rotate = `${y * -6}deg ${x * 6}deg 0` })
+    n.style.setProperty('--tx', String(x)); n.style.setProperty('--ty', String(y)); n.style.transform = `perspective(800px) rotateX(${y * -6}deg) rotateY(${x * 6}deg)` })
   return <div ref={el} className={`lm-card paper ${className}`} data-sheen={sheen} style={style}
     onPointerMove={tilt ? e => { const r = el.current!.getBoundingClientRect(); s.set([(e.clientX - r.left) / r.width - 0.5, (e.clientY - r.top) / r.height - 0.5]) } : undefined}
     onPointerLeave={tilt ? () => s.set([0, 0]) : undefined}>

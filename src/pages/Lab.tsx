@@ -1,9 +1,12 @@
 import { useEffect, useMemo, useState } from 'react'
+import { flushSync } from 'react-dom'
 import { Link } from 'react-router-dom'
 import { demos, type Demo } from '../lab/demos'
 import { Button, Switch, Tabs, Dialog } from '../components/ui'
 import Icon from '../components/Icon'
 import GrainMask from '../components/GrainMask'
+import { motionSafe } from '../lib/spring'
+import light from '../../tokens/light.json'
 import receipt from '../../token-audit-receipt.json'
 
 const KEY = 'lm-lab-picks'
@@ -18,14 +21,15 @@ function Card({ d, i, picked, onPick, onOpen }: { d: Demo; i: number; picked: bo
       <Button size="sm" onClick={onOpen}>open ↗</Button><Button size="sm" variant={picked ? 'ink' : 'accent'} onClick={onPick} aria-pressed={picked}>{picked ? '★ picked' : '☆ pick'}</Button></footer></article>
 }
 export default function Lab() {
-  const [picks, setPicks] = useState<string[]>(() => JSON.parse(localStorage.getItem(KEY) ?? '[]'))
-  const [angle, setAngle] = useState(135), [group, setGroup] = useState<'All' | Demo['group']>('All'), [open, setOpen] = useState<Demo | null>(null)
-  useEffect(() => localStorage.setItem(KEY, JSON.stringify(picks)), [picks])
+  const [picks, setPicks] = useState<string[]>(() => { try { const v: unknown = JSON.parse(localStorage.getItem(KEY) ?? '[]'); return Array.isArray(v) && v.every(x => typeof x === 'string') ? v : [] } catch { return [] } })
+  const [angle, setAngle] = useState(() => parseFloat(light.tokens.angle) || 135), [group, setGroup] = useState<'All' | Demo['group']>('All'), [open, setOpen] = useState<Demo | null>(null)
+  useEffect(() => { try { localStorage.setItem(KEY, JSON.stringify(picks)) } catch { /* storage unavailable */ } }, [picks])
   useEffect(() => { document.documentElement.style.setProperty('--lm-angle', `${angle}deg`) }, [angle])
+  useEffect(() => () => { document.documentElement.style.removeProperty('--lm-angle') }, [])
   useEffect(() => { const h = location.hash.slice(1); if (h) document.getElementById(h)?.scrollIntoView() }, [])
   const groups = ['All', 'Tactile', 'Material', 'Motion', 'Graphics', 'Type', 'Offer', 'A11y'] as const
   const list = useMemo(() => demos.filter(d => group === 'All' || d.group === group), [group])
-  const vt = (f: () => void) => { const d = document as Document & { startViewTransition?: (cb: () => void) => unknown }; d.startViewTransition ? d.startViewTransition(f) : f() }
+  const vt = (f: () => void) => { const d = document as Document & { startViewTransition?: (cb: () => void) => unknown }; if (d.startViewTransition && !motionSafe()) d.startViewTransition(() => flushSync(f)); else f() }
   return <div className="lm-lab min-h-screen p-3 sm:p-6">
     <GrainMask opacity={0.25} className="paper p-4 sm:p-6 mb-5"><div className="relative z-[2] flex flex-wrap gap-4 items-end">
       <div className="flex-1 min-w-[240px]"><Link to="/" className="font-mono text-[10px] underline">← specimen home</Link>

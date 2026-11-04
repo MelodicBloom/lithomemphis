@@ -17,6 +17,7 @@ export function Dialog({ open, onClose, title, children }: { open: boolean; onCl
   const ref = useRef<HTMLDialogElement>(null)
   useEffect(() => { const d = ref.current!; if (open && !d.open) d.showModal(); if (!open && d.open) d.close() }, [open])
   return <dialog ref={ref} className="lm-dialog paper" onClose={onClose} {...{ closedby: 'any' }} aria-labelledby="lm-dlg-t"
-    onClick={e => { if (e.target === ref.current) onClose() }}>
+    onClick={e => { const d = ref.current; if (e.target !== d || !d) return; const r = d.getBoundingClientRect()
+      if (e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom) onClose() }}>
     <div className="lm-dialog__head"><h2 id="lm-dlg-t" className="font-display font-black text-2xl">{title}</h2><Button size="sm" onClick={onClose} aria-label="Close">✕</Button></div>{children}</dialog>
 }

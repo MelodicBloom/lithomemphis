@@ -25,7 +25,7 @@
 .lm-dialog:not([open]) { opacity: 0; scale: .94; }
 .lm-dialog::backdrop { background: color-mix(in srgb, var(--lm-color-ink) 55%, transparent); backdrop-filter: blur(4px); }
 .lm-dialog__head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
-:focus-visible { outline: 3px solid var(--lm-color-cornflower); outline-offset: 3px; }
+.lm-lab :focus-visible { outline: 3px solid var(--lm-color-cornflower); outline-offset: 3px; }
 
 /* ---------- BackdropSurface ---------- */
 .lm-backdrop { isolation: isolate; border: 2px solid var(--lm-color-ink); border-radius: var(--lm-space-radius-card);
@@ -83,7 +83,7 @@
 @container (min-width: 380px) { .lm-bento__grid { grid-template-columns: 2fr 1fr 1fr; } .lm-bento__grid > :first-child { font-size: 16px; } }
 
 /* peel sticker */
-.lm-peel { position: relative; width: 120px; height: 120px; cursor: grab; }
+.lm-peel { position: relative; width: 120px; height: 120px; cursor: grab; touch-action: none; }
 .lm-peel__face, .lm-peel__back { position: absolute; inset: 0; border-radius: 50%; border: 2px solid var(--lm-color-ink); }
 .lm-peel__face { background: var(--lm-color-sunflower); display: grid; place-items: center; font: 900 20px var(--font-display);
   clip-path: polygon(0 0, 100% 0, 100% calc(100% - var(--p)), calc(100% - var(--p)) 100%, 0 100%); }

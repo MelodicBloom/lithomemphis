@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react'
+import { flushSync } from 'react-dom'
 import SpringPressable from '../components/SpringPressable'
 import Magnetic from '../components/Magnetic'
 import GrainMask from '../components/GrainMask'
@@ -36,7 +37,7 @@ function LightStage() { return <div className="flex flex-col items-center"><div 
 function FilmStage() { return <LithoCard sheen="film" className="w-[78%] p-4"><div className="font-mono text-[10px] uppercase">Nacre · thin-film</div><div className="font-display font-black text-2xl">Mother-of-pearl</div><div className="font-serif italic">tilt me</div></LithoCard> }
 function VTStage() { const [open, setOpen] = useState<number | null>(null)
   const go = (n: number | null) => { const d = document as Document & { startViewTransition?: (cb: () => void) => unknown }
-    if (d.startViewTransition && !motionSafe()) d.startViewTransition(() => setOpen(n)); else setOpen(n) }
+    if (d.startViewTransition && !motionSafe()) d.startViewTransition(() => flushSync(() => setOpen(n))); else setOpen(n) }
   const kinds = ['flora', 'vessel', 'arches'] as const
   return <div className="w-full p-3">{open === null
     ? <div className="grid grid-cols-3 gap-2">{kinds.map((k, i) => <button key={k} onClick={() => go(i)} className="border-2 border-ink rounded-lg overflow-hidden h-24 bg-paper" style={{ viewTransitionName: `vt-art-${i}` }}><Art kind={k} /></button>)}</div>
@@ -79,7 +80,7 @@ function PeelStage() { const ref = useRef<HTMLDivElement>(null); const drag = us
   const s = useSpring([18], springs.wobbly, ([p]) => ref.current?.style.setProperty('--p', `${p}%`))
   return <div ref={ref} className="lm-peel" style={{ ['--p' as string]: '18%' }} onPointerDown={e => { drag.current = true; e.currentTarget.setPointerCapture(e.pointerId) }}
     onPointerMove={e => { if (!drag.current) return; const b = e.currentTarget.getBoundingClientRect(); s.set([Math.min(85, Math.max(18, ((b.right - e.clientX) + (b.bottom - e.clientY)) / 2.4))]) }}
-    onPointerUp={() => { drag.current = false; s.set([18]) }}><div className="lm-peel__face">L·M</div><div className="lm-peel__back" /><span className="absolute -bottom-5 w-full text-center font-mono text-[9px]">drag the corner</span></div> }
+    onPointerUp={() => { drag.current = false; s.set([18]) }} onPointerCancel={() => { drag.current = false; s.set([18]) }}><div className="lm-peel__face">L·M</div><div className="lm-peel__back" /><span className="absolute -bottom-5 w-full text-center font-mono text-[9px]">drag the corner</span></div> }
 function DitherStage() { return <ShaderStage mode="dither" /> }
 function BlobFocusStage() { return <div className="flex flex-col items-center gap-3"><div className="lm-blob" /><div className="lm-focus-row flex gap-2">{['Tab', 'to', 'focus'].map(t => <button key={t} className="lm-btn lm-btn--sm">{t}</button>)}</div></div> }
 
