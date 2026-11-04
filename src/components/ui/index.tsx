@@ -16,8 +16,15 @@ export function Tabs<T extends string>({ value, onChange, items, label }: { valu
 export function Dialog({ open, onClose, title, children }: { open: boolean; onClose: () => void; title: string; children: ReactNode }) {
   const ref = useRef<HTMLDialogElement>(null)
   useEffect(() => { const d = ref.current!; if (open && !d.open) d.showModal(); if (!open && d.open) d.close() }, [open])
-  return <dialog ref={ref} className="lm-dialog paper" onClose={onClose} {...{ closedby: 'any' }} aria-labelledby="lm-dlg-t"
-    onClick={e => { const d = ref.current; if (e.target !== d || !d) return; const r = d.getBoundingClientRect()
-      if (e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom) onClose() }}>
+  // JS light-dismiss fallback (closedby="any" is flaky in some Chromium builds): backdrop clicks target the
+  // <dialog> itself; padding clicks do too, so also require the point to be outside the box rect.
+  useEffect(() => { const d = ref.current!; const out = (e: MouseEvent) => { const r = d.getBoundingClientRect()
+      return e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom }
+    let downOut = false
+    const down = (e: PointerEvent) => { downOut = e.target === d && out(e) }
+    const click = (e: MouseEvent) => { if (downOut && e.target === d && out(e) && d.open) d.close(); downOut = false }
+    d.addEventListener('pointerdown', down); d.addEventListener('click', click)
+    return () => { d.removeEventListener('pointerdown', down); d.removeEventListener('click', click) } }, [])
+  return <dialog ref={ref} className="lm-dialog paper" onClose={onClose} {...{ closedby: 'any' }} aria-labelledby="lm-dlg-t">
     <div className="lm-dialog__head"><h2 id="lm-dlg-t" className="font-display font-black text-2xl">{title}</h2><Button size="sm" onClick={onClose} aria-label="Close">✕</Button></div>{children}</dialog>
 }
