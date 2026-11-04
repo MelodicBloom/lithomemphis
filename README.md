@@ -36,16 +36,21 @@ All imagery is original inline SVG/CSS: marble = layered gradients, halftone = r
 ## Stack
 Vite + React + TypeScript + Tailwind v4 + react-router. `npm i && npm run dev`.
 
-## Wave 2 — specimen pages built
+## Waves
+Full Wave 2 remaining slices + proposed Wave 3 (two framings, decision matrix): **[docs/WAVES.md](docs/WAVES.md)**.
+
+## Wave 2 — built
 - `/gallery` functional tag/medium/year/search filters (URL params) + `/gallery/:id` artifact detail pages
 - `/archive`, `/community`, `/shop`, `/about` — specimen pages with fictional content (no auth, no checkout, no challenges, metrics “—”)
+- `/lab`, `/lab/icons`, Storybook, token drift audit (start of Tool Lab templates)
 
-## Wave 2 — NOT built yet
+## Wave 2 — remaining (see docs/WAVES.md §2)
 - Accounts/auth, profiles, XP/badges
 - Challenges (submission, voting, timers), leaderboard computation
 - Live activity feed ("The Collective is listening"), comments
-- Mobile nav drawer from the mobile comp; dark "Tool Lab" / "Challenge Arena" templates
-- Real 3D marble object, photographic collage
+- Mobile nav polish beyond current drawer; dark "Challenge Arena" template (Tool Lab started in `/lab`)
+- Real 3D marble object, photographic collage (proposed to move to W3 craft wave)
+- Cleanup: explicit `archived` field, medium sidebar, shared `studios.json`, detail-page header decision, soft-404
 
 ## Visual proof
 
