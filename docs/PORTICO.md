@@ -146,6 +146,10 @@ This Portico slice passes when:
 4. Connect provenance/trace language to real artifact metadata before adding any persistent handoff.
 5. If platform work is later approved, design collaboration from explicit privacy, moderation and ownership rules rather than adding generic social features.
 
+### Proposed encounter beat candidate
+
+`orient.print.stamp-bleed-relief` ([consumables/stamp-bleed-relief-v0.md](consumables/stamp-bleed-relief-v0.md)) is the first proposed encounter beat candidate under [VISUAL-LANGUAGE-CONSUMER.md](VISUAL-LANGUAGE-CONSUMER.md) v1.3. It is staged in `/lab` first and is **not yet in the runtime**. It joins `/portico` only after an `ADAPT` receipt and visual review.
+
 ## 9. Notes and provenance
 
 Portico predates this PR and was previously discussed as a collaborative system centered on shared spaces, thresholds, traveling gates, torch-passing, guidance, collective experience and shared values.

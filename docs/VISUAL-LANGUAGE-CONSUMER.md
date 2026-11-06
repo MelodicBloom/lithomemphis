@@ -1,9 +1,10 @@
-# LITHOMEMPHIS — Visual Language Consumer Specification (v1.2)
+# LITHOMEMPHIS — Visual Language Consumer Specification (v1.3)
 
-> **Status:** **Locked v1.2** — `2026-11-05` (America/New_York)  
+> **Status:** **Locked v1.3** — `2026-11-06` (America/New_York); supersedes Locked v1.2 (`2026-11-05`, commit `4b2a7cc`)  
 > **Kind:** Consumer intake contract & authority boundary for `MelodicBloom/lithomemphis`  
 > **Live specimen:** https://lithomemphis.vercel.app  
-> **Companion docs:** [WAVES.md](WAVES.md) · [PORTICO.md](PORTICO.md) · root [README.md](../README.md)
+> **Companion docs:** [WAVES.md](WAVES.md) · [PORTICO.md](PORTICO.md) · root [README.md](../README.md)  
+> **First approved candidate consumable (DEFER):** [consumables/stamp-bleed-relief-v0.md](consumables/stamp-bleed-relief-v0.md) · [consumables/stamp-bleed-relief-v0.receipt.json](consumables/stamp-bleed-relief-v0.receipt.json)
 
 **Evidence labels:** `measured` · `self-reported` · `proposed` · `unverified` · `unavailable` · `blocked` · `agent-inferred`.  
 **Gaps** are marked **⚠ GAP**. Nothing upstream is adopted unless it clears the fixture receipt gate in §6.
@@ -18,8 +19,8 @@ It is **not**:
 
 | Claimed identity | LithoMemphis stance | Evidence |
 |---|---|---|
-| `MelodicBloom/omni-loom` | **Not** the fabrication compiler; may **ADAPT** later via envelopes | Omni-Loom recovery pack v3 `CONSUMER-MATRIX.md` lists lithomemphis as **Candidate, unconfirmed** → treat as `DEFER` until fixture-gated |
-| Interaction & Visual SDK | **Not** the language taxonomy / runtime-engine owner | Consumer Spec v0–v1.2 (`self-reported` session drafts) |
+| `MelodicBloom/omni-loom` | **Not** the fabrication compiler; may **ADAPT** later via envelopes | Recovery pack v3 `CONSUMER-MATRIX.md` (**local, unpublished**; not on any live `omni-loom` remote branch) lists lithomemphis as **Candidate, unconfirmed** → treat as `DEFER` until fixture-gated |
+| Interaction & Visual SDK | **Not** the language taxonomy / runtime-engine owner | Consumer Spec v0–v1.3 (`self-reported` session drafts) |
 | Living Cloth authority | **Not** textile semantic owner; may **ADAPT** via Issue 23-style adapters | Inline Living Cloth contracts (2026-11-04) + Omni-Loom Issue 23 |
 | Upstream Visual OS monoliths (`NacreOS`, `The Textile Interface`, external Portico-as-OS, `Tierra Viva`, `MelodyFire`) | **Not** those systems | `self-reported` / profile memory; do not import their authority |
 
@@ -39,11 +40,33 @@ LithoMemphis consumes **only** modules that are:
 
 delivered as drop-in assets, components, scenes, effects, or primitives **with fixture receipts** (§6). No speculative imports. No unversioned shaders. No static AI stills as runtime truth.
 
-### Semantic boundary (Omni-Loom `CONSUMER-MATRIX.md`)
+### Semantic boundary (recovery-pack `CONSUMER-MATRIX.md`, unpublished)
 
 > `stitch_plan.json` fabrication IR ≠ shader optical metadata ≠ visual design tokens ≠ Living Cloth material semantics.
 
 Exchange occurs **only** via versioned envelopes and **loss-aware adapters**. Physical measurements require **explicit units** and measurement provenance (`calibrated` vs `illustrative`). Illustrative artistic sliders are not calibrated physical units. `proposed` classification from recovery pack v3 discovery dated 2026-11-04.
+
+### Omni-Loom authority status (audit reconciliation, v1.3)
+
+- Live `MelodicBloom/omni-loom` (`main` @ `0bbd92798b3d24285dfa046cfaa020f458d6f362`) currently has **no `CONSUMER-MATRIX.md` and no `stitch_plan.schema.json` on any remote branch**. `measured` 2026-11-06 by upstream reconciliation.
+- Issues `01–28` are **not published GitHub issues**. They live in the local, unpublished recovery pack v3 (`cross-repo/CONSUMER-MATRIX.md` SHA-256 `e9a9051f7e04bc7f45d9fb0af144ca9e41a41bd216fd39c6114913598cac5ea9`).
+- `DEFER` remains valid. It rests on that unpublished discovery pack (`proposed`) plus live `docs/VNEXT_SCOPE.md` and `specimen-v0` (`current`). Cite the matrix as an unpublished recovery-pack artifact, not as live `omni-loom` authority, until the owner approves publishing it.
+
+### Receipt families & ID namespaces (v1.3)
+
+Three receipt families exist, and they are **separate**:
+
+| Family | Owner | Receipt |
+|---|---|---|
+| Litho §6 `consumer-gate` | `MelodicBloom/lithomemphis` | This document §6 |
+| `fabrication-compiler` `planDigest` | `MelodicBloom/omni-loom` | specimen-v0 / future `stitch_plan` |
+| Experiment receipt | `MelodicBloom/shader-grammar` | `experiment-receipt.schema.json` @ `be11bde30962773999e2c37888e044970f5673d5`; `package.json` `repository.url` still `qt314wink/shader-grammar.git` (301 redirect) → identity pin **`blocked`** |
+
+They are exchanged **only** via loss-aware envelopes (`domain: "print-process"`, `canonicalOwner: "MelodicBloom/lithomemphis"`). The adapter's `mapping` block maps `consumableId` (`litho.print.*`) and the Litho-local `engineAlias` (e.g. `pressCycle`) explicitly against SG `$id` (`https://shader-grammar.dev/schemas/v0.1/…`) and future `stitch_plan` IDs. **No silent renaming.**
+
+### Metaphor-remap calibration rule (normative, v1.3)
+
+Cross-domain metaphor remaps (`Condensation ≈ ink bleed`, `Lensing ≈ press halo`) are **semantic analogies, not unit-preserving transforms**. Every remapped parameter **must** set `unitProvenance: "illustrative"` (envelope `calibration: "not-claimed"`) with explicit print units (`mm`, `um`, `gsm`, `ms`). Remaps **never** inherit `calibrated` status from optical `nm`/IOR fits or from `spec-only` Living Cloth formulas (`watercolor_radius_px`, `A_t`, `D_c`, `B_c`, `Q`). This holds until physical press or densitometer scans exist.
 
 ---
 
@@ -66,14 +89,15 @@ Exchange occurs **only** via versioned envelopes and **loss-aware adapters**. Ph
 | Repository / contract | Canonical responsibility | LithoMemphis stance | Evidence / next gate |
 |---|---|---|---|
 | **`MelodicBloom/lithomemphis`** | Lithographic, paper, plate-press specimen UI; `tokens/*.json`; `token-audit-receipt.json`; `/lab` primitives; bounded `/portico` encounter layer | **PRESERVE** / own | `measured` on `main` + PR #5 branch |
-| **`MelodicBloom/omni-loom`** | Deterministic `stitch_plan.json` fabrication IR; recovery pack v3 draft Issues `01–28` | **DEFER** → fixture-gated **ADAPT**; never replace IR | `CONSUMER-MATRIX.md` marks lithomemphis **Candidate, unconfirmed** |
-| **`qt314wink/shader-grammar`** vs **`MelodicBloom/shader-grammar`** | Optical material semantics (identity unresolved) | **ADAPT** via Issue 22 optical ingest **only after** repository ID pin & lineage resolution | `unverified` identity; `.github` PR #22 pending |
+| **`MelodicBloom/omni-loom`** | Deterministic `stitch_plan.json` fabrication IR (`main` @ `0bbd927`); recovery pack v3 draft Issues `01–28` (**local, unpublished**) | **DEFER** → fixture-gated **ADAPT**; never replace IR | Unpublished pack `CONSUMER-MATRIX.md` (SHA-256 `e9a9051f…`) marks lithomemphis **Candidate, unconfirmed**; no matrix / `stitch_plan.schema.json` on remote |
+| **`qt314wink/shader-grammar`** vs **`MelodicBloom/shader-grammar`** | Optical material semantics (identity unresolved); `experiment-receipt.schema.json` @ `be11bde` | **ADAPT** via Issue 22 optical ingest **only after** repository ID pin & lineage resolution; Tier-1 borrows receipt **discipline only** (typed params, clamps, SHA-256, anti-claims) | `package.json` still `qt314wink/shader-grammar.git` (301); identity pin `blocked`; `.github` PR #22 pending |
 | **`MelodicBloom/shader-gallery`** | `shader-meta.schema.json`, `shader-evidence-receipt.schema.json` | **ADAPT** | Verify GLSL uniforms, fixtures, schema version |
 | **`qt314wink/pompa-iridiscencia`** | Thin-film optical experiment | Independent profile; map wavelength / thickness / angle units explicitly if adapted | Measurement provenance `unverified` |
 | **Living Cloth contracts** / Omni-Loom Issue **23** | Textile / pigment / recipe semantics: observation protocol, stage machine, generative-region schema + specimen, seams, composition recipes, token derivation, spring/motion/sound/watercolor equations, parameter ranges | **ADAPT** via loss-aware textile adapter; never convert artistic heuristics into claimed physical measurements | Inline MD/JSON ingested 2026-11-04 (`measured` on attachment FS) |
 | **Nacre** (hosted instrument precedent) | Procedural Three.js mesh + TSL; 30 Hz GPU sim + CPU scalar fallback; session JSON I/O + schema; runtime renderer disclosure; `prefers-reduced-motion` paused default | **ADAPT** / optional hosted instrument pattern; **no** unproved cross-backend numerical identity claim | Nacre design/implementation contract ×3 identical (`self-reported` attachment) |
 | **`MelodicBloom/design-standards-2026-2027`** | Motion & accessibility token baselines (`tokens/motion.json`) | **RESPECT** / **SHARE** baselines | Verify token versions and budgets |
 | **`MelodicBloom/.github`** | Identity / registry attestations (PRs #21 / #22) | **Governance** — pending verification | `unverified` draft/merge state |
+| **`MelodicBloom/aurora-collage-ui-system`** (peer) | `StampSvg`, `InkBlot`, `WatercolorField`, `BleedMargin` @ `41c89e336e72` | **Cite as prior art only (`DIVERGE` — do not absorb)** | Recovery matrix `Candidate, unconfirmed`; owner decision 2026-11-06 |
 | **Seed Loom** (`qt314wink` / `MelodicBloom` identity to pin) | Provenance & deterministic evidence receipt patterns | **ADAPT** receipt patterns only | Verify repo ID + schema compatibility |
 
 ---
@@ -112,7 +136,7 @@ Stay **DEFER** until fixture-green. Prefer translation into print / plate / spec
 
 ---
 
-## 4. Interaction translation matrix & implementation rules (v1.1 → v1.2)
+## 4. Interaction translation matrix & implementation rules (v1.1 → v1.3)
 
 Every consumable must declare **bindings** from its state machine to these surfaces — not only how it looks at rest. Align onboarding with Portico’s **orientation-over-instruction** principle ([PORTICO.md](PORTICO.md)).
 
@@ -129,14 +153,30 @@ Every consumable must declare **bindings** from its state machine to these surfa
 
 ### 4.2 Eight Implementation Rules
 
-1. **One semantic state machine, many adapters.** Canonical states: `idle | lensing | impressed | bleeding | drifting | reduced`. Web / mobile / scroll / gyro are adapters, not forks.
-2. **Progress as a first-class continuous input.** `t ∈ [0, 1]` from scroll, timeline, or gesture; fixtures must be continuous in `t`, not only keyframe snaps.
+1. **One semantic state machine, many adapters (orthogonal, v1.3).** Canonical state is the product `phenomenonState × presentationMode`:
+   - `phenomenonState ∈ {idle, lensing, impressed, bleeding, drifting}`
+   - `presentationMode ∈ {full, reduced}`, driven by `prefers-reduced-motion` and LithoMemphis Safe Mode / `motionSafe()`.
+
+   Web / mobile / scroll / gyro are adapters, not forks. **Why:** v1.1–v1.2 modeled `reduced` as an exclusive peer state, so entering reduced motion erased whether the user was in `impressed` or `bleeding`. With orthogonal `presentationMode: "reduced"`, each `phenomenonState` renders as its deterministic static print snapshot and keeps its phenomenon identity. v1.2's peer `state: "reduced"` + `lastPhenomenonState` workaround is **superseded**; it survives only as history in §7.1 and §9.
+2. **Progress as a first-class continuous input.** `t ∈ [0, 1]` from scroll, timeline, or gesture; fixtures must be continuous in `t`, not only keyframe snaps. Every receipt **must** declare `progressSemantics: "plate-state-scrub" | "time-evolution"`. Real ink does not un-bleed: with `plate-state-scrub`, scrubbing `t` scrubs an **authored plate-press cycle**, while capillary dwell inside a single live press gesture stays **monotonic** (hysteresis; no reverse bleed until gesture end / explicit reset).
 3. **Input modality contract.** Declare `required` / `enhancement` / `forbidden` per fixture. Pointer ≠ finger ≠ tilt. **Gyro is always enhancement-only.**
 4. **Relief & press physics.** Springs model plate impression (`k`, `ζ`, travel in mm-equivalent); release = **ink lift**, not generic bounce.
 5. **Registration as layout primitive.** Misregistration Δx/Δy may bind to hover, tilt, or scroll velocity — **clamped**.
 6. **Narrative onboarding sequence.** `silhouette → stamp → hatch → relief → optional optics`. Never dump the full SDK.
-7. **Reduced motion / reduced sensing parity.** Replace phenomena with deterministic static print states; **zero** essential content that only exists via gyro or scrub.
+7. **Reduced motion / reduced sensing parity.** `presentationMode: "reduced"` renders the **current** `phenomenonState` as a deterministic static print snapshot (one per phenomenon state); **zero** essential content that only exists via gyro or scrub.
 8. **Viewport classes & LOD contracts.** `phone` · `tablet` · `desktop` · `projector` each declare LOD and touch-target contracts in the fixture receipt.
+
+### 4.3 Normative Print Gloss for `phenomenonState` (v1.3)
+
+State names keep their v1.1 lexicon for continuity, but each name **must** be read through this print gloss, so optical vocabulary never drifts into thin-film rainbows:
+
+| `phenomenonState` | Print gloss (normative) |
+|---|---|
+| `idle` | Plate at rest; dry ink film |
+| `lensing` | Pre-contact press-halo / raking catch-light anticipation (**not** thin-film interference) |
+| `impressed` | Plate bite / deboss under impression travel |
+| `bleeding` | Capillary wicking / halftone dot gain / ink lift on release |
+| `drifting` | Riso misregistration drift / registration scrub |
 
 ---
 
@@ -209,13 +249,13 @@ A module may move from **DEFER** to **ADAPT** only when a receipt ships with **a
 ### 6.1 Required fields
 
 1. Semantic name + engine alias  
-2. Process / physics specification + **unit provenance** (`calibrated` | `illustrative`)  
+2. Process / physics specification + **unit provenance** (`calibrated` | `illustrative`; metaphor remaps are always `illustrative`, §1)  
 3. Parameter schema + clamps + deterministic seed  
-4. State-machine map (`idle|lensing|impressed|bleeding|drifting|reduced` + transitions)  
+4. State-machine map: `phenomenonState` (`idle|lensing|impressed|bleeding|drifting`) × `presentationMode` (`full|reduced`) + transitions + print gloss + one static snapshot per `phenomenonState`  
 5. Maps / shaders / source + content SHA-256  
 6. Golden stills + short motion proof  
 7. Input contract (`required` / `enhancement` / `forbidden`)  
-8. Progress binding for `t ∈ [0, 1]`  
+8. Progress binding for `t ∈ [0, 1]` + `progressSemantics` (`plate-state-scrub` | `time-evolution`)  
 9. Gesture → phenomenon map  
 10. Onboarding beat ID (if taught in orientation / Portico)  
 11. Device LOD table (`phone|tablet|desktop|projector`)  
@@ -228,26 +268,40 @@ A module may move from **DEFER** to **ADAPT** only when a receipt ships with **a
 ```json
 {
   "schemaVersion": "1.0.0",
-  "consumableId": "litho.print.stamp-bleed-relief",
+  "consumerSpecVersion": "1.3",
+  "consumableId": "litho.print.stamp-bleed-relief-v0",
   "semanticName": "Stamp → Bleed → Relief",
   "engineAlias": "pressCycle",
   "maturity": "candidate",
-  "classification": "ADAPT",
+  "classification": "DEFER",
   "processSpec": {
     "kind": "print-process",
     "description": "Ink stamp impression with capillary bleed and plate-relief catch-light",
+    "unitProvenanceDefault": "illustrative",
+    "progressSemantics": "plate-state-scrub",
     "parameters": {
-      "misregistration_dx_mm": { "default": 0.35, "min": 0, "max": 1.2, "provenance": "illustrative" },
-      "misregistration_dy_mm": { "default": 0.22, "min": 0, "max": 1.2, "provenance": "illustrative" },
+      "misregistration_dx_mm": { "default": 0.35, "min": 0, "max": 1.2, "unit": "mm", "provenance": "illustrative" },
+      "misregistration_dy_mm": { "default": 0.22, "min": 0, "max": 1.2, "unit": "mm", "provenance": "illustrative" },
+      "capillary_spread_mm": { "default": 0.45, "min": 0, "max": 2.0, "unit": "mm", "provenance": "illustrative" },
+      "bite_depth_um": { "default": 80, "min": 10, "max": 400, "unit": "um", "provenance": "illustrative" },
       "hatch_density": { "default": 0.42, "min": 0, "max": 1, "provenance": "illustrative" },
-      "impression_travel_mm": { "default": 1.6, "min": 0.2, "max": 4.0, "provenance": "illustrative" },
+      "impression_travel_mm": { "default": 1.6, "min": 0.2, "max": 4.0, "unit": "mm", "provenance": "illustrative" },
       "spring_k": { "default": 180, "min": 60, "max": 420, "provenance": "illustrative" },
       "spring_zeta": { "default": 0.85, "min": 0.4, "max": 1.4, "provenance": "illustrative" }
     },
     "seed": 271828
   },
   "stateMachine": {
-    "states": ["idle", "lensing", "impressed", "bleeding", "drifting", "reduced"],
+    "phenomenonState": ["idle", "lensing", "impressed", "bleeding", "drifting"],
+    "presentationMode": ["full", "reduced"],
+    "gloss": {
+      "idle": "plate at rest; dry ink film",
+      "lensing": "pre-contact press-halo / raking catch-light anticipation (not thin-film interference)",
+      "impressed": "plate bite / deboss under impression travel",
+      "bleeding": "capillary wicking / halftone dot gain / ink lift on release",
+      "drifting": "riso misregistration drift / registration scrub"
+    },
+    "staticSnapshotsOnReduced": "one per phenomenonState",
     "canonical": true
   },
   "artifacts": {
@@ -261,7 +315,7 @@ A module may move from **DEFER** to **ADAPT** only when a receipt ships with **a
     "gyro": "enhancement",
     "scrub": "enhancement"
   },
-  "progressBinding": { "channel": "scroll|gesture|timeline", "t": "[0,1]" },
+  "progressBinding": { "channel": "scroll|gesture|timeline", "t": "[0,1]", "semantics": "plate-state-scrub" },
   "gestureMap": {
     "tap": "stamp",
     "longPress": "bleed",
@@ -277,12 +331,13 @@ A module may move from **DEFER** to **ADAPT** only when a receipt ships with **a
     "projector": { "lod": "high", "touchTargetMinPx": 48 }
   },
   "a11y": {
-    "reducedMotion": "static-print-state",
+    "reducedMotion": "presentationMode=reduced → static print snapshot of current phenomenonState",
     "keyboardPath": true,
     "screenReaderLabel": "Print press cycle: stamp, bleed, relief"
   },
   "provenance": {
-    "upstream": ["Living Cloth watercolor equations", "Omni-Loom issues 06,07,09"],
+    "upstream": ["LithoMemphis Icon + /lab primitives (current)", "Shader Grammar receipt discipline only", "Living Cloth watercolor equations (illustrative)", "Omni-Loom unpublished issues 06,07,09"],
+    "peerPriorArt": ["MelodicBloom/aurora-collage-ui-system StampSvg/InkBlot/WatercolorField/BleedMargin @ 41c89e336e72 (not absorbed)"],
     "chosenAgainst": ["generic bounce spring", "gyro-required content", "unversioned shader paste"],
     "anti_patterns": ["rainbow-splatter brand", "motion-before-readability", "fake live metrics"]
   },
@@ -290,7 +345,7 @@ A module may move from **DEFER** to **ADAPT** only when a receipt ships with **a
 }
 ```
 
-Promotion: **Candidate → validated fixtures → human visual review → ADAPT allowed in LithoMemphis**. CI cannot replace human visual review (Omni-Loom naming/freeze protocol).
+The full candidate receipt is [consumables/stamp-bleed-relief-v0.receipt.json](consumables/stamp-bleed-relief-v0.receipt.json). Promotion: **Candidate → validated fixtures → human visual review → ADAPT allowed in LithoMemphis**. CI cannot replace human visual review (Omni-Loom naming/freeze protocol).
 
 ---
 
@@ -306,6 +361,10 @@ Promotion: **Candidate → validated fixtures → human visual review → ADAPT 
 | Standalone consumer identity | Becoming Omni-Loom / Living Cloth / Visual OS authority | Preserve independent native representations; exchange via adapters |
 | Procedural / researched parameter engines as aspirational inserts | Static AI stills as source of truth | Stills may be revivable art-direction probes only |
 | Bounded in-repo `/portico` using existing tokens | Second material system or live collaboration OS | Orientation-over-instruction without fake liveness ([PORTICO.md](PORTICO.md)) |
+| **Orthogonal `phenomenonState` × `presentationMode` (v1.3, owner decision 2026-11-06)** | v1.1–v1.2 peer `reduced` state; v1.2 interim `state: "reduced"` + `lastPhenomenonState` workaround (**superseded legacy**) | Peer `reduced` erased whether the user was `impressed` or `bleeding`; orthogonal mode keeps phenomenon identity with a static snapshot |
+| **First §6 target: Option 1 native print-craft `litho.print.stamp-bleed-relief-v0`, staged `/lab` → `/portico` (owner decision 2026-11-06)** | Option 2: remap SG thin-film or Living Cloth watercolor engine as Tier 1 (preserved for gated Tier-2 research) | Avoids an interference-rainbow category error in neobrutalist print and avoids importing `spec-only` formulas; see [consumables/stamp-bleed-relief-v0.md](consumables/stamp-bleed-relief-v0.md) |
+| **Cite `aurora-collage-ui-system` (`StampSvg`/`InkBlot`/`WatercolorField`/`BleedMargin` @ `41c89e336e72`) as non-absorbed peer prior art (owner decision 2026-11-06)** | Absorbing peer components / design system | Preserves independent authority; matrix row `Candidate, unconfirmed` |
+| Metaphor remaps always `unitProvenance: "illustrative"` | Inheriting `calibrated` from optical/textile sources | No press/densitometer scans exist |
 | Keep Wave 3 `3A` vs `3B` open | Premature platform default | Specimen purity vs product demo friction kept side-by-side ([WAVES.md](WAVES.md) §3) |
 
 ### 7.2 Preserved art-direction probes (revivable reference only — **not runtime truth**)
@@ -320,7 +379,8 @@ Promotion: **Candidate → validated fixtures → human visual review → ADAPT 
 
 1. Wave 3 **`3A Platform`** vs **`3B Craft`** — still open in [WAVES.md](WAVES.md); recommended default is proposed 3B, **not decided**.  
 2. Static tactile paper honesty vs 30–60 Hz simulation budgets (Nacre-class instruments).  
-3. Illustrative artistic sliders vs calibrated physical units (always label provenance).  
+3. Illustrative artistic sliders vs calibrated physical units (always label provenance; metaphor remaps are never calibrated).  
+5. Optical state-name lexicon (`lensing`, `drifting`) vs print semantics, resolved for now by the normative print gloss (§4.3) rather than renaming.  
 4. Portico as static orientation grammar vs future persisted traces / torch-passing — **no persistence approved** in PR #5.
 
 ### 7.4 Attachment & source reconciliation receipt (2026-11-04 / 2026-11-05)
@@ -329,10 +389,11 @@ Promotion: **Candidate → validated fixtures → human visual review → ADAPT 
 
 | Source | Size / identity | Role |
 |---|---|---|
-| `421234f2a08eb40774341d029e4155ce3a36689b04a5e79f05d45a86b34722b9.zip` | **58,264 B** Omni-Loom recovery pack v3 | `README.md`, `cross-repo/CONSUMER-MATRIX.md`, `issue-index.csv`, Issues `01–28`, `release/NAMING-FREEZE-RELEASE.md`, contracts |
+| `421234f2a08eb40774341d029e4155ce3a36689b04a5e79f05d45a86b34722b9.zip` | **58,264 B** Omni-Loom recovery pack v3 (**local, unpublished**; `CONSUMER-MATRIX.md` SHA-256 `e9a9051f7e04bc7f45d9fb0af144ca9e41a41bd216fd39c6114913598cac5ea9`) | `README.md`, `cross-repo/CONSUMER-MATRIX.md`, `issue-index.csv`, Issues `01–28`, `release/NAMING-FREEZE-RELEASE.md`, contracts |
 | Inline Living Cloth MD/JSON set | Observation protocol; stage machine; generative-region schema + specimen; seams; recipes; token rules; equations; parameter ranges | ADAPT inventory |
 | Inline Nacre contract ×3 (identical) | Design/implementation contract | Instrument precedent |
-| Repo commits | `0b80820` (W1); `3314f01` #1; `2a3f9f6` #2; `6a62f16` #3; `294c330` #4; `166c183..c3f39b7` #5 (Portico + waves) | `measured` |
+| Repo commits | `0b80820` (W1); `3314f01` #1; `2a3f9f6` #2; `6a62f16` #3; `294c330` #4; `166c183..c3f39b7` #5 (Portico + waves); `4b2a7cc` (v1.2 lock) | `measured` |
+| Upstream reconciliation (2026-11-06) | `lithomemphis-v1.2-reconciliation.md` + candidate JSON from Interaction & Visual SDK | Source of v1.3 audit fixes |
 
 #### Unavailable zip attachments (`MISSING` on attachment filesystem during ingest)
 
@@ -350,12 +411,12 @@ Status: **`unavailable`**. Do not invent their contents.
 
 ---
 
-## 8. Copy-ready upstream handoff prompt (Consumer Spec v1.2)
+## 8. Copy-ready upstream handoff prompt (Consumer Spec v1.3)
 
 Use this block when requesting a LithoMemphis-consumable drop-in from `@Interaction & Visual SDK` or other upstream module authors:
 
 ```text
-LithoMemphis Consumer Intake Request — Visual Language Consumer Spec v1.2 (locked 2026-11-05)
+LithoMemphis Consumer Intake Request — Visual Language Consumer Spec v1.3 (locked 2026-11-06)
 
 You are delivering a drop-in module for MelodicBloom/lithomemphis (https://lithomemphis.vercel.app),
 a standalone print-born neobrutalist specimen runtime. LithoMemphis is NOT Omni-Loom, NOT the
@@ -367,12 +428,15 @@ that serves print semantics (e.g. Condensation≈ink bleed, Lensing≈press halo
 Required with the module — a fixture receipt including ALL of:
 - semantic name + engine alias
 - print-process or physics spec with unit provenance (calibrated|illustrative) and explicit units
+  (mm, um, gsm, ms); metaphor remaps are ALWAYS unitProvenance=illustrative, calibration=not-claimed
 - parameter schema + clamps + deterministic seed
-- canonical state machine: idle|lensing|impressed|bleeding|drifting|reduced
+- canonical state machine: phenomenonState (idle|lensing|impressed|bleeding|drifting)
+  × presentationMode (full|reduced), read through the print gloss (lensing = press-halo,
+  never thin-film), with one static print snapshot per phenomenonState
 - source/maps/shaders + SHA-256
 - golden stills + short motion proof
 - input contract (required|enhancement|forbidden); gyro = enhancement only
-- progress binding t∈[0,1]
+- progress binding t∈[0,1] + progressSemantics (plate-state-scrub|time-evolution)
 - gesture→phenomenon map (tap→stamp, long-press→bleed, pinch→hatch, tilt→relief, scroll→plate)
 - onboarding beat id (silhouette→stamp→hatch→relief→optional optics)
 - device LOD table (phone|tablet|desktop|projector)
@@ -385,8 +449,11 @@ Non-negotiable boundaries:
 - no speculative imports; no unversioned shaders; no static AI stills as runtime truth
 - do not claim cross-backend numerical identity or optical calibration without fixtures
 - do not replace Omni-Loom fabrication IR
+- Litho §6, Omni-Loom planDigest, and Shader Grammar experiment receipts are separate families;
+  map consumableId (litho.print.*) and engineAlias explicitly, with no silent renaming
 
-Target first demo: stamp → bleed → relief with a green receipt, suitable for /lab or a Portico beat.
+Approved first target: litho.print.stamp-bleed-relief-v0 (native print-craft, staged /lab → /portico
+beat orient.print.stamp-bleed-relief). See docs/consumables/stamp-bleed-relief-v0.md.
 ```
 
 ---
@@ -396,8 +463,8 @@ Target first demo: stamp → bleed → relief with a green receipt, suitable for
 ### Near-term (LithoMemphis-owned)
 
 1. Keep shipping Wave 2 UI cleanup per [WAVES.md](WAVES.md) §2 (2.1–2.6).  
-2. Treat Omni-Loom Issues `01–28` and SDK modules as **upstream candidates** only.  
-3. First craft demo after docs lock: one bounded print-phenomenon (`stamp → bleed → relief`) behind a receipt, preferably as a `/lab` pick or Portico beat — **proposed**, not started.  
+2. Treat Omni-Loom Issues `01–28` (unpublished recovery pack) and SDK modules as **upstream candidates** only.  
+3. First craft demo: `litho.print.stamp-bleed-relief-v0` — **approved as first §6 target (2026-11-06)**, candidate spec + receipt skeleton in [consumables/](consumables/stamp-bleed-relief-v0.md); runtime **not started**; build in `/lab` first, then `/portico`.  
 4. Re-attach the seven `MISSING` zips if they contain print/litho fixtures worth citing.  
 5. Visual acceptance of `/portico` remains required before PR #5 promotion ([PORTICO.md](PORTICO.md) §7).
 
@@ -419,7 +486,8 @@ Target first demo: stamp → bleed → relief with a green receipt, suitable for
 | **v1.0** | 2026-11-04 | Print-press & hand-craft family elevated to **primary** consumables; optical/physics → secondary gated |
 | **v1.1** | 2026-11-04 | Six-surface Interaction Translation Matrix; eight Implementation Rules; fixture receipt additions (input contract, progress binding, gesture map, onboarding beat, device LOD) |
 | **v1.2** | **2026-11-05 — LOCKED** | Omni-Loom consumer matrix authority table; Living Cloth + Nacre ADAPT inventory; `DEFER→ADAPT` receipt schema; Portico reconciliation; preservative decisions/tensions/probes; missing-zip audit; upstream handoff prompt; this document at `docs/VISUAL-LANGUAGE-CONSUMER.md` |
+| **v1.3** | **2026-11-06 — LOCKED** | Orthogonal `phenomenonState × presentationMode` replaces peer `reduced` (v1.2 `lastPhenomenonState` workaround superseded); normative print gloss; `progressSemantics` (`plate-state-scrub`); metaphor-remap `unitProvenance: "illustrative"` rule; Omni-Loom matrix / Issues `01–28` marked local unpublished; three receipt families + ID namespace mapping; `aurora-collage-ui-system` non-absorbed prior art; first candidate `docs/consumables/stamp-bleed-relief-v0.{md,receipt.json}` (DEFER) |
 
 ---
 
-*End of locked v1.2. Edits after this date require a new semver bump and change-log entry; do not silently rewrite authority claims.*
+*End of locked v1.3. Edits after this date require a new semver bump and change-log entry; do not silently rewrite authority claims.*

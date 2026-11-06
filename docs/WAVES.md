@@ -3,7 +3,7 @@
 > Preservative synthesis. Nothing here is decided unless marked **decided**. Everything for Wave 3 is **proposed**.
 > As of **2026-11-05 (America/New_York)**. Sources: `README.md`, PRs #1–#4 on `MelodicBloom/lithomemphis`, the live specimen at https://lithomemphis.vercel.app, recovered Portico design context (labelled), and agent session context (labelled).
 >
-> **Visual language intake boundary (locked):** [VISUAL-LANGUAGE-CONSUMER.md](VISUAL-LANGUAGE-CONSUMER.md) — LithoMemphis Consumer Spec **v1.2** (print-first consumables, authority matrix, fixture receipts, `DEFER → ADAPT` gate). Cross-refs [PORTICO.md](PORTICO.md).
+> **Visual language intake boundary (locked):** [VISUAL-LANGUAGE-CONSUMER.md](VISUAL-LANGUAGE-CONSUMER.md) — LithoMemphis Consumer Spec **v1.3** (print-first consumables, authority matrix, fixture receipts, `DEFER → ADAPT` gate, orthogonal `phenomenonState × presentationMode`). First approved candidate: [consumables/stamp-bleed-relief-v0.md](consumables/stamp-bleed-relief-v0.md). Cross-refs [PORTICO.md](PORTICO.md).
 
 **Evidence labels:** `measured` (build output, a file or route on `main`) · `self-reported` (owner or agent statement, not independently checked) · `agent-inferred` · `proposed` · `unverified` · `blocked`.
 **Gaps** are marked **⚠ GAP**.
@@ -120,7 +120,8 @@ An R3F (React Three Fiber) marble object, a photographic collage pipeline, print
 - **Optimizes for:** design-engineering portfolio evidence, and bounded work that stays runnable.
 - **Against:** demonstrating social and product mechanics; heavier client bundles (3D); collage rights and sourcing (⚠ GAP: image sources undefined).
 - **Prereqs:** performance budget, a fallback when WebGL is missing, and an asset-licensing stance.
-- **Intake boundary:** print-press / hand-craft consumables and receipt-gated `DEFER → ADAPT` promotion are locked in **[VISUAL-LANGUAGE-CONSUMER.md](VISUAL-LANGUAGE-CONSUMER.md)** (v1.2). Optical / textile / Nacre-class engines stay secondary until fixture-green.
+- **Intake boundary:** print-press / hand-craft consumables and receipt-gated `DEFER → ADAPT` promotion are locked in **[VISUAL-LANGUAGE-CONSUMER.md](VISUAL-LANGUAGE-CONSUMER.md)** (v1.3). Optical / textile / Nacre-class engines stay secondary until fixture-green.
+- **First approved candidate (2026-11-06):** `litho.print.stamp-bleed-relief-v0`. See [consumables/stamp-bleed-relief-v0.md](consumables/stamp-bleed-relief-v0.md) + [receipt](consumables/stamp-bleed-relief-v0.receipt.json). Status `DEFER`, staged `/lab` → `/portico`, runtime not built.
 
 ### Decision matrix
 
@@ -162,7 +163,7 @@ Acceptance still required on the exact PR head: build, phone/desktop visual revi
 - **Palette** (`measured`, `src/index.css`, tokens audit): ink `#0E0E0E`, paper `#F7F6F2`, cornflower `#3B6FF0`, sunflower `#EABF41`, cherry `#D54545`, lime `#9BBF49`, mauve `#9B5478`, wine `#58294B`, brass `#B08D57`.
 - **Type:** Fraunces (display, substituting for Canela), Instrument Serif (editorial, substituting for Noe), Space Mono (UI and data), Inter (body). `measured`, README.
 - **Tactility:** paper cards with hard offset shadows, brass corner clips, registration marks, print frames, halftone, grain, and generated SVG botanicals and marble. All original SVG/CSS; no comp or stock assets. `measured`
-- **Motion:** spring pressables, magnetic hover and shader backdrops from the Lab (#2). ⚠ GAP: there is no written motion grammar yet. That is a W3B candidate. Material / motion **intake** from upstream SDKs is governed by **[VISUAL-LANGUAGE-CONSUMER.md](VISUAL-LANGUAGE-CONSUMER.md)** (canonical state machine `idle|lensing|impressed|bleeding|drifting|reduced`; gyro enhancement-only; reduced-motion static print parity).
+- **Motion:** spring pressables, magnetic hover and shader backdrops from the Lab (#2). ⚠ GAP: there is no written motion grammar yet. That is a W3B candidate. Material / motion **intake** from upstream SDKs is governed by **[VISUAL-LANGUAGE-CONSUMER.md](VISUAL-LANGUAGE-CONSUMER.md)** (v1.3 canonical state machine `phenomenonState` `idle|lensing|impressed|bleeding|drifting` × `presentationMode` `full|reduced` with normative print gloss; gyro enhancement-only; reduced-motion static print parity). First candidate: [consumables/stamp-bleed-relief-v0.md](consumables/stamp-bleed-relief-v0.md) (`DEFER`).
 - **Honesty rules:** metrics read "—"; fictional content is labelled; no fake live counters. `measured` in the UI copy.
 
 ---
@@ -182,3 +183,4 @@ Acceptance still required on the exact PR head: build, phone/desktop visual revi
 - **2026-11-04:** #1 visual proof (`3314f01`), #2 Lab, Storybook and tokens (`2a3f9f6`), #3 gallery filters and `/gallery/:id` (`6a62f16`), and #4 Archive, Community, Shop, About plus shared nav (`294c330`) merged to `main`. This scope document was drafted on branch `docs/w2-w3-scope`.
 - **2026-11-04:** PR #5 branch gained the recovered Portico concept as a bounded `/portico` specimen plus `docs/PORTICO.md`, shared navigation, and a Home threshold CTA. Build/visual acceptance must be re-run because the PR is no longer docs-only.
 - **2026-11-05:** Locked **Visual Language Consumer Spec v1.2** at [VISUAL-LANGUAGE-CONSUMER.md](VISUAL-LANGUAGE-CONSUMER.md) (authority matrix, print-first taxonomy, interaction translation rules, fixture receipt / `DEFER → ADAPT` gate, Living Cloth & Nacre ADAPT inventory, missing-zip audit). Cross-linked from this file and README; Portico remains the in-repo orientation specimen, not an upstream Visual OS.
+- **2026-11-06:** Bumped Consumer Spec to **v1.3** (orthogonal `phenomenonState × presentationMode`, print gloss, `plate-state-scrub`, illustrative metaphor-remap rule, unpublished Omni-Loom matrix status, `aurora-collage-ui-system` prior art only). Added first approved candidate spec `docs/consumables/stamp-bleed-relief-v0.{md,receipt.json}` (`DEFER`, staged `/lab` → `/portico`, no runtime yet).

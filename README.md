@@ -44,7 +44,7 @@ Portico concept, design grammar, implementation boundary, and next slices: **[do
 
 Full Wave 2 remaining slices + proposed Wave 3 (two framings, decision matrix): **[docs/WAVES.md](docs/WAVES.md)**.
 
-Locked Visual Language Consumer Spec v1.2 (intake authority, print-first taxonomy, fixture receipts): **[docs/VISUAL-LANGUAGE-CONSUMER.md](docs/VISUAL-LANGUAGE-CONSUMER.md)**.
+Locked Visual Language Consumer Spec v1.3 (intake authority, print-first taxonomy, fixture receipts, orthogonal `phenomenonState × presentationMode`): **[docs/VISUAL-LANGUAGE-CONSUMER.md](docs/VISUAL-LANGUAGE-CONSUMER.md)**. First candidate consumable (`DEFER`, spec only): **[docs/consumables/stamp-bleed-relief-v0.md](docs/consumables/stamp-bleed-relief-v0.md)**.
 
 ## Wave 2 — built
 - `/gallery` functional tag/medium/year/search filters (URL params) + `/gallery/:id` artifact detail pages
