@@ -3,7 +3,7 @@ import { SITE_NAV } from '../lib/nav'
 export function Logo({light=true}:{light?:boolean}){return <div className={light?'text-paper':'text-ink'}><div className="font-display font-black tracking-tight text-[22px] leading-none">LITHOMEMPHIS</div><div className="font-serif italic text-[22px] -mt-1">Collective</div></div>}
 export function SpecimenBadge(){return <span className="font-mono text-[10px] uppercase tracking-widest bg-sunflower text-ink border-2 border-ink rounded px-2 py-0.5">Specimen · static demo</span>}
 export default function Sidebar(){
-  const icons:Record<string,string>={'/':'⌂','/gallery':'▦','/archive':'▤','/community':'✧','/shop':'◇','/about':'ⓘ'}
+  const icons:Record<string,string>={'/':'⌂','/portico':'⌘','/gallery':'▦','/archive':'▤','/community':'✧','/shop':'◇','/about':'ⓘ'}
   return <aside className="ink-card p-5 flex flex-col gap-6 w-56 shrink-0 overflow-hidden">
     <Logo/><p className="font-mono text-[10px] tracking-widest text-paper/70 -mt-4">PRINT · STUDY · REMIX</p>
     <nav className="flex flex-col gap-1">{SITE_NAV.map(([to,l])=><NavLink key={to} to={to} end={to==='/'} className={({isActive})=>`font-mono text-sm px-3 py-2 rounded-lg border-2 ${isActive?'bg-paper text-ink border-ink shadow-[3px_3px_0_#000]':'border-transparent text-paper/85 hover:bg-white/10'}`}><span className="mr-2">{icons[to]}</span>{l}</NavLink>)}</nav>

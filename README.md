@@ -8,7 +8,10 @@ Live: https://lithomemphis.vercel.app
 
 ## Routes
 - `/` — Collective home specimen: static hero prompt card ("Print the Future"), sample featured studios (no scores), metric placeholders, archive strip.
+- `/portico` — shared-discovery threshold specimen: encounter grammar, traveling gates, torch-passing notes, and explicit non-live boundaries.
 - `/gallery` — Gallery with taxonomy sidebar, tab filters, search, and grid/list toggle over static JSON.
+- `/archive`, `/community`, `/shop`, `/about` — bounded specimen routes over fictional/static content.
+- `/lab`, `/lab/icons` — live component/effect exploration and icon browser.
 
 ## Palette (`src/index.css` CSS vars + `src/tokens.ts`)
 | Token | Hex |
@@ -36,16 +39,26 @@ All imagery is original inline SVG/CSS: marble = layered gradients, halftone = r
 ## Stack
 Vite + React + TypeScript + Tailwind v4 + react-router. `npm i && npm run dev`.
 
-## Wave 2 — specimen pages built
+## Portico + waves + visual language
+Portico concept, design grammar, implementation boundary, and next slices: **[docs/PORTICO.md](docs/PORTICO.md)**.
+
+Full Wave 2 remaining slices + proposed Wave 3 (two framings, decision matrix): **[docs/WAVES.md](docs/WAVES.md)**.
+
+Locked Visual Language Consumer Spec v1.3 (intake authority, print-first taxonomy, fixture receipts, orthogonal `phenomenonState × presentationMode`): **[docs/VISUAL-LANGUAGE-CONSUMER.md](docs/VISUAL-LANGUAGE-CONSUMER.md)**. First candidate consumable (`DEFER`, spec only): **[docs/consumables/stamp-bleed-relief-v0.md](docs/consumables/stamp-bleed-relief-v0.md)**.
+
+## Wave 2 — built
 - `/gallery` functional tag/medium/year/search filters (URL params) + `/gallery/:id` artifact detail pages
 - `/archive`, `/community`, `/shop`, `/about` — specimen pages with fictional content (no auth, no checkout, no challenges, metrics “—”)
+- `/lab`, `/lab/icons`, Storybook, token drift audit (start of Tool Lab templates)
+- `/portico` shared-discovery threshold layer using existing LITHOMEMPHIS tokens/primitives; no auth, persistence, or implied live collaboration
 
-## Wave 2 — NOT built yet
+## Wave 2 — remaining (see docs/WAVES.md §2)
 - Accounts/auth, profiles, XP/badges
 - Challenges (submission, voting, timers), leaderboard computation
 - Live activity feed ("The Collective is listening"), comments
-- Mobile nav drawer from the mobile comp; dark "Tool Lab" / "Challenge Arena" templates
-- Real 3D marble object, photographic collage
+- Mobile nav polish beyond current drawer; dark "Challenge Arena" template (Tool Lab started in `/lab`)
+- Real 3D marble object, photographic collage (proposed to move to W3 craft wave)
+- Cleanup: explicit `archived` field, medium sidebar, shared `studios.json`, detail-page header decision, soft-404
 
 ## Visual proof
 

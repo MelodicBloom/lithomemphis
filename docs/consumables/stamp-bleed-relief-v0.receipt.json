@@ -1,0 +1,527 @@
+{
+  "$comment": "CANDIDATE SPEC ONLY — not a green §6 receipt. status=candidate-spec-unverified-runtime. No runtime component is claimed built. PLACEHOLDER fields must be filled on build.",
+  "schemaVersion": "1.0.0",
+  "status": "candidate-spec-unverified-runtime",
+  "approval": "draft",
+  "maturity": "candidate",
+  "classification": "DEFER",
+  "classificationNote": "Promotes to ADAPT only after the bounded /lab build, golden stills + ≤3s motion proof, SHA-256 fills, tokens:audit pass, and human visual review per Litho Consumer Spec v1.3 §6. Checklist: docs/consumables/stamp-bleed-relief-v0.md §8.",
+  "consumableId": "litho.print.stamp-bleed-relief-v0",
+  "semanticName": "Stamp → Bleed → Relief",
+  "engineAlias": "pressCycle",
+  "targetSurfaces": [
+    "/lab",
+    "/portico"
+  ],
+  "onboardingBeatId": "orient.print.stamp-bleed-relief",
+  "consumerContract": {
+    "spec": "MelodicBloom/lithomemphis docs/VISUAL-LANGUAGE-CONSUMER.md",
+    "specVersion": "1.3",
+    "specLockedDate": "2026-11-06",
+    "specLocation": "Draft PR #5 branch docs/w2-w3-scope (HEAD-of-docs/w2-w3-scope; not on main)",
+    "baselineSpecVersion": "1.2",
+    "baselineSpecCommit": "4b2a7cc8910943dc749665e36ca8f086d337270d",
+    "label": "current-on-pr5"
+  },
+  "optionChoice": {
+    "chosen": "option-1-native-print-craft",
+    "chosenAgainst": [
+      "option-2-remap-sg-thin-film-as-tier1",
+      "option-2-remap-living-cloth-watercolor-as-tier1",
+      "absorb-aurora-collage-components-wholesale",
+      "claim-calibrated-from-metaphor-remap",
+      "gyro-required-relief"
+    ],
+    "stagedPromotion": "option-3-lab-first-then-portico",
+    "stages": [
+      {
+        "stage": 1,
+        "surface": "/lab",
+        "form": "bounded pick-board demo"
+      },
+      {
+        "stage": 2,
+        "surface": "/portico",
+        "onboardingBeatId": "orient.print.stamp-bleed-relief",
+        "gate": "ADAPT receipt + human visual review"
+      }
+    ],
+    "approvedByOwnerDate": "2026-11-06",
+    "approvalRef": "t15s1",
+    "ownerDecisions": {
+      "firstTarget": "option-1-native-print-craft + staged /lab -> /portico",
+      "stateModel": "orthogonal phenomenonState x presentationMode (Consumer Spec v1.3)",
+      "peerPriorArt": "aurora-collage-ui-system StampSvg/InkBlot/WatercolorField/BleedMargin @ 41c89e336e72 cited as non-absorbed prior art only"
+    },
+    "preservedForTier2Research": [
+      "option-2-remap-sg-thin-film",
+      "option-2-remap-living-cloth-watercolor"
+    ]
+  },
+  "processSpec": {
+    "kind": "print-process",
+    "description": "Letterpress/litho stamp impression with capillary ink bleed (dot gain) and plate-relief catch-light under raking light. Native print-craft consumable; optional optics beat may borrow Shader Grammar schema discipline only — not thin-film recipes.",
+    "unitProvenanceDefault": "illustrative",
+    "calibrationRule": "Cross-domain metaphor remaps (Condensation≈ink bleed, Lensing≈press halo) are semantic analogies, not unit-preserving transforms: unitProvenance=illustrative, calibration=not-claimed, explicit print units (mm, um, gsm, ms). Never inherit calibrated from optical nm/IOR fits or spec-only Living Cloth formulas (Consumer Spec v1.3 §1).",
+    "progressSemantics": "plate-state-scrub",
+    "progressSemanticsNote": "t∈[0,1] scrubs an authored plate-press cycle; it does not claim physical un-bleed. Capillary dwell within a single live press gesture is monotonic (hysteresis).",
+    "parameters": {
+      "misregistration_dx_mm": {
+        "default": 0.35,
+        "min": 0,
+        "max": 1.2,
+        "unit": "mm",
+        "provenance": "illustrative"
+      },
+      "misregistration_dy_mm": {
+        "default": 0.22,
+        "min": 0,
+        "max": 1.2,
+        "unit": "mm",
+        "provenance": "illustrative"
+      },
+      "capillary_spread_mm": {
+        "default": 0.45,
+        "min": 0,
+        "max": 2.0,
+        "unit": "mm",
+        "provenance": "illustrative"
+      },
+      "bite_depth_um": {
+        "default": 80,
+        "min": 10,
+        "max": 400,
+        "unit": "um",
+        "provenance": "illustrative"
+      },
+      "stock_weight_gsm": {
+        "default": 250,
+        "min": 80,
+        "max": 400,
+        "unit": "gsm",
+        "provenance": "illustrative"
+      },
+      "dwell_ms": {
+        "default": 180,
+        "min": 40,
+        "max": 1200,
+        "unit": "ms",
+        "provenance": "illustrative"
+      },
+      "impression_travel_mm": {
+        "default": 1.6,
+        "min": 0.2,
+        "max": 4.0,
+        "unit": "mm",
+        "provenance": "illustrative"
+      },
+      "spring_k": {
+        "default": 180,
+        "min": 60,
+        "max": 420,
+        "unit": "dimensionless-illustrative",
+        "provenance": "illustrative"
+      },
+      "spring_zeta": {
+        "default": 0.85,
+        "min": 0.4,
+        "max": 1.4,
+        "unit": "dimensionless-illustrative",
+        "provenance": "illustrative"
+      },
+      "hatch_density": {
+        "default": 0.42,
+        "min": 0,
+        "max": 1,
+        "unit": "normalized",
+        "provenance": "illustrative"
+      },
+      "ink_opacity": {
+        "default": 0.88,
+        "min": 0.2,
+        "max": 1,
+        "unit": "normalized",
+        "provenance": "illustrative"
+      }
+    },
+    "seed": 271828,
+    "seedProvenance": "illustrative artistic seed (also used in Living Cloth generative-region specimen attachment; not a measurement seed)",
+    "progressSemanticsEnum": [
+      "plate-state-scrub",
+      "time-evolution"
+    ]
+  },
+  "stateMachine": {
+    "consumerCompliance": "Litho Consumer Spec v1.3 §4.2 Rule 1, Rule 7, §4.3",
+    "canonical": true,
+    "phenomenonState": [
+      "idle",
+      "lensing",
+      "impressed",
+      "bleeding",
+      "drifting"
+    ],
+    "presentationMode": [
+      "full",
+      "reduced"
+    ],
+    "presentationModeSource": [
+      "prefers-reduced-motion",
+      "LithoMemphis Safe Mode / motionSafe()"
+    ],
+    "gloss": {
+      "idle": "plate at rest; dry ink film",
+      "lensing": "pre-contact press-halo / raking catch-light anticipation (NOT thin-film interference)",
+      "impressed": "plate bite / deboss under impression travel",
+      "bleeding": "capillary wicking / halftone dot gain / ink lift on release",
+      "drifting": "riso misregistration drift / registration scrub"
+    },
+    "staticSnapshotsOnReduced": {
+      "idle": {
+        "description": "clean plate, flat ink, no halo",
+        "still": "PLACEHOLDER_GENERATE_ON_BUILD"
+      },
+      "lensing": {
+        "description": "static soft press-halo outline at rest offset; no animated catch-light",
+        "still": "PLACEHOLDER_GENERATE_ON_BUILD"
+      },
+      "impressed": {
+        "description": "debossed stamp at full impression_travel_mm with press shadow",
+        "still": "PLACEHOLDER_GENERATE_ON_BUILD"
+      },
+      "bleeding": {
+        "description": "stamp with final capillary_spread_mm bleed halo (lm-ink-bleed) frozen",
+        "still": "PLACEHOLDER_GENERATE_ON_BUILD"
+      },
+      "drifting": {
+        "description": "two-layer riso print at default misregistration_dx/dy_mm, no motion",
+        "still": "PLACEHOLDER_GENERATE_ON_BUILD"
+      }
+    },
+    "transitions": [
+      {
+        "from": "idle",
+        "to": "lensing",
+        "via": "hover|focus|tilt-enhancement"
+      },
+      {
+        "from": "lensing",
+        "to": "idle",
+        "via": "pointerleave|blur"
+      },
+      {
+        "from": "lensing",
+        "to": "impressed",
+        "via": "tap|press|Enter|Space"
+      },
+      {
+        "from": "impressed",
+        "to": "bleeding",
+        "via": "longPress|dwell>=dwell_ms"
+      },
+      {
+        "from": "bleeding",
+        "to": "drifting",
+        "via": "pan|scroll-velocity"
+      },
+      {
+        "from": "drifting",
+        "to": "idle",
+        "via": "release+settle|explicit-reset"
+      },
+      {
+        "from": "*",
+        "to": "*",
+        "via": "scrub t∈[0,1]",
+        "note": "plate-state-scrub maps t to authored cycle idle→lensing→impressed→bleeding→drifting"
+      }
+    ],
+    "presentationModeTransitions": [
+      {
+        "from": "full",
+        "to": "reduced",
+        "via": "prefers-reduced-motion|safe-mode-on",
+        "effect": "render current phenomenonState as staticSnapshotsOnReduced[state]; phenomenonState preserved"
+      },
+      {
+        "from": "reduced",
+        "to": "full",
+        "via": "motion-restored",
+        "effect": "resume from preserved phenomenonState without replaying bleed"
+      }
+    ],
+    "hysteresis": "Within one live press gesture, bleeding is monotonic (no un-bleed). Reverse travel only via gesture end + explicit reset or plate-state-scrub of t.",
+    "legacy": {
+      "v1.2": "peer state 'reduced' + lastPhenomenonState workaround — superseded by v1.3; history only"
+    }
+  },
+  "artifacts": {
+    "source": {
+      "path": "PLACEHOLDER_GENERATE_ON_BUILD (e.g. src/lab/demos/StampBleedRelief.tsx; not built)",
+      "sha256": "PLACEHOLDER_GENERATE_ON_BUILD"
+    },
+    "maps": [],
+    "shaders": {
+      "optionalOpticsBeat": {
+        "path": "PLACEHOLDER — only if optional optics enabled; must be versioned",
+        "sha256": "PLACEHOLDER_GENERATE_ON_BUILD",
+        "note": "Do not paste unversioned SG thin-film GLSL. Prefer Litho ShaderCanvas film mode or CSS raking-light normals."
+      }
+    },
+    "goldenStills": [
+      {
+        "state": "idle",
+        "path": "PLACEHOLDER",
+        "sha256": "PLACEHOLDER_GENERATE_ON_BUILD"
+      },
+      {
+        "state": "impressed",
+        "path": "PLACEHOLDER",
+        "sha256": "PLACEHOLDER_GENERATE_ON_BUILD"
+      },
+      {
+        "state": "bleeding",
+        "path": "PLACEHOLDER",
+        "sha256": "PLACEHOLDER_GENERATE_ON_BUILD"
+      },
+      {
+        "state": "bleeding@reduced",
+        "path": "PLACEHOLDER",
+        "sha256": "PLACEHOLDER_GENERATE_ON_BUILD"
+      }
+    ],
+    "motionProof": {
+      "path": "PLACEHOLDER",
+      "sha256": "PLACEHOLDER_GENERATE_ON_BUILD",
+      "durationMs": 2400,
+      "maxDurationMs": 3000
+    }
+  },
+  "inputContract": {
+    "pointer": "required",
+    "touch": "required",
+    "keyboard": "required",
+    "gyro": "enhancement",
+    "scrub": "enhancement",
+    "screenReader": "required"
+  },
+  "progressBinding": {
+    "channel": "scroll|gesture|timeline",
+    "t": "[0,1]",
+    "semantics": "plate-state-scrub"
+  },
+  "gestureMap": {
+    "tap": "stamp",
+    "longPress": "bleed",
+    "pinch": "hatch_density",
+    "tilt": "relief_catchlight",
+    "scroll": "plate_cycle"
+  },
+  "deviceLod": {
+    "phone": {
+      "lod": "low",
+      "touchTargetMinPx": 44,
+      "shader": "off-or-1frame"
+    },
+    "tablet": {
+      "lod": "medium",
+      "touchTargetMinPx": 44,
+      "shader": "optional"
+    },
+    "desktop": {
+      "lod": "high",
+      "touchTargetMinPx": 32,
+      "shader": "optional-optics-beat"
+    },
+    "projector": {
+      "lod": "high",
+      "touchTargetMinPx": 48,
+      "shader": "optional-high-contrast-print"
+    }
+  },
+  "a11y": {
+    "reducedMotion": "presentationMode=reduced → static print snapshot of current phenomenonState",
+    "keyboardPath": true,
+    "screenReaderLabel": "Print press cycle: stamp, bleed, relief",
+    "alignsWith": [
+      "lithomemphis Safe Mode / motionSafe()",
+      "MelodicBloom/design-standards-2026-2027 tokens/motion.json @ 1279b0c38cc1183d1c764d5ed7dbc2f91e6660b2"
+    ]
+  },
+  "substrate": {
+    "lithomemphis": {
+      "commit": "4b2a7cc8910943dc749665e36ca8f086d337270d",
+      "primitives": [
+        "src/components/Icon/index.tsx — SVG filters #lm-stamp, #lm-ink-bleed",
+        "src/lab/demos.tsx — RisoStage (misregistration), SpringPressable usage, FilmStage (optional sheen)",
+        "src/components/SpringPressable.tsx",
+        "tokens/spring.json",
+        "src/lib/spring.ts — motionSafe()",
+        "src/styles/lab.css — .lm-stamped / lm-stamp-in keyframe (safe-mode disabled)"
+      ],
+      "label": "current"
+    },
+    "shaderGrammarDisciplineOnly": {
+      "repo": "MelodicBloom/shader-grammar",
+      "commit": "be11bde30962773999e2c37888e044970f5673d5",
+      "borrow": [
+        "parameter typing",
+        "clamps",
+        "sha256 integrity",
+        "anti-claims / scope.out_of_scope pattern"
+      ],
+      "doNotBorrowForTier1": [
+        "thin-film recipes",
+        "holographic-foil",
+        "nacre",
+        "soap-film",
+        "interference rainbow"
+      ],
+      "identityDrift": "package.json repository.url still qt314wink/shader-grammar (301 redirects to MelodicBloom); pin blocked until approved",
+      "label": "current-schema / blocked-identity"
+    },
+    "omniLoomEnvelope": {
+      "repo": "MelodicBloom/omni-loom",
+      "commit": "0bbd92798b3d24285dfa046cfaa020f458d6f362",
+      "note": "Do not replace stitch_plan IR. Exchange via versioned print-process envelope only. stitch_plan.schema.json still unavailable on remote.",
+      "consumerMatrixRemote": "unavailable",
+      "consumerMatrixLocalPack": {
+        "path": "/workspace/litho-attachments/421234f2a08e/omni-loom-recovery-issues-v3/cross-repo/CONSUMER-MATRIX.md",
+        "sha256": "e9a9051f7e04bc7f45d9fb0af144ca9e41a41bd216fd39c6114913598cac5ea9",
+        "lithomemphisRow": "Candidate, unconfirmed",
+        "label": "proposed-unpublished"
+      },
+      "label": "current-specimen-v0 / proposed-ir-schema",
+      "issues01to28": "not published GitHub issues; local unpublished recovery pack v3 only"
+    },
+    "livingCloth": {
+      "equations": "illustrative watercolor_radius_px and springs — ADAPT reference only",
+      "label": "proposed-spec-only"
+    },
+    "auroraCollagePeerPriorArt": {
+      "repo": "MelodicBloom/aurora-collage-ui-system",
+      "commit": "41c89e336e72",
+      "components": [
+        "StampSvg.tsx",
+        "InkBlot.tsx",
+        "WatercolorField.tsx",
+        "BleedMargin.tsx"
+      ],
+      "stance": "DIVERGE — cite as non-absorbed peer prior art only; matrix Candidate, unconfirmed; owner decision 2026-11-06",
+      "label": "current-peer-code"
+    }
+  },
+  "upstreamEnvelopeStub": {
+    "schemaVersion": "1.0.0",
+    "ingestId": "ingest-litho-print-stamp-bleed-relief-v0",
+    "domain": "print-process",
+    "recordKind": "print-craft-consumable",
+    "canonicalOwner": "MelodicBloom/lithomemphis",
+    "units": {
+      "length": "mm",
+      "depth": "um",
+      "massArea": "gsm",
+      "time": "ms",
+      "color": "token-ref"
+    },
+    "mapping": {
+      "adapterVersion": "0.1.0-candidate",
+      "losses": [
+        "No claim of physical press calibration",
+        "Optical-lexicon phenomenonState names retained; normative print gloss applied (v1.3 §4.3)",
+        "Optional optics beat drops SG spectral/IOR fields"
+      ],
+      "unmappedFields": [
+        "stitch_plan primitives",
+        "SG thin-film thicknessNm",
+        "Living Cloth A_t/D_c/Q"
+      ],
+      "idMapping": {
+        "consumableId": "litho.print.stamp-bleed-relief-v0",
+        "engineAlias": "pressCycle",
+        "shaderGrammarId": "none (discipline only)",
+        "stitchPlanId": "none",
+        "rule": "explicit mapping, no silent renaming"
+      }
+    },
+    "evidence": {
+      "maturity": "candidate",
+      "calibration": "not-claimed",
+      "checks": [],
+      "unitProvenance": "illustrative"
+    }
+  },
+  "provenance": {
+    "upstream": [
+      "LithoMemphis Icon ink-bleed/stamp filters + lab riso/spring primitives @ 4b2a7cc8910943dc749665e36ca8f086d337270d",
+      "Litho Consumer Spec v1.3 §6 template",
+      "Shader Grammar receipt/anti-claim discipline @ be11bde30962773999e2c37888e044970f5673d5 (discipline only)",
+      "Omni-Loom VNEXT_SCOPE + specimen-v0 receipt pattern @ 0bbd92798b3d24285dfa046cfaa020f458d6f362",
+      "Recovery pack CONSUMER-MATRIX lithomemphis=Candidate, unconfirmed (local only)",
+      "Living Cloth watercolor equations (illustrative attachment)"
+    ],
+    "chosenAgainst": [
+      "generic bounce spring as press release",
+      "gyro-required content",
+      "unversioned shader paste",
+      "SG thin-film interference as Tier-1 print fill",
+      "inheriting calibrated from optical/textile metaphor remap",
+      "treating unpublished Issues 06/07 as proven print physics",
+      "absorbing aurora-collage design system"
+    ],
+    "anti_patterns": [
+      {
+        "id": "rainbow-splatter-brand",
+        "checked": false,
+        "note": "PLACEHOLDER — must be checked on visual review"
+      },
+      {
+        "id": "motion-before-readability",
+        "checked": false,
+        "note": "PLACEHOLDER"
+      },
+      {
+        "id": "fake-live-metrics",
+        "checked": true,
+        "note": "Litho specimen already forbids; keep"
+      },
+      {
+        "id": "unversioned-shader",
+        "checked": false,
+        "note": "PLACEHOLDER until source SHA filled"
+      },
+      {
+        "id": "category-error-thin-film-as-ink",
+        "checked": false,
+        "note": "PLACEHOLDER — Option 1 chosen against this"
+      }
+    ],
+    "peerPriorArt": [
+      {
+        "repo": "MelodicBloom/aurora-collage-ui-system",
+        "commit": "41c89e336e72",
+        "files": [
+          "StampSvg.tsx",
+          "InkBlot.tsx",
+          "WatercolorField.tsx",
+          "BleedMargin.tsx"
+        ],
+        "absorbed": false
+      }
+    ]
+  },
+  "nextBoundedActions": [
+    "Build bounded /lab demo composing existing primitives (no new tokens)",
+    "Capture 5 full-mode + 5 reduced-mode golden stills and ≤3s motion proof; fill SHA-256 PLACEHOLDERS",
+    "npm run build (tokens:audit 0 drift)",
+    "Check anti_patterns on visual review",
+    "Human visual review → flip classification DEFER→ADAPT",
+    "Then promote to /portico beat orient.print.stamp-bleed-relief"
+  ],
+  "generatedAt": {
+    "timezone": "America/New_York",
+    "date": "2026-11-06",
+    "adaptedFrom": "/workspace/living-cloth-salvage/lithomemphis-stamp-bleed-relief-candidate.json (v1.2 candidate)"
+  },
+  "companionSpec": "docs/consumables/stamp-bleed-relief-v0.md"
+}
