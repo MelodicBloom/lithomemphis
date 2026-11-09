@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Inversion Monolith — Study A</title>
+  <meta name="description" content="Study A: a WebGL2 signed-distance monolith. Sculpture detents and section cuts reveal a carved vault.">
+  <link rel="stylesheet" href="./css/study.css">
+</head>
+<body>
+  <main class="stage-wrap">
+    <canvas id="stage" width="1280" height="720" tabindex="0" aria-label="Inversion monolith"></canvas>
+    <svg id="fallback" hidden role="img" aria-label="Static section, WebGL2 unavailable"></svg>
+  </main>
+  <section class="band" aria-label="Monolith controls">
+    <div class="title-row">
+      <h1>Inversion Monolith</h1>
+      <p class="kicker" id="kicker">Free explore</p>
+    </div>
+    <div class="title-row">
+      <p class="readout"><span id="detent">Detent 00</span> · <span id="angle">0°</span> · <span id="section">Section 1/2</span></p>
+      <p class="readout amber" id="queue">Seated</p>
+    </div>
+    <div class="control-row">
+      <button type="button" id="phase-dec" aria-label="Phase minus one detent">Phase −</button>
+      <button type="button" id="phase-inc" aria-label="Phase plus one detent">Phase +</button>
+      <button type="button" id="cut-0" aria-pressed="true">1/2</button>
+      <button type="button" id="cut-1" aria-pressed="false">2/3</button>
+      <button type="button" id="cut-2" aria-pressed="false">4/5</button>
+      <label id="light-label">Light -42°
+        <input id="light" type="range" min="-60" max="60" step="1" value="-42" aria-valuemin="-60" aria-valuemax="60">
+      </label>
+      <button type="button" id="fog">Fog on</button>
+      <button type="button" id="pause">Pause</button>
+    </div>
+    <div class="control-row">
+      <button type="button" id="undo">Undo</button>
+      <button type="button" id="redo">Redo</button>
+      <button type="button" id="reset">Reset</button>
+      <button type="button" id="mode-free" aria-pressed="true">Free</button>
+      <button type="button" id="mode-puzzle" aria-pressed="false">Puzzle</button>
+      <button type="button" id="reduced">Reduced motion</button>
+      <label id="tick-label">Tick 0
+        <input id="scrub" type="range" min="0" max="2400" step="1" value="0">
+      </label>
+      <label>Seed <input id="seed" type="number" min="0" max="4294967295" step="1" value="1001"></label>
+    </div>
+    <div class="control-row">
+      <button type="button" id="preset-mass">Mass</button>
+      <button type="button" id="preset-vault">Vault</button>
+      <button type="button" id="preset-aperture">Apse</button>
+      <button type="button" id="preset-puzzle">Puzzle seed</button>
+    </div>
+    <div class="meta-row">
+      <p class="status" id="status">Loading shader.</p>
+      <p class="readout" id="hint"></p>
+    </div>
+    <p class="readout" id="notice" aria-live="polite">Loading.</p>
+  </section>
+  <noscript>This study needs JavaScript to run its CPU state. The raymarched view also needs WebGL2.</noscript>
+  <script type="module" src="./js/main.js"></script>
+</body>
+</html>

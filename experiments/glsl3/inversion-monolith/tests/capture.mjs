@@ -1,0 +1,225 @@
+import { spawn } from 'node:child_process';
+import { mkdirSync, writeFileSync } from 'node:fs';
+import { dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const root = dirname(dirname(fileURLToPath(import.meta.url)));
+const outDir = join(root, 'captures');
+mkdirSync(outDir, { recursive: true });
+
+const base = process.argv[2] || 'http://127.0.0.1:5173/experiments/glsl3/inversion-monolith/';
+const port = 9333;
+
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+const chrome = spawn('google-chrome', [
+  '--headless=new',
+  '--use-angle=swiftshader',
+  '--enable-unsafe-swiftshader',
+  '--remote-debugging-port=' + port,
+  '--user-data-dir=/tmp/chrome-inversion-monolith',
+  '--window-size=1440,1100',
+  '--no-first-run',
+  '--no-default-browser-check',
+  '--disable-extensions',
+  'about:blank',
+], { stdio: 'ignore' });
+
+let ws;
+let seq = 0;
+const pending = new Map();
+
+function send(method, params = {}) {
+  const id = ++seq;
+  ws.send(JSON.stringify({ id, method, params }));
+  return new Promise((resolve, reject) => {
+    pending.set(id, { resolve, reject });
+  });
+}
+
+async function waitReady() {
+  for (let i = 0; i < 80; i += 1) {
+    const evaled = await send('Runtime.evaluate', {
+      expression: 'document.body && document.body.dataset.ready === "1"',
+      returnByValue: true,
+    });
+    if (evaled.result?.value === true) return;
+    await sleep(100);
+  }
+  throw new Error('page did not become ready');
+}
+
+async function evalJson(expression) {
+  const evaled = await send('Runtime.evaluate', {
+    expression,
+    returnByValue: true,
+    awaitPromise: true,
+  });
+  if (evaled.exceptionDetails) {
+    const details = evaled.exceptionDetails;
+    throw new Error(details.exception?.description || details.text || JSON.stringify(details));
+  }
+  return evaled.result?.value;
+}
+
+async function open(url) {
+  await send('Page.navigate', { url });
+  await waitReady();
+  await sleep(80);
+}
+
+async function shot(name) {
+  const { data } = await send('Page.captureScreenshot', { format: 'png' });
+  const file = join(outDir, `${name}.png`);
+  writeFileSync(file, Buffer.from(data, 'base64'));
+  return file;
+}
+
+async function main() {
+  for (let i = 0; i < 40; i += 1) {
+    try {
+      const list = await fetch(`http://127.0.0.1:${port}/json/list`).then((r) => r.json());
+      if (list[0]?.webSocketDebuggerUrl) {
+        ws = new WebSocket(list[0].webSocketDebuggerUrl);
+        break;
+      }
+    } catch {
+      // Chrome is still starting.
+    }
+    await sleep(100);
+  }
+  if (!ws) throw new Error('chrome debugging port did not open');
+  await new Promise((resolve, reject) => {
+    ws.addEventListener('open', resolve);
+    ws.addEventListener('error', reject);
+  });
+  ws.addEventListener('message', (event) => {
+    const msg = JSON.parse(event.data);
+    if (msg.id && pending.has(msg.id)) {
+      const { resolve, reject } = pending.get(msg.id);
+      pending.delete(msg.id);
+      if (msg.error) reject(new Error(JSON.stringify(msg.error)));
+      else resolve(msg.result);
+    }
+  });
+  await send('Page.enable');
+  await send('Runtime.enable');
+
+  const shots = ['initial', 'hybrid', 'mid', 'aligned'];
+  const pages = {};
+  for (const name of shots) {
+    await open(`${base}?shot=${name}&readback=1`);
+    const sample = await evalJson(`(() => {
+      const canvas = document.querySelector('#stage');
+      const gl = window.__GL__;
+      if (!gl) return { error: 'no gl', notice: document.querySelector('#notice').textContent, status: document.querySelector('#status').textContent, mode: window.__STUDY__.mode() };
+      const center = new Uint8Array(4);
+      const corner = new Uint8Array(4);
+      gl.readPixels(640, 360, 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, center);
+      gl.readPixels(8, 8, 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, corner);
+      return {
+        center: Array.from(center),
+        corner: Array.from(corner),
+        notice: document.querySelector('#notice').textContent,
+        status: document.querySelector('#status').textContent,
+        hash: window.__STUDY__.hash(),
+        aligned: window.__STUDY__.aligned(),
+        k: window.__STUDY__.getState().k,
+        cut: window.__STUDY__.getState().cut,
+        info: window.__STUDY__.info(),
+        mode: window.__STUDY__.mode(),
+      };
+    })()`);
+    pages[name] = { ...sample, file: await shot(name) };
+  }
+
+  await open(`${base}?readback=1`);
+  const before = await evalJson('window.__STUDY__.hash()');
+  const box = await evalJson(`(() => {
+    const r = document.querySelector('#phase-inc').getBoundingClientRect();
+    return { x: r.x + r.width / 2, y: r.y + r.height / 2 };
+  })()`);
+  await send('Input.dispatchMouseEvent', { type: 'mousePressed', x: box.x, y: box.y, button: 'left', clickCount: 1 });
+  await send('Input.dispatchMouseEvent', { type: 'mouseReleased', x: box.x, y: box.y, button: 'left', clickCount: 1 });
+  await sleep(40);
+  const afterClick = await evalJson(`({ hash: window.__STUDY__.hash(), notice: document.querySelector('#notice').textContent, k: window.__STUDY__.getState().k })`);
+  const stage = await evalJson(`(() => {
+    const r = document.querySelector('#stage').getBoundingClientRect();
+    return { x: r.x + 40, y: r.y + 40 };
+  })()`);
+  await send('Input.dispatchMouseEvent', { type: 'mousePressed', x: stage.x, y: stage.y, button: 'left', clickCount: 1 });
+  await send('Input.dispatchMouseEvent', { type: 'mouseReleased', x: stage.x, y: stage.y, button: 'left', clickCount: 1 });
+  await send('Input.dispatchKeyEvent', { type: 'keyDown', key: 'ArrowRight', code: 'ArrowRight', windowsVirtualKeyCode: 39, nativeVirtualKeyCode: 39 });
+  await send('Input.dispatchKeyEvent', { type: 'keyUp', key: 'ArrowRight', code: 'ArrowRight', windowsVirtualKeyCode: 39, nativeVirtualKeyCode: 39 });
+  await sleep(40);
+  const afterKey = await evalJson(`({ hash: window.__STUDY__.hash(), notice: document.querySelector('#notice').textContent, k: window.__STUDY__.getState().k })`);
+
+  await evalJson(`window.__STUDY__.dispatch({ type: 'pause', value: 1 })`);
+  const pausedHash = await evalJson('window.__STUDY__.hash()');
+  const loss = await evalJson(`(async () => {
+    const gl = window.__GL__;
+    const ext = gl && gl.getExtension('WEBGL_lose_context');
+    if (!ext) return { available: false, hashes: [] };
+    const hashes = [];
+    for (let i = 0; i < 5; i += 1) {
+      ext.loseContext();
+      await new Promise((r) => setTimeout(r, 50));
+      ext.restoreContext();
+      await new Promise((r) => setTimeout(r, 80));
+      hashes.push(window.__STUDY__.hash());
+    }
+    return { available: true, hashes };
+  })()`);
+  loss.pausedHash = pausedHash;
+
+  const report = {
+    pages,
+    input: { before, afterClick, afterKey },
+    contextLoss: loss,
+    contextLossStable: Boolean(loss?.available) && loss.hashes.every((h) => h === loss.pausedHash),
+  };
+  writeFileSync(join(outDir, 'browser-report.json'), `${JSON.stringify(report, null, 2)}\n`);
+  console.log(JSON.stringify({
+    mode: pages.initial.mode,
+    status: pages.initial.status,
+    center: pages.initial.center,
+    corner: pages.initial.corner,
+    aligned: pages.aligned.aligned,
+    alignedNotice: pages.aligned.notice,
+    afterClick,
+    afterKey,
+    contextLossStable: report.contextLossStable,
+  }, null, 2));
+  await send('Emulation.setDeviceMetricsOverride', {
+    width: 320,
+    height: 568,
+    deviceScaleFactor: 1,
+    mobile: true,
+  });
+  await open(`${base}?shot=initial&readback=1`);
+  await shot('layout-320');
+  await send('Emulation.clearDeviceMetricsOverride');
+
+  await open(`${base}?shot=initial&readback=1`);
+  for (let i = 0; i < 9; i += 1) {
+    const clip = await evalJson(`(() => {
+      const r = document.querySelector('#stage').getBoundingClientRect();
+      return { x: r.x, y: r.y, width: Math.max(1, r.width), height: Math.max(1, r.height), scale: 1 };
+    })()`);
+    const frame = await send('Page.captureScreenshot', { format: 'png', clip });
+    writeFileSync(join(outDir, `morph-${String(i).padStart(2, '0')}.png`), Buffer.from(frame.data, 'base64'));
+    await evalJson(`window.__STUDY__.dispatch({ type: 'reduced', value: 1 })`);
+    await evalJson(`window.__STUDY__.dispatch({ type: 'phase', delta: 1 })`);
+  }
+
+  ws.close();
+  chrome.kill();
+}
+
+main().catch((error) => {
+  console.error(error);
+  chrome.kill();
+  process.exit(1);
+});

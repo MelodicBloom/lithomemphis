@@ -1,0 +1,63 @@
+{
+  "study": "A",
+  "title": "The Inversion Monolith",
+  "date": "2026-11-09",
+  "humanVisualApproval": null,
+  "lenses": "review perspectives, not independent reviewers and not scores",
+  "shaderHash": "c521842ef05e9674c713c179c4fd79511774fd812d012ce96860221d84dcf52f",
+  "sourceHash": "74ddff05b8f73350cc36bbadecb41fe5e0ed0b3ebb3bba61576e0f4e1c686c02",
+  "logic": {
+    "pass": true,
+    "replayTraces": 100,
+    "replayDistinctFinalHashes": 100,
+    "invalidInputs": 10000,
+    "rejected": 7626,
+    "clampedMutations": 1447,
+    "unchangedAlreadyAtClamp": 927,
+    "domainBreaks": 0,
+    "endpointUniforms": 1296,
+    "hintSolves": 72,
+    "minFalseSeamPx": 8.272266253923961,
+    "tweenIntrusionsUnder2px": 0
+  },
+  "browser": {
+    "chrome": "156.0.8078.47",
+    "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+    "software": true,
+    "drawingBuffer": [1280, 720],
+    "initialCenterPixel": [64, 58, 50, 255],
+    "initialCornerPixel": [42, 41, 39, 255],
+    "phaseClickNotice": "Detent 01. Phase +15°.",
+    "arrowRightNotice": "Detent 02. Phase +15°. Queue 1.",
+    "contextLossRestores": 5,
+    "contextLossHashStableWhilePaused": true
+  },
+  "performance": {
+    "gateP95Under20ms": false,
+    "reason": "software renderer; headless rAF intervals and readPixels both far above 20 ms",
+    "raf": {
+      "method": "requestAnimationFrame, paused scene, 10s warmup, 3x60s, nearest-rank",
+      "runs": [
+        { "n": 199, "p50": 300, "p95": 600, "p99": 883.3, "max": 883.4, "fractionOver25ms": 0.779 },
+        { "n": 201, "p50": 300, "p95": 583.4, "p99": 633.3, "max": 866.6, "fractionOver25ms": 0.801 },
+        { "n": 201, "p50": 300, "p95": 583.3, "p99": 600, "max": 883.3, "fractionOver25ms": 0.861 }
+      ]
+    },
+    "submitAndFinishMs": { "n": 6, "p95Submit": 0.2, "p95Finish": 0.3 },
+    "readPixelsMs": { "n": 6, "p50": 293, "p95": 795.2, "max": 795.2 },
+    "gpuTimerElapsed": "unmeasured",
+    "gpuTimerExtension": "EXT_disjoint_timer_query_webgl2 present"
+  },
+  "audio": "not implemented",
+  "unverified": [
+    "Jennipher visual approval",
+    "a real GPU against the 20 ms p95 gate",
+    "per-frame GPU timer elapsed",
+    "cross-device pixels",
+    "phone GPU",
+    "a participant using the puzzle",
+    "input-to-photon latency",
+    "a browser with WebGL2 disabled",
+    "KODE and WebGL Water timings"
+  ]
+}
