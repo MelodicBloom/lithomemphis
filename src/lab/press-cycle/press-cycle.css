@@ -1,0 +1,157 @@
+/* Plate presentation for the experimental press cycle. No keyframe loop.
+   Reduced motion is a presentation mode, not a shortened animation. */
+.lm-press {
+  --pc-impression: 0;
+  --pc-bleed: 0;
+  --pc-misreg: 0;
+  --pc-halo: 0;
+  --pc-hatch: 0;
+  --pc-tilt: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  color: var(--lm-color-ink, #0e0e0e);
+  max-width: 100%;
+}
+.lm-press:focus-visible,
+.lm-press__btn:focus-visible,
+.lm-press__range:focus-visible {
+  outline: 3px solid var(--lm-color-cornflower, #3b6ff0);
+  outline-offset: 3px;
+}
+.lm-press__sheet {
+  position: relative;
+  width: 280px;
+  height: 210px;
+  box-sizing: border-box;
+  overflow: hidden;
+  border: 2px solid var(--lm-color-ink, #0e0e0e);
+  border-radius: 14px;
+  background-color: var(--lm-color-paper, #f7f6f2);
+  background-image: radial-gradient(rgba(14, 14, 14, 0.07) 1px, transparent 1.2px);
+  background-size: 5px 5px;
+  box-shadow:
+    inset 0 calc(var(--pc-impression) * 12px) 0 rgba(14, 14, 14, 0.28),
+    4px 4px 0 var(--lm-color-ink, #0e0e0e);
+  touch-action: manipulation;
+  user-select: none;
+}
+.lm-press--compact .lm-press__sheet { width: 200px; height: 150px; }
+.lm-press__sheet::before {
+  content: "";
+  position: absolute;
+  z-index: 6;
+  top: 8px;
+  left: 8px;
+  width: 10px;
+  height: 10px;
+  border: 1px solid var(--lm-color-ink, #0e0e0e);
+  border-radius: 50%;
+  background:
+    linear-gradient(#0e0e0e, #0e0e0e) center / 1px 100% no-repeat,
+    linear-gradient(#0e0e0e, #0e0e0e) center / 100% 1px no-repeat;
+  pointer-events: none;
+}
+.lm-press__halo,
+.lm-press__hatch,
+.lm-press__bite,
+.lm-press__layer,
+.lm-press__speck { position: absolute; pointer-events: none; }
+.lm-press__halo {
+  z-index: 1;
+  inset: 8% 14%;
+  opacity: var(--pc-halo);
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 42%, rgba(255, 248, 230, 0.95), rgba(234, 191, 65, 0.55) 38%, transparent 70%);
+  transform: translateX(calc(var(--pc-tilt) * 0.8px));
+}
+.lm-press__hatch {
+  z-index: 1;
+  inset: 0;
+  opacity: calc(var(--pc-hatch) * 0.55);
+  background: repeating-linear-gradient(90deg, transparent 0 7px, rgba(14, 14, 14, 0.4) 7px 8px);
+}
+.lm-press__bite {
+  z-index: 2;
+  left: 27%;
+  top: 18%;
+  width: 46%;
+  height: 64%;
+  box-sizing: border-box;
+  opacity: var(--pc-impression);
+  border: 2px solid var(--lm-color-ink, #0e0e0e);
+  border-radius: 8px;
+  transform: translateY(calc(var(--pc-impression) * 8px));
+  box-shadow: inset 0 calc(var(--pc-impression) * -8px) 0 rgba(14, 14, 14, 0.3);
+}
+.lm-press__layer { inset: 0; display: grid; place-items: center; }
+.lm-press__layer--key {
+  z-index: 4;
+  color: var(--lm-color-ink, #0e0e0e);
+  transform: translateY(calc(var(--pc-impression) * 14px));
+}
+.lm-press__layer--spot {
+  z-index: 3;
+  color: var(--lm-color-cherry, #d54545);
+  opacity: var(--pc-bleed);
+  transform: scale(calc(1 + var(--pc-bleed) * 0.22));
+}
+.lm-press__layer--drift {
+  z-index: 5;
+  color: var(--lm-color-cornflower, #3b6ff0);
+  opacity: var(--pc-misreg);
+  transform: translate(calc(var(--pc-misreg) * 18px), calc(var(--pc-misreg) * -12px));
+}
+.lm-press__speck {
+  z-index: 2;
+  background: rgba(14, 14, 14, 0.55);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+.lm-press__readout,
+.lm-press__note {
+  margin: 0;
+  max-width: 28rem;
+  font: 11px/1.4 var(--font-mono, ui-monospace, monospace);
+}
+.lm-press__gloss {
+  margin: 0;
+  max-width: 28rem;
+  font: italic 18px/1.3 var(--font-serif, Georgia, serif);
+}
+.lm-press__note { opacity: 0.8; }
+.lm-press__controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  max-width: 28rem;
+}
+.lm-press__range-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  font: 700 11px/1 var(--font-mono, ui-monospace, monospace);
+}
+.lm-press__range { min-height: 44px; min-width: 44px; width: 9rem; accent-color: var(--lm-color-cherry, #d54545); }
+.lm-press__btn {
+  min-height: 44px;
+  min-width: 44px;
+  padding: 0 14px;
+  font: 700 12px/1 var(--font-mono, ui-monospace, monospace);
+  color: var(--lm-color-ink, #0e0e0e);
+  background: var(--lm-color-paper, #f7f6f2);
+  border: 2px solid var(--lm-color-ink, #0e0e0e);
+  border-radius: 999px;
+  box-shadow: 3px 3px 0 var(--lm-color-ink, #0e0e0e);
+  cursor: pointer;
+}
+.lm-press__btn:disabled { cursor: not-allowed; opacity: 0.45; }
+@media (prefers-reduced-motion: reduce) {
+  .lm-press__layer,
+  .lm-press__halo,
+  .lm-press__bite,
+  .lm-press__hatch { animation: none; transition: none; }
+}

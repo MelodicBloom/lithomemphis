@@ -11,6 +11,7 @@ import ShaderCanvas, { type ShaderMode } from '../components/ShaderCanvas'
 import { Button, Tabs, Switch } from '../components/ui'
 import { springs, useSpring, motionSafe } from '../lib/spring'
 import Art from '../components/Art'
+import { PressCycleStage } from './press-cycle/PressCycle'
 
 export type Demo = { id: string; title: string; group: 'Tactile' | 'Material' | 'Motion' | 'Graphics' | 'Type' | 'Offer' | 'A11y'; forr: string; against: string; Stage: () => ReactNode }
 const Knob = ({ l, v, min, max, set, step = 1 }: { l: string; v: number; min: number; max: number; set: (n: number) => void; step?: number }) =>
@@ -105,4 +106,5 @@ export const demos: Demo[] = [
   { id: 'peel', title: 'Peel sticker', group: 'Tactile', forr: 'reward reveal, collectible', against: 'drag affordance must be taught', Stage: PeelStage },
   { id: 'dither', title: 'Ordered-dither fade', group: 'Graphics', forr: 'retro print transition', against: 'pixel shimmer on hi-dpi', Stage: DitherStage },
   { id: 'blob-focus', title: 'Liquid blob + focus choreography', group: 'A11y', forr: 'keyboard users get a delight path too', against: 'blob is decoration only', Stage: BlobFocusStage },
+  { id: 'press-cycle', title: 'Stamp → bleed → relief', group: 'Motion', forr: 'one scrubbable plate on the existing ink filters', against: 'experimental DEFER; illustrative units; not a calibrated press', Stage: PressCycleStage },
 ]

@@ -3,3 +3,6 @@ dist
 .vercel
 storybook-static
 *storybook.log
+playwright-report/
+test-results/
+blob-report/

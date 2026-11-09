@@ -40,6 +40,7 @@ export default function Lab() {
         <div className="flex gap-2 items-center"><span className="lm-score">★ {picks.length} / {demos.length} PICKED</span>
           <Button size="sm" onClick={() => navigator.clipboard?.writeText(picks.join(', '))}>copy picks</Button><Button size="sm" onClick={() => setPicks([])}>reset</Button></div>
         <div className="flex gap-2 items-center"><Link className="underline" to="/lab/icons"><Icon name="stamp" size={14} /> icons</Link>
+          <Link className="underline" to="/lab/press-cycle">press cycle</Link>
           <span className={`chip ${receipt.pass ? 'bg-lime' : 'bg-cherry'}`} title={`commit ${receipt.commit} · ${receipt.auditedAt}`}>tokens:audit {receipt.pass ? 'PASS' : 'FAIL'} · {receipt.counts.tokens}</span></div></div>
     </div></GrainMask>
     <div className="mb-4 overflow-x-auto"><Tabs label="filter" value={group} onChange={g => vt(() => setGroup(g))} items={groups} /></div>
