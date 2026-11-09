@@ -1,0 +1,110 @@
+{
+  "shots": [
+    {
+      "name": "misaligned",
+      "file": "/agent/repos/lithomemphis/experiments/glsl3/folded-atrium/captures/misaligned.png",
+      "renderer": "Google Inc. (Google) / ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+      "hash": "1fe8238aae3cfa7ff618c1caa1418030c39571ff05ac6bf19b84f16716985489",
+      "status": "Misaligned",
+      "hint": "Phase +, toward the seam",
+      "buffer": {
+        "width": 1280,
+        "height": 720
+      },
+      "fallback": true,
+      "notice": ""
+    },
+    {
+      "name": "mid-transition",
+      "file": "/agent/repos/lithomemphis/experiments/glsl3/folded-atrium/captures/mid-transition.png",
+      "renderer": "Google Inc. (Google) / ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+      "hash": "32798d17be05f2c13a48decf1cbb3beec5dac3578315ae246a3c8ef0c9d72531",
+      "status": "Seating",
+      "hint": "The seam is seated.",
+      "buffer": {
+        "width": 1280,
+        "height": 720
+      },
+      "fallback": true,
+      "notice": ""
+    },
+    {
+      "name": "aligned",
+      "file": "/agent/repos/lithomemphis/experiments/glsl3/folded-atrium/captures/aligned.png",
+      "renderer": "Google Inc. (Google) / ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+      "hash": "a35eec63b451bf5263c431f7edb9e2b1f759e249c568bed9dad6be82880ba9cc",
+      "status": "Aligned",
+      "hint": "The seam is seated.",
+      "buffer": {
+        "width": 1280,
+        "height": 720
+      },
+      "fallback": true,
+      "notice": ""
+    }
+  ],
+  "occlusion": {
+    "aligned": {
+      "buffer": {
+        "width": 1280,
+        "height": 720
+      },
+      "rib": 414,
+      "portal": 1,
+      "void": 65
+    },
+    "misaligned": {
+      "rib": 414,
+      "portal": 1,
+      "void": 65
+    }
+  },
+  "controls": {
+    "before": "8588f28d6ec9d92c0c59c26cc67bfb91e7a2f37d83989216a914ea92586fa2e4",
+    "afterKey": 16,
+    "refused": "Queue full — action refused",
+    "queue": "queue 2/2",
+    "hashAfterReset": "8c0c90eb421fa6f171fd410f8bfd2d688a08bba674e437769e5935fafef09fe3",
+    "scene": 15
+  },
+  "context": [
+    {
+      "before": "4f343238f956d4e14d5913b62e62d883330c0b99373abf18ce557e5b9e162374",
+      "after": "4f343238f956d4e14d5913b62e62d883330c0b99373abf18ce557e5b9e162374",
+      "same": true
+    },
+    {
+      "before": "4f343238f956d4e14d5913b62e62d883330c0b99373abf18ce557e5b9e162374",
+      "after": "4f343238f956d4e14d5913b62e62d883330c0b99373abf18ce557e5b9e162374",
+      "same": true
+    },
+    {
+      "before": "4f343238f956d4e14d5913b62e62d883330c0b99373abf18ce557e5b9e162374",
+      "after": "4f343238f956d4e14d5913b62e62d883330c0b99373abf18ce557e5b9e162374",
+      "same": true
+    },
+    {
+      "before": "4f343238f956d4e14d5913b62e62d883330c0b99373abf18ce557e5b9e162374",
+      "after": "4f343238f956d4e14d5913b62e62d883330c0b99373abf18ce557e5b9e162374",
+      "same": true
+    },
+    {
+      "before": "4f343238f956d4e14d5913b62e62d883330c0b99373abf18ce557e5b9e162374",
+      "after": "4f343238f956d4e14d5913b62e62d883330c0b99373abf18ce557e5b9e162374",
+      "same": true
+    }
+  ],
+  "perf": {
+    "renderer": "Google Inc. (Google) / ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+    "n": 114,
+    "p50": 33.30000000000018,
+    "p95": 66.69999999999982,
+    "p99": 83.40000000000055,
+    "over25": 0.7894736842105263,
+    "cpuP95": 2.5,
+    "buffer": {
+      "width": 1280,
+      "height": 720
+    }
+  }
+}
