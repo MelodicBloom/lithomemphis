@@ -8,6 +8,7 @@ Bounded proof only. Classification stays **DEFER**. No merge, no force-push, no 
 |---|---|
 | Start SHA | `294c330c8bc57a1d13cf669533dc4d203409c924` (`main`, 2026-11-06, matches the brief) |
 | Branch | `cursor/press-cycle-specimen-9bdf` |
+| Draft PR | https://github.com/MelodicBloom/lithomemphis/pull/6 |
 | Specimen commit | `2f25b3ddc1302376d00abe0dd221d12535a6ec11` |
 | Receipt note | The commit that records this SHA is docs-only and is the PR head if it sits directly on `2f25b3d`. |
 | Draft spec | [PR #5](https://github.com/MelodicBloom/lithomemphis/pull/5) still open, head `540c3ecaee6c6c976526b652e1895e4f9ac68407`. Those docs are **not** on `main`. This specimen cites them as draft. |
@@ -42,11 +43,25 @@ Tokens, unrelated routes, and `token-audit-receipt.json` are unchanged.
 | `npm run test:e2e` | pass. 16 tests. Screenshot compare used `maxDiffPixels: 0` and `threshold: 0` against the committed baselines (second run did not rewrite them). |
 | Node | v22.23.4. Lockfile install. New devDependency: `@playwright/test` 1.65.0 (Apache-2.0, not in the client bundle). |
 
-CI on GitHub had not run at the time this file was first written. The PR body is updated with the run URL after the workflow is observed. Do not treat a missing check as a pass.
+GitHub Actions run on `68f9d5b` (the push that opened the draft PR): [run 42675126422](https://github.com/MelodicBloom/lithomemphis/actions/runs/42675126422). All five jobs succeeded:
+
+| Job | Result | URL |
+|---|---|---|
+| lint | success | https://github.com/MelodicBloom/lithomemphis/actions/runs/42675126422/job/129354348072 |
+| typecheck | success | https://github.com/MelodicBloom/lithomemphis/actions/runs/42675126422/job/129354347999 |
+| unit | success | https://github.com/MelodicBloom/lithomemphis/actions/runs/42675126422/job/129354347880 |
+| storybook | success | https://github.com/MelodicBloom/lithomemphis/actions/runs/42675126422/job/129354347568 |
+| playwright | success | https://github.com/MelodicBloom/lithomemphis/actions/runs/42675126422/job/129354348009 |
+
+Playwright on `ubuntu-latest` matched the committed linux baselines at `maxDiffPixels: 0` and `threshold: 0`. Lint warnings are annotations only; the job exited 0. A later docs commit that records this paragraph starts a new run; it does not change the specimen.
 
 ## Preview
 
-No deploy job was added. A Vercel preview exists only if the existing GitHub integration comments on the PR. A Storybook artifact is a static build, not a live site. The page to open on a preview host is `/lab/press-cycle`.
+Vercel posted a Ready deployment for this branch:
+
+https://lithomemphis-git-cursor-press-cycle-specimen-9bdf-melodicbloom.vercel.app
+
+Opening `/lab/press-cycle` from this environment redirected to `https://vercel.com/login` (team SSO). The plate was not exercised on that host. No Vercel credentials were added. The local production preview and the GitHub Playwright job are the runs that actually loaded the specimen. A Storybook artifact is not a live site.
 
 ## Decision
 
