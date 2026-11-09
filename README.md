@@ -58,7 +58,7 @@ Poster links to an 8 s hero loop (`docs/visual-proof/hero.mp4`); social card at 
 Lighthouse: run locally — `npx lighthouse https://lithomemphis.vercel.app --view`
 
 ## Lab (`/lab`) — live pick board
-20 working effect/interaction demos. Toggle each on/off, open it in a dialog, and ☆ pick; picks persist in localStorage (“copy picks” gives you a comma list). The ☀ LIGHT slider changes `--lm-angle` (seeded from the `light.angle` token) for every lit card. Icon browser: `/lab/icons`. `/` and `/gallery` are unchanged.
+21 working effect/interaction demos. Toggle each on/off, open it in a dialog, and ☆ pick; picks persist in localStorage (“copy picks” gives you a comma list). The ☀ LIGHT slider changes `--lm-angle` (seeded from the `light.angle` token) for every lit card. Icon browser: `/lab/icons`. Experimental stamp → bleed → relief plate: `/lab/press-cycle` (also `/lab#press-cycle`). It is a DEFER specimen with illustrative units, not a calibrated press and not a `/portico` route. `/` and `/gallery` are unchanged.
 
 Components (`src/components/`): `SpringPressable`, `Magnetic`, `GrainMask`, `BackdropSurface`, `LithoCard`, `OfferChip`, `ShaderCanvas`, `Icon` + `InkDefs` (12 stamp icons, finishes `clean|bleed|stamp`), and `ui/` (Button, Switch, Tabs, Dialog). These are small local primitives in the style of shadcn (variant props, native `<dialog closedby>`). They use the litho tokens, not shadcn's gray theme. Spring physics: `src/lib/spring.ts` (semi-implicit Euler; snaps under reduced motion / safe mode).
 

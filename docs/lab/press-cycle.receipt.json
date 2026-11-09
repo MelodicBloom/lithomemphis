@@ -1,0 +1,56 @@
+{
+  "schemaVersion": "0.1.0-experimental",
+  "consumerSpecVersion": "1.3-draft",
+  "consumableId": "litho.print.stamp-bleed-relief-v0",
+  "semanticName": "Stamp → Bleed → Relief",
+  "engineAlias": "pressCycle",
+  "maturity": "experimental",
+  "classification": "DEFER",
+  "approval": "draft-experimental",
+  "promotion": "blocked-human-review",
+  "note": "This receipt does not satisfy the draft §6 promotion gate and does not move the consumable to ADAPT. Draft Consumer Spec v1.3 is unmerged PR #5 (docs/w2-w3-scope @ 540c3ecaee6c6c976526b652e1895e4f9ac68407) and is not on main.",
+  "processSpec": {
+    "kind": "print-process",
+    "description": "Authored plate-state scrub: stamp, press halo, bite, capillary bleed, riso misregistration. Ink and paper only.",
+    "unitProvenanceDefault": "illustrative",
+    "calibration": "not-claimed",
+    "progressSemantics": "plate-state-scrub",
+    "seed": 271828
+  },
+  "stateMachine": {
+    "phenomenonState": ["idle", "lensing", "impressed", "bleeding", "drifting"],
+    "presentationMode": ["full", "reduced"],
+    "staticSnapshotsOnReduced": "one canonical still per phenomenonState; input t is preserved"
+  },
+  "source": [
+    { "path": "src/lab/press-cycle/model.ts", "sha256": "2a17005f9192e7ace5908f426c40f562c91dca0536180bd1a6201b16464aff84" },
+    { "path": "src/lab/press-cycle/controller.ts", "sha256": "ae0867526a302491114729297812e4d00bf766ae7e3b62d06f55d1f913134898" },
+    { "path": "src/lab/press-cycle/PressCycle.tsx", "sha256": "3863f7359654f4a1169723a9884fff35f7193d185768b970a2efb5780bfadf72" },
+    { "path": "src/lab/press-cycle/press-cycle.css", "sha256": "30f7a2bcac2a2c6926e4010a9ce02ad91731ab17d9c4341b631442b4e00d73a1" }
+  ],
+  "goldenStills": [
+    { "name": "idle", "path": "e2e/press-cycle.spec.ts-snapshots/plate-idle-linux.png", "sha256": "71942386866410dff15907d7bfbdfc2d423de2fc283768470bcc177bd850022a" },
+    { "name": "lensing", "path": "e2e/press-cycle.spec.ts-snapshots/plate-lensing-linux.png", "sha256": "0761b175d3a7a8fc69272440f1dac4cfc77cacf1e460258537c4a0f8c28742d6" },
+    { "name": "impressed", "path": "e2e/press-cycle.spec.ts-snapshots/plate-impressed-linux.png", "sha256": "a93c12524ec08b69773c0de47cc9011d636513154f53609cb178f05bbeb4641f" },
+    { "name": "bleeding-canonical", "path": "e2e/press-cycle.spec.ts-snapshots/plate-bleeding-linux.png", "sha256": "0842a6135d443257e30451e50d58c851b5db0e8dce7813fa1a0e460e313d5868" },
+    { "name": "bleeding-edge-full", "path": "e2e/press-cycle.spec.ts-snapshots/plate-bleeding-edge-linux.png", "sha256": "d9bceaf065f936484f6457bcfd56033857a6d3420e612f185e9a89e3fb5aef1f" },
+    { "name": "bleeding-reduced", "path": "e2e/press-cycle.spec.ts-snapshots/plate-bleeding-reduced-linux.png", "sha256": "0842a6135d443257e30451e50d58c851b5db0e8dce7813fa1a0e460e313d5868", "note": "Same pixels as the canonical bleeding still. Reduced mode at t=0.52 renders snapshotProgress(bleeding)=0.63." },
+    { "name": "reduced-motion", "path": "e2e/press-cycle.spec.ts-snapshots/plate-reduced-motion-linux.png", "sha256": "0842a6135d443257e30451e50d58c851b5db0e8dce7813fa1a0e460e313d5868", "note": "prefers-reduced-motion at t=0.52 matches the explicit reduced still." },
+    { "name": "drifting", "path": "e2e/press-cycle.spec.ts-snapshots/plate-drifting-linux.png", "sha256": "2bc79d9acb878a27cf5f7cbd7299d591f7e795b42c86b34007a7242e1156d372" },
+    { "name": "edge-clamped", "path": "e2e/press-cycle.spec.ts-snapshots/plate-edge-clamped-linux.png", "sha256": "087acc035c0a10519da576854c4bf81c7f956158b57e0844f4b5c7615a236dc9" }
+  ],
+  "motionProof": {
+    "path": "not-in-repo",
+    "artifact": "/opt/cursor/artifacts/press-cycle-replay.webm",
+    "sha256": "2501ad0b6dd3339d1672b7652b2b905a8311326858d6448f6b99fdd2587f2679",
+    "note": "One Replay click from t=0 to t=1 in Headless Chrome. Not a calibrated capture."
+  },
+  "anti_patterns": [
+    { "id": "rainbow-splatter-brand", "checked": true, "note": "Spot inks are ink, cherry, and cornflower. No rainbow gradient." },
+    { "id": "category-error-thin-film-as-ink", "checked": true, "note": "ShaderCanvas film mode is not used. Lensing is a warm paper halo." },
+    { "id": "motion-before-readability", "checked": true, "note": "The plate is a still until Replay or a pointer hold. Reduced mode does not start the clock." },
+    { "id": "fake-live-metrics", "checked": true, "note": "No scores or live counters." },
+    { "id": "unversioned-shader", "checked": true, "note": "No new shader. Existing lm-ink-bleed and lm-stamp filters only." }
+  ],
+  "humanReview": "required before any DEFER → ADAPT claim"
+}

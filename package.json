@@ -12,7 +12,13 @@
     "tokens:audit": "node scripts/tokens-audit.mjs",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build -o storybook-static",
-    "build:all": "npm run build && storybook build -o dist/storybook --quiet"
+    "build:all": "npm run build && storybook build -o dist/storybook --quiet",
+    "typecheck": "tsc -b --pretty false",
+    "test:unit": "node --experimental-strip-types --test src/lab/press-cycle/*.test.ts",
+    "test:e2e": "npm run build && STORYBOOK_DISABLE_TELEMETRY=1 npm run build-storybook && playwright test"
+  },
+  "engines": {
+    "node": ">=22.18.0"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.3.3",
@@ -22,6 +28,7 @@
     "tailwindcss": "^4.3.3"
   },
   "devDependencies": {
+    "@playwright/test": "^1.65.0",
     "@storybook/react-vite": "^10.6.4",
     "@types/node": "^24.19.2",
     "@types/react": "^19.3.0",

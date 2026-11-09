@@ -1,0 +1,33 @@
+{
+  "label": "measured",
+  "capturedAt": "2026-11-09",
+  "environment": {
+    "node": "v22.23.4",
+    "platform": "linux",
+    "browser": "HeadlessChrome/158.0.8127.18",
+    "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/158.0.8127.18 Safari/537.36",
+    "playwright": "1.65.0",
+    "viewport": "1280x800",
+    "deviceScaleFactor": 1
+  },
+  "manualClock": {
+    "label": "measured",
+    "stepMs": 16,
+    "framesToReach1": 150,
+    "authoredCycleMs": 2400,
+    "note": "node:test drives the injected clock. 150 = 2400/16. This is the driver, not a browser frame rate."
+  },
+  "browserReplay": {
+    "label": "measured",
+    "updates": 145,
+    "elapsedMs": 2428.1,
+    "repeatElapsedMs": 2430.4,
+    "note": "MutationObserver on data-t during one Replay click. Two samples from the same Playwright run family. Attribute updates can be fewer than animation frames when quantize does not change the displayed value."
+  },
+  "proposedBudget": {
+    "label": "proposed",
+    "pausedAnimationFrames": 0,
+    "authoredPlaybackMs": 2400,
+    "note": "Not a CI performance gate. Playwright only fails this sample if replay never finishes or runs longer than 8s (stuck-loop guard)."
+  }
+}
