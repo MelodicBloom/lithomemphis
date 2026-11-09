@@ -8,7 +8,8 @@ Bounded proof only. Classification stays **DEFER**. No merge, no force-push, no 
 |---|---|
 | Start SHA | `294c330c8bc57a1d13cf669533dc4d203409c924` (`main`, 2026-11-06, matches the brief) |
 | Branch | `cursor/press-cycle-specimen-9bdf` |
-| Final SHA | filled after the implementing commit; the PR head is the source of truth |
+| Specimen commit | `2f25b3ddc1302376d00abe0dd221d12535a6ec11` |
+| Receipt note | The commit that records this SHA is docs-only and is the PR head if it sits directly on `2f25b3d`. |
 | Draft spec | [PR #5](https://github.com/MelodicBloom/lithomemphis/pull/5) still open, head `540c3ecaee6c6c976526b652e1895e4f9ac68407`. Those docs are **not** on `main`. This specimen cites them as draft. |
 | Live route | `/lab/press-cycle` (and `/lab#press-cycle` on the pick board) |
 
