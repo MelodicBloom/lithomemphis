@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Folded Atrium — Study C</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <main id="study">
+    <div id="stage">
+      <canvas id="view" tabindex="0" aria-label="Folded Atrium. Seven chamfered ribs and a folded interior. Drag to look only in free explore."></canvas>
+      <p id="fallback" hidden></p>
+      <p id="status-line" aria-live="polite"></p>
+    </div>
+    <section id="band" aria-label="Study controls">
+      <div class="row">
+        <span class="name">Folded Atrium</span>
+        <span class="meta" id="phase-readout"></span>
+        <span class="meta" id="queue-readout"></span>
+        <span class="hint" id="hint"></span>
+      </div>
+      <div class="row">
+        <div class="group" id="phase-control" tabindex="0" aria-label="Phase detents">
+          <button type="button" id="phase-minus" aria-label="Phase minus one detent">Phase −</button>
+          <button type="button" id="phase-plus" aria-label="Phase plus one detent">Phase +</button>
+        </div>
+        <div class="group" id="ratio-control" aria-label="Depth ratio">
+          <button type="button" data-ratio="0">2/3</button>
+          <button type="button" data-ratio="1">3/4</button>
+          <button type="button" data-ratio="2">4/5</button>
+        </div>
+        <button type="button" id="undo">Undo</button>
+        <button type="button" id="redo">Redo</button>
+        <button type="button" id="reset">Reset</button>
+        <button type="button" id="pause">Pause</button>
+        <button type="button" id="mode">Puzzle</button>
+      </div>
+      <div class="row">
+        <button type="button" data-preset="stagger">Stagger</button>
+        <button type="button" data-preset="threshold">Threshold</button>
+        <button type="button" data-preset="seam">Seam</button>
+        <label>Light <input id="light" type="range" min="-60" max="60" step="1" aria-label="Raking light azimuth"></label>
+        <label>Mist <input id="mist" type="range" min="0" max="60000" step="1000" aria-label="Mist extinction"></label>
+        <button type="button" id="mist-off">Mist off</button>
+        <label><input id="reduced" type="checkbox"> Reduced motion</label>
+      </div>
+      <div class="row" id="free-tools">
+        <span class="meta">Look</span>
+        <button type="button" data-look="yaw" data-sign="-1">Left</button>
+        <button type="button" data-look="yaw" data-sign="1">Right</button>
+        <button type="button" data-look="pitch" data-sign="1">Up</button>
+        <button type="button" data-look="pitch" data-sign="-1">Down</button>
+        <label>Tick <input id="tick" type="number" min="0" step="1" aria-label="Scrub tick"></label>
+      </div>
+      <p class="notice" id="notice" aria-live="assertive"></p>
+      <p class="meta" id="foot"></p>
+    </section>
+  </main>
+  <script type="module" src="./main.mjs"></script>
+</body>
+</html>

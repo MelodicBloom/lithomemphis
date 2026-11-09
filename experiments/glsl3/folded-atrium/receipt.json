@@ -1,0 +1,33 @@
+{
+  "study": "folded-atrium",
+  "option": "C",
+  "date": "2026-11-09",
+  "glsl": "WebGL2 / GLSL ES 3.00",
+  "three": false,
+  "webgpu": false,
+  "audio": "deferred, not implemented",
+  "humanApproval": null,
+  "sourceSha256": "dd91d5530e151c3af6a4c1d4680f7d1eadf109924b2543c86721f21d428d5179",
+  "fixtures": {
+    "nodeTest": "10/10 passed",
+    "replayTraces": "100/100 identical canonical hashes",
+    "invalidInputs": 10000,
+    "seamMinNonTargetPx1280": 5.64,
+    "seamMinNonTargetPx320": 4.45,
+    "portalRedirectsOnCenterRay": 1,
+    "marchStepsPerChamberMax": 64,
+    "marchDistanceMaxWU": 40
+  },
+  "performance": {
+    "pass20msP95": false,
+    "reason": "software renderer",
+    "renderer": "Google Inc. (Google) / ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+    "drawingBuffer": [1280, 720],
+    "dpr": 1,
+    "protocol": "8s rAF sample after a short settle, paused seam preset. Not 3x60s. GPU timer unmeasured.",
+    "portalOn": { "n": 226, "p50ms": 33.3, "p95ms": 50.1, "p99ms": 83.4, "fractionOver25ms": 0.81 },
+    "portalOff": { "n": 237, "p50ms": 33.3, "p95ms": 50.1, "p99ms": 83.4, "fractionOver25ms": 0.79 }
+  },
+  "contextLossPausedHashMatch": "5/5",
+  "route": "/experiments/glsl3/folded-atrium/"
+}

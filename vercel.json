@@ -2,5 +2,7 @@
   "rewrites": [
     { "source": "/storybook", "destination": "/storybook/index.html" },
     { "source": "/storybook/", "destination": "/storybook/index.html" },
-    { "source": "/((?!storybook(?:/|$)).*)", "destination": "/index.html" }
+    { "source": "/experiments/glsl3/folded-atrium", "destination": "/experiments/glsl3/folded-atrium/index.html" },
+    { "source": "/experiments/glsl3/folded-atrium/", "destination": "/experiments/glsl3/folded-atrium/index.html" },
+    { "source": "/((?!storybook(?:/|$)|experiments(?:/|$)).*)", "destination": "/index.html" }
   ] }
