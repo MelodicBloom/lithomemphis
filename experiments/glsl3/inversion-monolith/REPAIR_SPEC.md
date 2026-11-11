@@ -37,7 +37,7 @@ Problem: the author rule `canvas, svg { display: block; }` overrides the browser
 Design:
 
 1. Add a scoped `.stage-wrap > [hidden] { display: none; }` rule after the canvas/SVG display rule.
-2. Continue using `setMode()` as the single owner of renderer visibility.
+2. Continue using `setMode()` as the single owner of renderer visibility, and toggle the actual `hidden` attributes rather than relying on SVG `.hidden` property behavior.
 
 Acceptance:
 
