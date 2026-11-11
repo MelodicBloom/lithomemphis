@@ -9,7 +9,7 @@ Authority:
 - Reviewed head: `5d1eb770251e13ce057d1016043ae096f61683f3`
 - Required verification profile: study logic, repository lint, and production build
 
-This specification is the change boundary for the first review cycle. It fixes the four unresolved reviewer findings and adds only the regression coverage needed to prove those repairs. It does not change the sculpture, shader equations, state domains, puzzle rules, captures, performance claims, application routes, dependencies, or deployment configuration.
+This specification is the change boundary for the first review cycle. It fixes the four unresolved reviewer findings and adds only the regression and delivery coverage needed to prove those repairs. It does not change the sculpture, shader equations, state domains, puzzle rules, captures, performance claims, application routes, dependencies, or Vercel rewrite rules.
 
 ## Findings and required behavior
 
@@ -95,6 +95,22 @@ Acceptance:
 - The unchanged shader pair retains its existing canonical hash on Windows and POSIX.
 - JS source hashes change for substantive runtime edits, not checkout line-ending policy.
 - All existing logic assertions continue to pass.
+
+### R6 — include the study in cross-platform production builds
+
+Problem: `public/experiments` is a Git symlink. On Windows without symlink checkout support it becomes a 14-byte placeholder file, so Vite reports a successful build but emits `dist/experiments` as a file and serves the application shell for every study resource.
+
+Design:
+
+1. Add a dependency-free Vite build plugin that copies the repository's canonical `experiments/` directory to `dist/experiments/` after the normal bundle.
+2. Remove an emitted placeholder file before copying when the checkout cannot materialize the symlink.
+3. Keep `public/experiments` and Vercel rewrites unchanged for existing POSIX behavior.
+
+Acceptance:
+
+- `npm run build` produces `dist/experiments/glsl3/inversion-monolith/index.html` and its JS, CSS, and shader resources on Windows and POSIX.
+- Vite preview serves the study HTML and resources directly rather than the application shell.
+- The browser regression suite passes against the production preview URL.
 
 ## Changed-file sibling sweep
 
