@@ -51,13 +51,14 @@ Problem: live clock repainting assigns `dom.seed.value` on every tick, overwriti
 
 Design:
 
-1. Do not synchronize the seed field while it owns focus.
-2. Resume state-to-field synchronization after focus leaves the field.
-3. Keep `readSeed()` as the validation boundary used by the Puzzle seed button.
+1. Track the canonical seed last rendered into the field.
+2. Synchronize the field only when canonical `state.seed` changes, rather than on every clock repaint.
+3. Preserve the visitor's draft across focus and blur until the Puzzle seed action reads it.
+4. Keep `readSeed()` as the validation boundary and force canonical resynchronization after that action, including its invalid-input fallback.
 
 Acceptance:
 
-- A focused seed field retains a typed valid value across live clock repaints.
+- A typed seed field retains its valid draft across live clock repaints and a real blur-before-click sequence.
 - Clicking Puzzle seed commits that value and produces the corresponding puzzle preset.
 - A later state change updates the unfocused field from canonical state.
 - Invalid seed input continues to fall back to the current canonical seed.
