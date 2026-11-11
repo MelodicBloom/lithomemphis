@@ -98,8 +98,10 @@ The only destructive parent-label assignments are the two reported sites. The on
 Required profile checks:
 
 1. `node experiments/glsl3/inversion-monolith/tests/run.mjs`
-2. `npm run lint`
-3. `npm run build`
+2. `npm.cmd exec oxlint -- experiments/glsl3/inversion-monolith/js experiments/glsl3/inversion-monolith/tests` on Windows (`npm exec` on POSIX)
+3. `npm.cmd run build` on Windows (`npm run build` on POSIX)
+
+The repository-wide `npm run lint` remains an additional diagnostic. At the reviewed base it exits nonzero on pre-existing `react(only-export-components)` warnings in `src/lab/demos.tsx`, which is outside PR #8. Those warnings are recorded as baseline debt rather than widened into this visual-demo repair.
 
 Targeted browser regression checks:
 
@@ -115,6 +117,7 @@ Test harness portability:
 Additional scans:
 
 - `npm audit --audit-level=high`
+- repository-wide `npm run lint`, with base-versus-PR attribution for any failure
 - `git diff --check`
 - changed-file review against this specification
 - current-head GitHub checks and unresolved review threads after push
