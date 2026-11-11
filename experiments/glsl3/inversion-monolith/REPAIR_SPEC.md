@@ -81,6 +81,21 @@ Acceptance:
 - Successful restoration returns to `webgl` and preserves the hash.
 - A failed restoration remains in fallback mode and exposes a diagnostic notice.
 
+### R5 — keep source receipts stable across checkout line endings
+
+Problem: the logic suite hashes working-tree text verbatim. Git's Windows checkout converts LF to CRLF, changing the recorded shader and JS source hashes even when the Git blobs are otherwise identical.
+
+Design:
+
+1. Normalize CRLF and lone CR to LF before hashing text sources.
+2. Continue hashing the same shader and JS file lists in the same order.
+
+Acceptance:
+
+- The unchanged shader pair retains its existing canonical hash on Windows and POSIX.
+- JS source hashes change for substantive runtime edits, not checkout line-ending policy.
+- All existing logic assertions continue to pass.
+
 ## Changed-file sibling sweep
 
 The PR's complete changed-file list was searched before implementation for:
