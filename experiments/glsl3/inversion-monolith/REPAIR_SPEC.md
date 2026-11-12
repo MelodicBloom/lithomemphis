@@ -104,7 +104,7 @@ Design:
 
 1. Add a dependency-free Vite build plugin that copies the repository's canonical `experiments/` directory to `dist/experiments/` after the normal bundle.
 2. Remove an emitted placeholder file before copying when the checkout cannot materialize the symlink.
-3. Keep `public/experiments` and Vercel rewrites unchanged for existing POSIX behavior.
+3. Keep `public/experiments` and unrelated Vercel rewrites unchanged for existing POSIX behavior; canonical slash handling is specified separately in R9.
 
 Acceptance:
 
@@ -148,6 +148,23 @@ Acceptance:
 - The diagnostic notice remains visible until a subsequent user action produces its own notice.
 - Successful WebGL, WebGL-unavailable, context-loss, shot, and benchmark paths retain their existing scheduling behavior.
 
+### R9 — canonicalize the deployed study URL before serving relative assets
+
+Problem: the slashless Vercel rewrite serves the study HTML at `/experiments/glsl3/inversion-monolith` without changing the browser URL. Relative `./css`, `./js`, and `./shaders` references then resolve from `/experiments/glsl3/` instead of the study directory.
+
+Design:
+
+1. Replace only the slashless study rewrite with a Vercel `redirects` entry targeting `/experiments/glsl3/inversion-monolith/`.
+2. Use a permanent redirect so the canonical directory URL is stable; Vercel documents this as HTTP 308 and processes redirects before rewrites.
+3. Retain the trailing-slash rewrite to `index.html` and the existing exclusions from the application-shell catch-all.
+
+Acceptance:
+
+- The Vercel configuration parses and the production build remains green.
+- A deployed request to the slashless URL returns a redirect whose `Location` is the trailing-slash URL.
+- The trailing-slash URL returns the study HTML and its relative CSS, JS, and shader requests succeed.
+- Storybook and the application-shell catch-all behavior remain unchanged.
+
 ## Changed-file sibling sweep
 
 The PR's complete changed-file list was searched before implementation for:
@@ -190,6 +207,7 @@ Additional scans:
 - `git diff --check`
 - changed-file review against this specification
 - current-head GitHub checks and unresolved review threads after push
+- deployed slashless redirect and trailing-slash resource checks after Vercel reports success
 
 ## Merge gate
 
