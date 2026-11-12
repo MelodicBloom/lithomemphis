@@ -7,7 +7,7 @@ Authority:
 - Repository: `MelodicBloom/lithomemphis`
 - Pull request: `#8`, `cursor/inversion-monolith-56b5` into `main`
 - Reviewed head: `5d1eb770251e13ce057d1016043ae096f61683f3`
-- Required verification profile: study logic, repository lint, and production build
+- Required verification profile: study logic, study-scoped lint, and production build
 
 This specification is the change boundary for the first review cycle. It fixes the four unresolved reviewer findings and adds only the regression and delivery coverage needed to prove those repairs. It does not change the sculpture, shader equations, state domains, puzzle rules, captures, performance claims, application routes, dependencies, or Vercel rewrite rules.
 
@@ -36,7 +36,7 @@ Problem: the author rule `canvas, svg { display: block; }` overrides the browser
 
 Design:
 
-1. Add a scoped `.stage-wrap > [hidden] { display: none; }` rule after the canvas/SVG display rule.
+1. Add scoped `#stage[hidden], #fallback[hidden] { display: none; }` rules after the canvas/SVG display rule. The renderer IDs are required so the hidden rule outranks the existing `#fallback` display selector without using `!important`.
 2. Continue using `setMode()` as the single owner of renderer visibility, and toggle the actual `hidden` attributes rather than relying on SVG `.hidden` property behavior.
 
 Acceptance:

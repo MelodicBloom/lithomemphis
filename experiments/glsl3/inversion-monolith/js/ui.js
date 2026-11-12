@@ -70,7 +70,11 @@ export function bindControls(dom, getState, dispatch) {
   click('presetMass', () => ({ type: 'preset', id: 'mass' }));
   click('presetVault', () => ({ type: 'preset', id: 'vault' }));
   click('presetAperture', () => ({ type: 'preset', id: 'aperture' }));
-  click('presetPuzzle', () => ({ type: 'preset', id: 'puzzle', seed: readSeed(dom, getState()) }));
+  click('presetPuzzle', () => {
+    const seed = readSeed(dom, getState());
+    dom.seed.dataset.stateSeed = '';
+    return { type: 'preset', id: 'puzzle', seed };
+  });
 
   dom.light.addEventListener('pointerdown', () => dispatch({ type: 'gesture', value: 1 }));
   dom.light.addEventListener('input', () => dispatch({ type: 'light', deg: Number(dom.light.value) }));
@@ -134,13 +138,16 @@ export function paintControls(dom, state, notice) {
   dom.section.textContent = `Section ${n}/${d}`;
   dom.queue.textContent = queue ? `Queue ${queue}` : aligned ? 'Aligned' : 'Seated';
   dom.light.value = String(state.lightDeg);
-  dom.lightLabel.textContent = `Light ${state.lightDeg}°`;
+  dom.lightValue.textContent = `Light ${state.lightDeg}°`;
   dom.fog.textContent = state.fog ? 'Fog on' : 'Fog off';
   dom.pause.textContent = state.paused ? 'Paused' : 'Live';
   dom.reduced.textContent = state.reduced ? 'Motion on' : 'Reduced motion';
   dom.scrub.value = String(Math.min(2400, state.tick));
-  dom.tickLabel.textContent = `Tick ${state.tick}`;
-  dom.seed.value = String(state.seed);
+  dom.tickValue.textContent = `Tick ${state.tick}`;
+  if (dom.seed.dataset.stateSeed !== String(state.seed)) {
+    dom.seed.value = String(state.seed);
+    dom.seed.dataset.stateSeed = String(state.seed);
+  }
   dom.notice.textContent = notice;
   dom.hint.textContent = hint(state).text;
   dom.stage.setAttribute(

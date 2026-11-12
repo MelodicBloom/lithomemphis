@@ -40,6 +40,10 @@ canvas, #fallback {
   display: block;
 }
 
+#stage[hidden], #fallback[hidden] {
+  display: none;
+}
+
 canvas:focus-visible, button:focus-visible, input:focus-visible {
   outline: 1px solid var(--focus);
   outline-offset: 3px;

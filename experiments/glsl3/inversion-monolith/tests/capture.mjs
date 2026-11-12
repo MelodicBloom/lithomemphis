@@ -1,25 +1,28 @@
 import { spawn } from 'node:child_process';
 import { mkdirSync, writeFileSync } from 'node:fs';
-import { dirname, join } from 'node:path';
+import { tmpdir } from 'node:os';
+import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const root = dirname(dirname(fileURLToPath(import.meta.url)));
-const outDir = join(root, 'captures');
+const outDir = process.env.CAPTURE_DIR ? resolve(process.env.CAPTURE_DIR) : join(root, 'captures');
 mkdirSync(outDir, { recursive: true });
 
 const base = process.argv[2] || 'http://127.0.0.1:5173/experiments/glsl3/inversion-monolith/';
 const port = 9333;
+const chromeBin = process.env.CHROME_BIN || 'google-chrome';
+const chromeProfile = join(tmpdir(), `chrome-inversion-monolith-${process.pid}`);
 
 function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-const chrome = spawn('google-chrome', [
+const chrome = spawn(chromeBin, [
   '--headless=new',
   '--use-angle=swiftshader',
   '--enable-unsafe-swiftshader',
   '--remote-debugging-port=' + port,
-  '--user-data-dir=/tmp/chrome-inversion-monolith',
+  `--user-data-dir=${chromeProfile}`,
   '--window-size=1440,1100',
   '--no-first-run',
   '--no-default-browser-check',
@@ -136,6 +139,18 @@ async function main() {
   }
 
   await open(`${base}?readback=1`);
+  const controlsAtBoot = await evalJson(`(() => {
+    const stage = document.querySelector('#stage');
+    const fallback = document.querySelector('#fallback');
+    const light = document.querySelector('#light');
+    const scrub = document.querySelector('#scrub');
+    return {
+      lightConnected: light.isConnected,
+      scrubConnected: scrub.isConnected,
+      stageVisible: !stage.hasAttribute('hidden') && stage.getClientRects().length > 0,
+      fallbackHidden: fallback.hasAttribute('hidden') && fallback.getClientRects().length === 0,
+    };
+  })()`);
   const before = await evalJson('window.__STUDY__.hash()');
   const box = await evalJson(`(() => {
     const r = document.querySelector('#phase-inc').getBoundingClientRect();
@@ -156,30 +171,98 @@ async function main() {
   await sleep(40);
   const afterKey = await evalJson(`({ hash: window.__STUDY__.hash(), notice: document.querySelector('#notice').textContent, k: window.__STUDY__.getState().k })`);
 
+  const controlInputs = await evalJson(`(() => {
+    const light = document.querySelector('#light');
+    light.value = '17';
+    light.dispatchEvent(new Event('input', { bubbles: true }));
+    const scrub = document.querySelector('#scrub');
+    scrub.value = '120';
+    scrub.dispatchEvent(new Event('input', { bubbles: true }));
+    return {
+      lightConnected: light.isConnected,
+      scrubConnected: scrub.isConnected,
+      lightDeg: window.__STUDY__.getState().lightDeg,
+      tick: window.__STUDY__.getState().tick,
+      lightText: document.querySelector('#light-value').textContent,
+      tickText: document.querySelector('#tick-value').textContent,
+    };
+  })()`);
+
+  const seedDraft = await evalJson(`(() => {
+    const seed = document.querySelector('#seed');
+    seed.focus();
+    seed.value = '4242';
+    window.__STUDY__.dispatch({ type: 'advance', ticks: 1 });
+    const preserved = seed.value;
+    seed.blur();
+    document.querySelector('#preset-puzzle').click();
+    const committed = window.__STUDY__.getState().seed;
+    document.querySelector('#preset-mass').click();
+    return { preserved, committed, synchronized: seed.value };
+  })()`);
+
   await evalJson(`window.__STUDY__.dispatch({ type: 'pause', value: 1 })`);
   const pausedHash = await evalJson('window.__STUDY__.hash()');
   const loss = await evalJson(`(async () => {
     const gl = window.__GL__;
     const ext = gl && gl.getExtension('WEBGL_lose_context');
-    if (!ext) return { available: false, hashes: [] };
-    const hashes = [];
+    if (!ext) return { available: false, losses: [], restores: [] };
+    const losses = [];
+    const restores = [];
     for (let i = 0; i < 5; i += 1) {
       ext.loseContext();
       await new Promise((r) => setTimeout(r, 50));
+      losses.push({
+        hash: window.__STUDY__.hash(),
+        mode: window.__STUDY__.mode(),
+        stageHidden: document.querySelector('#stage').hasAttribute('hidden'),
+        fallbackHidden: document.querySelector('#fallback').hasAttribute('hidden'),
+        fallbackRects: document.querySelector('#fallback').getClientRects().length,
+      });
       ext.restoreContext();
       await new Promise((r) => setTimeout(r, 80));
-      hashes.push(window.__STUDY__.hash());
+      restores.push({ hash: window.__STUDY__.hash(), mode: window.__STUDY__.mode() });
     }
-    return { available: true, hashes };
+    return { available: true, losses, restores };
   })()`);
   loss.pausedHash = pausedHash;
 
+  const browserFailures = [];
+  const requireCheck = (condition, label) => {
+    if (!condition) browserFailures.push(label);
+  };
+  requireCheck(controlsAtBoot.lightConnected && controlsAtBoot.scrubConnected,
+    'range inputs remain connected after initial paint');
+  requireCheck(controlsAtBoot.stageVisible && controlsAtBoot.fallbackHidden,
+    'inactive fallback has no layout box in WebGL mode');
+  requireCheck(afterClick.k === 1 && afterKey.k === 2,
+    'real pointer and keyboard inputs advance one detent each');
+  requireCheck(controlInputs.lightDeg === 17 && controlInputs.lightText === 'Light 17°',
+    'light range updates canonical state and visible label');
+  requireCheck(controlInputs.tick === 120 && controlInputs.tickText === 'Tick 120',
+    'scrub range updates canonical state and visible label');
+  requireCheck(seedDraft.preserved === '4242' && seedDraft.committed === 4242
+    && seedDraft.synchronized === '1001',
+  'focused seed draft survives repaint, commits, then resynchronizes');
+
   const report = {
     pages,
-    input: { before, afterClick, afterKey },
+    input: { before, afterClick, afterKey, controlsAtBoot, controlInputs, seedDraft },
     contextLoss: loss,
-    contextLossStable: Boolean(loss?.available) && loss.hashes.every((h) => h === loss.pausedHash),
+    contextLossStable: Boolean(loss?.available)
+      && loss.losses.every((item) => item.hash === loss.pausedHash)
+      && loss.restores.every((item) => item.hash === loss.pausedHash),
+    contextLossFallbackVisible: Boolean(loss?.available)
+      && loss.losses.every((item) => item.mode === 'fallback'
+        && item.stageHidden && !item.fallbackHidden && item.fallbackRects > 0),
+    contextRestoreWebgl: Boolean(loss?.available)
+      && loss.restores.every((item) => item.mode === 'webgl'),
+    failures: browserFailures,
   };
+  requireCheck(report.contextLossStable, 'context loss and restoration preserve canonical state');
+  requireCheck(report.contextLossFallbackVisible, 'context loss shows only the static fallback');
+  requireCheck(report.contextRestoreWebgl, 'context restoration returns to WebGL mode');
+  report.pass = browserFailures.length === 0;
   writeFileSync(join(outDir, 'browser-report.json'), `${JSON.stringify(report, null, 2)}\n`);
   console.log(JSON.stringify({
     mode: pages.initial.mode,
@@ -190,8 +273,15 @@ async function main() {
     alignedNotice: pages.aligned.notice,
     afterClick,
     afterKey,
+    controlsAtBoot,
+    controlInputs,
+    seedDraft,
     contextLossStable: report.contextLossStable,
+    contextLossFallbackVisible: report.contextLossFallbackVisible,
+    contextRestoreWebgl: report.contextRestoreWebgl,
+    failures: report.failures,
   }, null, 2));
+  if (!report.pass) throw new Error(`browser checks failed: ${report.failures.join('; ')}`);
   await send('Emulation.setDeviceMetricsOverride', {
     width: 320,
     height: 568,

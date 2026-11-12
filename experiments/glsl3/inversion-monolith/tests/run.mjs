@@ -468,13 +468,14 @@ const puzzleIdle = uniformsOf(puzzlePreset);
 const reducedIdle = uniformsOf(reduced);
 check('idle contract', idleOff.idle === 0 && Math.abs(idleOn.idle - 0.004 * Math.sin(2 * Math.PI * 0.05)) < 1e-12 && puzzleIdle.idle === 0 && reducedIdle.idle === 0, idleOn.idle);
 
-const frag = readFileSync(join(root, 'shaders/monolith.frag'), 'utf8');
-const vert = readFileSync(join(root, 'shaders/monolith.vert'), 'utf8');
+const canonicalText = (path) => readFileSync(path, 'utf8').replace(/\r\n?/g, '\n');
+const frag = canonicalText(join(root, 'shaders/monolith.frag'));
+const vert = canonicalText(join(root, 'shaders/monolith.vert'));
 check('glsl version', frag.startsWith('#version 300 es') && vert.startsWith('#version 300 es'));
 check('shader clamps', SHADER_CLAMPS.every((line) => frag.includes(line)));
 check('march bounds', frag.includes('const int MAX_STEPS = 64') && frag.includes('const int SHADOW_STEPS = 16') && frag.includes('const float MAX_DIST = 40.0'));
 const shaderHash = sha256(vert + '\n' + frag);
-const sourceHash = sha256(['constants.js', 'ease.js', 'geometry.js', 'sdf.js', 'sha256.js', 'state.js', 'uniforms.js', 'renderer.js', 'ui.js', 'fallback.js', 'main.js'].map((name) => readFileSync(join(root, 'js', name), 'utf8')).join('\n'));
+const sourceHash = sha256(['constants.js', 'ease.js', 'geometry.js', 'sdf.js', 'sha256.js', 'state.js', 'uniforms.js', 'renderer.js', 'ui.js', 'fallback.js', 'main.js'].map((name) => canonicalText(join(root, 'js', name))).join('\n'));
 
 const bridgeState = solve(createState('puzzle', { seed: 20261109 }));
 check('bridge rises only when aligned', bridgeProgress(base) === 0 && bridgeProgress(bridgeState) > 0.9 && isAligned(bridgeState));

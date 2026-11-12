@@ -23,12 +23,12 @@ const dom = {
   section: document.querySelector('#section'),
   queue: document.querySelector('#queue'),
   light: document.querySelector('#light'),
-  lightLabel: document.querySelector('#light-label'),
+  lightValue: document.querySelector('#light-value'),
   fog: document.querySelector('#fog'),
   pause: document.querySelector('#pause'),
   reduced: document.querySelector('#reduced'),
   scrub: document.querySelector('#scrub'),
-  tickLabel: document.querySelector('#tick-label'),
+  tickValue: document.querySelector('#tick-value'),
   seed: document.querySelector('#seed'),
   phaseDec: document.querySelector('#phase-dec'),
   phaseInc: document.querySelector('#phase-inc'),
@@ -84,8 +84,8 @@ function setMode(next, message) {
   mode = next;
   document.body.dataset.renderer = next;
   dom.status.textContent = message;
-  dom.stage.hidden = next !== 'webgl';
-  dom.fallback.hidden = next === 'webgl';
+  dom.stage.toggleAttribute('hidden', next !== 'webgl');
+  dom.fallback.toggleAttribute('hidden', next === 'webgl');
 }
 
 async function loadShaders() {
@@ -119,13 +119,25 @@ function bootGl() {
     event.preventDefault();
     gpu = null;
     notice = 'WebGL context lost. CPU state kept.';
+    setMode('fallback', 'WebGL context lost. Static section only.');
     paint();
   });
   dom.stage.addEventListener('webglcontextrestored', () => {
-    gpu = createProgram(gl, vertSrc, fragSrc);
-    notice = 'WebGL context restored from CPU state.';
-    paint();
-    render();
+    try {
+      gpu = createProgram(gl, vertSrc, fragSrc);
+      const restoredInfo = rendererInfo(gl);
+      const restoredLabel = restoredInfo.software ? 'SwiftShader (software)' : restoredInfo.renderer;
+      dom.status.title = `${restoredInfo.vendor} · ${restoredInfo.renderer}`;
+      setMode('webgl', restoredLabel);
+      notice = 'WebGL context restored from CPU state.';
+      paint();
+      render();
+    } catch (error) {
+      gpu = null;
+      setMode('fallback', 'WebGL context restore failed. Static section only.');
+      notice = `WebGL context restore failed: ${String(error.message || error)}`;
+      paint();
+    }
   });
   return true;
 }
