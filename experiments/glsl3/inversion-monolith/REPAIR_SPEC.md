@@ -112,6 +112,42 @@ Acceptance:
 - Vite preview serves the study HTML and resources directly rather than the application shell.
 - The browser regression suite passes against the production preview URL.
 
+### R7 — preserve one history entry for an active gesture
+
+Problem: `cloneState()` recreates live state through `snapshot()` and `inflate()`, both of which intentionally clear `gesture` for stored undo/redo snapshots. A live slider or camera drag therefore loses its active-gesture flag after the first input mutation or clock advance, causing later pointer moves to append history entries instead of extending the original gesture.
+
+Design:
+
+1. Keep `snapshot()` and `inflate()` zeroing `gesture` so persisted undo/redo states cannot restore a half-open interaction.
+2. After cloning live state, explicitly copy the current live `state.gesture` value onto the clone.
+3. Add a regression that begins a gesture, performs multiple light and camera mutations with an intervening clock advance, and verifies that history grows only at gesture start.
+
+Acceptance:
+
+- An active gesture remains active across live-state cloning and clock advancement.
+- Repeated mutations during one gesture do not append history entries.
+- Gesture end clears the flag without adding history.
+- One Undo after the gesture restores the pre-gesture state.
+- Undo/redo snapshots continue to restore with `gesture === 0`.
+
+### R8 — run the static fallback after shader initialization failure
+
+Problem: the shader load/compile rejection path paints the fallback once but never schedules `loop()`. In the default animated state, later Phase or Section actions enqueue transitions whose ticks never advance, so the controls and static geometry diverge and the queue can remain permanently full.
+
+Design:
+
+1. Introduce one guarded animation-loop starter used by every non-shot runtime path.
+2. Start that loop after shader load or compilation failure, after setting fallback mode and painting the diagnostic state.
+3. Keep shot and benchmark paths deterministic and avoid scheduling duplicate animation loops.
+4. Extend the browser harness with a request-interception case that forces one shader request to fail and proves that fallback state advances after a real control action.
+
+Acceptance:
+
+- A forced shader failure reaches ready fallback mode with the canvas hidden and SVG visible.
+- A Phase action in that mode advances ticks and updates the fallback geometry/state instead of leaving an open plan frozen.
+- The diagnostic notice remains visible until a subsequent user action produces its own notice.
+- Successful WebGL, WebGL-unavailable, context-loss, shot, and benchmark paths retain their existing scheduling behavior.
+
 ## Changed-file sibling sweep
 
 The PR's complete changed-file list was searched before implementation for:
@@ -139,6 +175,8 @@ Targeted browser regression checks:
 - DOM connectivity and layout boxes for both renderer elements and both range inputs.
 - Light, scrub, seed-draft, and Puzzle seed interactions through the rendered controls.
 - WebGL compile/draw and context loss/restoration with visible-mode assertions.
+- Forced shader-fetch failure with a progressing static-fallback clock.
+- Multi-mutation gesture history coalescing, including an intervening clock advance.
 - Desktop and 320 x 568 layouts, console errors, failed resources, keyboard focus, and reduced-motion behavior.
 
 Test harness portability:
