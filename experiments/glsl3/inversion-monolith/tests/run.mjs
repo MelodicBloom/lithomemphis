@@ -235,6 +235,22 @@ for (let i = 0; i < 129; i += 1) hist = reduce(hist, { type: 'phase', delta: 1 }
 const evict = reduce(hist, { type: 'phase', delta: 1 });
 check('history cap', evict.state.history.length === 128 && evict.notice.includes('Oldest entry dropped.'), evict.notice);
 
+let gesture = createState('mass');
+gesture = reduce(gesture, { type: 'gesture', value: 1 }).state;
+gesture = reduce(gesture, { type: 'light', deg: -10 }).state;
+gesture = reduce(gesture, { type: 'advance', ticks: 5 }).state;
+gesture = reduce(gesture, { type: 'camera', yaw: 4, pitch: -2 }).state;
+check('gesture remains active across clones', gesture.gesture === 1 && gesture.history.length === 1
+  && gesture.lightDeg === -10 && gesture.tick === 5 && gesture.camYaw === 4 && gesture.camPitch === -2);
+gesture = reduce(gesture, { type: 'gesture', value: 0 }).state;
+check('gesture end keeps one history entry', gesture.gesture === 0 && gesture.history.length === 1);
+const undoGesture = reduce(gesture, { type: 'undo' }).state;
+check('gesture undo restores pre-drag state', undoGesture.gesture === 0 && undoGesture.history.length === 0
+  && undoGesture.lightDeg === -42 && undoGesture.tick === 0 && undoGesture.camYaw === 0 && undoGesture.camPitch === 0);
+const redoGesture = reduce(undoGesture, { type: 'redo' }).state;
+check('gesture redo restores closed state', redoGesture.gesture === 0 && redoGesture.lightDeg === -10
+  && redoGesture.tick === 5 && redoGesture.camYaw === 4 && redoGesture.camPitch === -2);
+
 const reset = reduce(plus.state, { type: 'reset' });
 check('reset', reset.state.k === 0 && reset.state.plan === null && reset.state.tick === 0 && reset.notice.startsWith('Reset.'));
 const undoReset = reduce(reset.state, { type: 'undo' });

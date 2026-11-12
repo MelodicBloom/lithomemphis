@@ -109,6 +109,7 @@ async function main() {
   });
   await send('Page.enable');
   await send('Runtime.enable');
+  await send('Network.enable');
 
   const shots = ['initial', 'hybrid', 'mid', 'aligned'];
   const pages = {};
@@ -227,6 +228,39 @@ async function main() {
   })()`);
   loss.pausedHash = pausedHash;
 
+  await send('Network.setCacheDisabled', { cacheDisabled: true });
+  await send('Network.setBlockedURLs', { urls: ['*monolith.frag*'] });
+  await open(`${base}?forced-shader-failure=1`);
+  const shaderFailure = await evalJson(`(async () => {
+    const stage = document.querySelector('#stage');
+    const fallback = document.querySelector('#fallback');
+    const before = {
+      mode: window.__STUDY__.mode(),
+      notice: document.querySelector('#notice').textContent,
+      tick: window.__STUDY__.getState().tick,
+      fallbackMarkup: fallback.innerHTML,
+      stageHidden: stage.hasAttribute('hidden'),
+      fallbackVisible: !fallback.hasAttribute('hidden') && fallback.getClientRects().length > 0,
+    };
+    document.querySelector('#phase-inc').click();
+    await new Promise((resolve) => setTimeout(resolve, 1400));
+    const state = window.__STUDY__.getState();
+    return {
+      before,
+      after: {
+        mode: window.__STUDY__.mode(),
+        notice: document.querySelector('#notice').textContent,
+        tick: state.tick,
+        k: state.k,
+        planOpen: Boolean(state.plan),
+        fallbackMarkup: fallback.innerHTML,
+      },
+    };
+  })()`);
+  shaderFailure.file = await shot('shader-failure');
+  await send('Network.setBlockedURLs', { urls: [] });
+  await send('Network.setCacheDisabled', { cacheDisabled: false });
+
   const browserFailures = [];
   const requireCheck = (condition, label) => {
     if (!condition) browserFailures.push(label);
@@ -244,10 +278,19 @@ async function main() {
   requireCheck(seedDraft.preserved === '4242' && seedDraft.committed === 4242
     && seedDraft.synchronized === '1001',
   'focused seed draft survives repaint, commits, then resynchronizes');
+  requireCheck(shaderFailure.before.mode === 'fallback'
+    && shaderFailure.before.stageHidden && shaderFailure.before.fallbackVisible
+    && shaderFailure.before.notice.length > 0,
+  'forced shader failure reaches visible diagnostic fallback mode');
+  requireCheck(shaderFailure.after.mode === 'fallback' && shaderFailure.after.k === 1
+    && shaderFailure.after.tick > shaderFailure.before.tick && !shaderFailure.after.planOpen
+    && shaderFailure.after.fallbackMarkup !== shaderFailure.before.fallbackMarkup,
+  'shader-failure fallback clock advances and repaints a real phase action');
 
   const report = {
     pages,
     input: { before, afterClick, afterKey, controlsAtBoot, controlInputs, seedDraft },
+    shaderFailure,
     contextLoss: loss,
     contextLossStable: Boolean(loss?.available)
       && loss.losses.every((item) => item.hash === loss.pausedHash)
@@ -276,6 +319,7 @@ async function main() {
     controlsAtBoot,
     controlInputs,
     seedDraft,
+    shaderFailure,
     contextLossStable: report.contextLossStable,
     contextLossFallbackVisible: report.contextLossFallbackVisible,
     contextRestoreWebgl: report.contextRestoreWebgl,

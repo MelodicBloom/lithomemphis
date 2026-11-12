@@ -192,6 +192,14 @@ function applyShot(name) {
 
 let acc = 0;
 let last = performance.now();
+let loopStarted = false;
+
+function startLoop() {
+  if (loopStarted || params.get('shot') || params.has('bench')) return false;
+  loopStarted = true;
+  requestAnimationFrame(loop);
+  return true;
+}
 
 function loop(now) {
   const dt = Math.min(100, now - last);
@@ -311,11 +319,13 @@ loadShaders()
     render();
     document.body.dataset.ready = '1';
     if (params.has('bench')) runBench();
-    else if (!shot) requestAnimationFrame(loop);
+    else startLoop();
   })
   .catch((error) => {
     setMode('fallback', 'Shader files failed to load. Static section only.');
     notice = String(error.message || error);
     paint();
     document.body.dataset.ready = '1';
+    if (params.has('bench')) runBench();
+    else startLoop();
   });

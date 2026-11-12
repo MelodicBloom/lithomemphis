@@ -199,7 +199,9 @@ function inflate(snap, history, redo) {
 }
 
 function cloneState(state) {
-  return inflate(snapshot(state), state.history, state.redo);
+  const next = inflate(snapshot(state), state.history, state.redo);
+  next.gesture = state.gesture;
+  return next;
 }
 
 export function pendingCount(state) {
