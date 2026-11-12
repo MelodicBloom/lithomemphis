@@ -11,6 +11,8 @@ Scope: first Codex review cycle for `MelodicBloom/lithomemphis#8`.
 - Repair implementation: `199f686` (`fix: harden inversion monolith interactions`)
 - Review: `5863848529`
 - Findings repaired: four of four
+- Fresh review on `806776e`: `5880013910`
+- Second-cycle implementation: `a61b272` (`fix: preserve gestures and animate fallback`)
 
 ## Implemented behavior
 
@@ -20,6 +22,8 @@ Scope: first Codex review cycle for `MelodicBloom/lithomemphis#8`.
 4. Context loss preserves CPU state and shows the static fallback; successful restoration recreates the program before returning to WebGL.
 5. Source receipt hashing normalizes checkout line endings without changing the canonical shader hash.
 6. The production build copies the canonical `experiments/` tree on platforms where the public symlink is materialized as a file.
+7. Live-state clones retain the active gesture flag, while stored undo/redo snapshots remain closed; a multi-mutation drag consumes one history entry and one Undo restores the pre-drag state.
+8. A guarded animation-loop starter runs the static fallback after shader initialization failure without duplicating successful, shot, or benchmark scheduling.
 
 ## Verification
 
@@ -36,6 +40,7 @@ Rendered browser regression, Chrome with SwiftShader against the production prev
 - light and scrub state/label synchronization — passed;
 - seed draft preservation, commit, and canonical resynchronization — passed;
 - repeated context loss/restoration with state-hash and renderer-layout assertions — passed;
+- forced shader-fetch failure — passed: visible fallback advanced from tick 154 to 322, completed the phase plan, and repainted from detent 0 to detent 1;
 - browser failure list — empty.
 
 Additional checks:
