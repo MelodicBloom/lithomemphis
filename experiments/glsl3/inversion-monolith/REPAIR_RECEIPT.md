@@ -13,6 +13,8 @@ Scope: first Codex review cycle for `MelodicBloom/lithomemphis#8`.
 - Findings repaired: four of four
 - Fresh review on `806776e`: `5880013910`
 - Second-cycle implementation: `a61b272` (`fix: preserve gestures and animate fallback`)
+- Fresh review on `1ff2534`: `5880378286`
+- Third-cycle implementation: `6e829a4` (`fix: redirect slashless study URL`)
 
 ## Implemented behavior
 
@@ -24,6 +26,7 @@ Scope: first Codex review cycle for `MelodicBloom/lithomemphis#8`.
 6. The production build copies the canonical `experiments/` tree on platforms where the public symlink is materialized as a file.
 7. Live-state clones retain the active gesture flag, while stored undo/redo snapshots remain closed; a multi-mutation drag consumes one history entry and one Undo restores the pre-drag state.
 8. A guarded animation-loop starter runs the static fallback after shader initialization failure without duplicating successful, shot, or benchmark scheduling.
+9. Vercel permanently redirects the slashless study route to its canonical trailing-slash URL before the existing HTML rewrite, preserving relative asset resolution.
 
 ## Verification
 
