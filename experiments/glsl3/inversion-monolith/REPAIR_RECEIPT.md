@@ -1,8 +1,8 @@
 # Inversion Monolith repair receipt
 
-Date: 2026-11-12
+Date: 2026-11-12 through 2026-11-14
 
-Scope: first Codex review cycle for `MelodicBloom/lithomemphis#8`.
+Scope: bounded Codex review and repair loop for `MelodicBloom/lithomemphis#8`.
 
 ## Authority
 
@@ -15,6 +15,11 @@ Scope: first Codex review cycle for `MelodicBloom/lithomemphis#8`.
 - Second-cycle implementation: `a61b272` (`fix: preserve gestures and animate fallback`)
 - Fresh review on `1ff2534`: `5880378286`
 - Third-cycle implementation: `6e829a4` (`fix: redirect slashless study URL`)
+- Clean exact-head review on `d6d3d8a`: no findings
+- Ready-transition review on `d6d3d8a`: `5906063838`
+- Fourth-cycle specification: `04d23fa` (`docs: specify canceled slider gesture repair`)
+- Fourth-cycle implementation: `3a40c6c` (`fix: close canceled slider gestures`)
+- Cumulative findings repaired: eight
 
 ## Implemented behavior
 
@@ -27,6 +32,7 @@ Scope: first Codex review cycle for `MelodicBloom/lithomemphis#8`.
 7. Live-state clones retain the active gesture flag, while stored undo/redo snapshots remain closed; a multi-mutation drag consumes one history entry and one Undo restores the pre-drag state.
 8. A guarded animation-loop starter runs the static fallback after shader initialization failure without duplicating successful, shot, or benchmark scheduling.
 9. Vercel permanently redirects the slashless study route to its canonical trailing-slash URL before the existing HTML rewrite, preserving relative asset resolution.
+10. Light and Tick share one range-gesture binding that closes on both `pointerup` and `pointercancel`, so a later keyboard mutation creates an independent undo entry.
 
 ## Verification
 
@@ -36,7 +42,7 @@ Required profile, using the persisted GH Review Loop verification profile:
 - `npm.cmd exec oxlint -- experiments/glsl3/inversion-monolith/js experiments/glsl3/inversion-monolith/tests` — passed.
 - `npm.cmd run build` — passed; the production preview serves the study HTML, JS, CSS, and shader resources directly.
 
-Rendered browser regression, Chrome with SwiftShader against the production preview:
+Prior full rendered browser regression, Chrome with SwiftShader against the production preview:
 
 - desktop initial, aligned, hybrid, mid-state, eight morph frames, and 320 x 568 capture — passed visual inspection;
 - real pointer and keyboard detent input — passed;
@@ -45,6 +51,15 @@ Rendered browser regression, Chrome with SwiftShader against the production prev
 - repeated context loss/restoration with state-hash and renderer-layout assertions — passed;
 - forced shader-fetch failure — passed: visible fallback advanced from tick 154 to 322, completed the phase plan, and repainted from detent 0 to detent 1;
 - browser failure list — empty.
+
+Current-head incremental rendered check, in-app Chromium against the production preview:
+
+- the live study reached `data-ready="1"` with no console warnings or errors;
+- canceling a real Light slider gesture at `23°` left `gesture === 0` and one history entry;
+- a subsequent keyboard Light change reached `24°` and added a second history entry;
+- one Undo returned to `23°` and one history entry, proving the canceled gesture did not absorb the later edit.
+
+The standalone Windows Edge headless/CDP runner did not reach the ready marker in two bounded attempts even though the same preview and all study assets returned HTTP 200 and the in-app Chromium surface initialized successfully. That runner result is locally inconclusive; the ineffective timeout experiment was removed rather than retained as a workaround.
 
 Additional checks:
 
