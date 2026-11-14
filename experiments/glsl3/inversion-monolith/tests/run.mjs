@@ -46,7 +46,7 @@ import {
   puzzleLayout,
   reduce,
 } from '../js/state.js';
-import { keyToAction } from '../js/ui.js';
+import { bindRangeGesture, keyToAction } from '../js/ui.js';
 import { deriveUniforms, uniformViolations } from '../js/uniforms.js';
 
 const root = dirname(dirname(fileURLToPath(import.meta.url)));
@@ -74,6 +74,12 @@ function mulberry32(seed) {
 
 function uniformsOf(state) {
   return deriveUniforms(state, { width: 1280, height: 720 });
+}
+
+function rangeControl(value) {
+  const control = new EventTarget();
+  control.value = String(value);
+  return control;
 }
 
 function solve(start) {
@@ -250,6 +256,28 @@ check('gesture undo restores pre-drag state', undoGesture.gesture === 0 && undoG
 const redoGesture = reduce(undoGesture, { type: 'redo' }).state;
 check('gesture redo restores closed state', redoGesture.gesture === 0 && redoGesture.lightDeg === -10
   && redoGesture.tick === 5 && redoGesture.camYaw === 4 && redoGesture.camPitch === -2);
+
+const rangeActions = [];
+const lightRange = rangeControl(17);
+const scrubRange = rangeControl(120);
+bindRangeGesture(lightRange, (deg) => ({ type: 'light', deg }), (action) => rangeActions.push(action));
+bindRangeGesture(scrubRange, (tick) => ({ type: 'seek', tick }), (action) => rangeActions.push(action));
+lightRange.dispatchEvent(new Event('pointerdown'));
+lightRange.dispatchEvent(new Event('input'));
+lightRange.dispatchEvent(new Event('pointercancel'));
+scrubRange.dispatchEvent(new Event('pointerdown'));
+scrubRange.dispatchEvent(new Event('input'));
+scrubRange.dispatchEvent(new Event('pointerup'));
+scrubRange.dispatchEvent(new Event('change'));
+check('range gestures close on cancel and pointer up', JSON.stringify(rangeActions) === JSON.stringify([
+  { type: 'gesture', value: 1 },
+  { type: 'light', deg: 17 },
+  { type: 'gesture', value: 0 },
+  { type: 'gesture', value: 1 },
+  { type: 'seek', tick: 120 },
+  { type: 'gesture', value: 0 },
+  { type: 'seek', tick: 120 },
+]), rangeActions);
 
 const reset = reduce(plus.state, { type: 'reset' });
 check('reset', reset.state.k === 0 && reset.state.plan === null && reset.state.tick === 0 && reset.notice.startsWith('Reset.'));

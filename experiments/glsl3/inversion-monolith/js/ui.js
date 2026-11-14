@@ -50,6 +50,17 @@ function fieldFocused(target) {
   return tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT';
 }
 
+export function bindRangeGesture(element, valueAction, dispatch) {
+  const dispatchValue = () => dispatch(valueAction(Number(element.value)));
+  const endGesture = () => dispatch({ type: 'gesture', value: 0 });
+
+  element.addEventListener('pointerdown', () => dispatch({ type: 'gesture', value: 1 }));
+  element.addEventListener('input', dispatchValue);
+  element.addEventListener('pointerup', endGesture);
+  element.addEventListener('pointercancel', endGesture);
+  element.addEventListener('change', dispatchValue);
+}
+
 export function bindControls(dom, getState, dispatch) {
   const click = (id, action) => {
     dom[id].addEventListener('click', () => dispatch(action()));
@@ -76,15 +87,8 @@ export function bindControls(dom, getState, dispatch) {
     return { type: 'preset', id: 'puzzle', seed };
   });
 
-  dom.light.addEventListener('pointerdown', () => dispatch({ type: 'gesture', value: 1 }));
-  dom.light.addEventListener('input', () => dispatch({ type: 'light', deg: Number(dom.light.value) }));
-  dom.light.addEventListener('pointerup', () => dispatch({ type: 'gesture', value: 0 }));
-  dom.light.addEventListener('change', () => dispatch({ type: 'light', deg: Number(dom.light.value) }));
-
-  dom.scrub.addEventListener('pointerdown', () => dispatch({ type: 'gesture', value: 1 }));
-  dom.scrub.addEventListener('input', () => dispatch({ type: 'seek', tick: Number(dom.scrub.value) }));
-  dom.scrub.addEventListener('pointerup', () => dispatch({ type: 'gesture', value: 0 }));
-  dom.scrub.addEventListener('change', () => dispatch({ type: 'seek', tick: Number(dom.scrub.value) }));
+  bindRangeGesture(dom.light, (deg) => ({ type: 'light', deg }), dispatch);
+  bindRangeGesture(dom.scrub, (tick) => ({ type: 'seek', tick }), dispatch);
 
   let drag = null;
   dom.stage.addEventListener('pointerdown', (event) => {

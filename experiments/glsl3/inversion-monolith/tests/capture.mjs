@@ -189,6 +189,31 @@ async function main() {
     };
   })()`);
 
+  const canceledRangeGesture = await evalJson(`(() => {
+    const light = document.querySelector('#light');
+    const historyBefore = window.__STUDY__.getState().history.length;
+    light.dispatchEvent(new Event('pointerdown', { bubbles: true }));
+    light.value = '23';
+    light.dispatchEvent(new Event('input', { bubbles: true }));
+    light.dispatchEvent(new Event('pointercancel', { bubbles: true }));
+    const afterCancel = window.__STUDY__.getState();
+    window.dispatchEvent(new KeyboardEvent('keydown', { code: 'BracketRight', bubbles: true }));
+    const afterKeyboard = window.__STUDY__.getState();
+    window.dispatchEvent(new KeyboardEvent('keydown', { code: 'KeyZ', bubbles: true }));
+    const afterUndo = window.__STUDY__.getState();
+    return {
+      historyBefore,
+      canceledValue: afterCancel.lightDeg,
+      canceledGesture: afterCancel.gesture,
+      historyAfterCancel: afterCancel.history.length,
+      keyboardValue: afterKeyboard.lightDeg,
+      historyAfterKeyboard: afterKeyboard.history.length,
+      undoValue: afterUndo.lightDeg,
+      undoGesture: afterUndo.gesture,
+      historyAfterUndo: afterUndo.history.length,
+    };
+  })()`);
+
   const seedDraft = await evalJson(`(() => {
     const seed = document.querySelector('#seed');
     seed.focus();
@@ -275,6 +300,15 @@ async function main() {
     'light range updates canonical state and visible label');
   requireCheck(controlInputs.tick === 120 && controlInputs.tickText === 'Tick 120',
     'scrub range updates canonical state and visible label');
+  requireCheck(canceledRangeGesture.canceledValue === 23
+    && canceledRangeGesture.canceledGesture === 0
+    && canceledRangeGesture.historyAfterCancel === canceledRangeGesture.historyBefore + 1
+    && canceledRangeGesture.keyboardValue === 24
+    && canceledRangeGesture.historyAfterKeyboard === canceledRangeGesture.historyAfterCancel + 1
+    && canceledRangeGesture.undoValue === 23
+    && canceledRangeGesture.undoGesture === 0
+    && canceledRangeGesture.historyAfterUndo === canceledRangeGesture.historyAfterCancel,
+  'canceled range gesture closes before an independently undoable keyboard edit');
   requireCheck(seedDraft.preserved === '4242' && seedDraft.committed === 4242
     && seedDraft.synchronized === '1001',
   'focused seed draft survives repaint, commits, then resynchronizes');
@@ -289,7 +323,7 @@ async function main() {
 
   const report = {
     pages,
-    input: { before, afterClick, afterKey, controlsAtBoot, controlInputs, seedDraft },
+    input: { before, afterClick, afterKey, controlsAtBoot, controlInputs, canceledRangeGesture, seedDraft },
     shaderFailure,
     contextLoss: loss,
     contextLossStable: Boolean(loss?.available)
@@ -318,6 +352,7 @@ async function main() {
     afterKey,
     controlsAtBoot,
     controlInputs,
+    canceledRangeGesture,
     seedDraft,
     shaderFailure,
     contextLossStable: report.contextLossStable,
