@@ -1,0 +1,17 @@
+{
+  "failures": [],
+  "sha256abc": "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad",
+  "replayTraces": 100,
+  "replayDistinctFinalHashes": 100,
+  "invalidRejections": 7626,
+  "clampMutations": 1447,
+  "domainBreaks": 0,
+  "endpointUniforms": 1296,
+  "minFalseSeamPx": 8.272266253923961,
+  "tweenIntrusions": 0,
+  "hintSolves": 72,
+  "shaderHash": "c521842ef05e9674c713c179c4fd79511774fd812d012ce96860221d84dcf52f",
+  "sourceHash": "16279580855c72fd7e86e3601e7be21cdb6d5e825d2d687dd3f41cd468793b93",
+  "fogSigma": 0.012,
+  "pass": true
+}
