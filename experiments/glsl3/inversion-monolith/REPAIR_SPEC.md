@@ -218,6 +218,7 @@ Targeted browser regression checks:
 Test harness portability:
 
 - `tests/capture.mjs` may accept `CHROME_BIN` and use the operating system's temporary directory so the same CDP checks can run on Windows while retaining `google-chrome` as the default on existing Linux runners.
+- The readiness wait must retain the explicit `data-ready="1"` gate while allowing enough startup time for Windows Chromium running the software GPU path; a slow renderer is not evidence that the page failed to initialize.
 
 Additional scans:
 
