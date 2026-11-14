@@ -165,6 +165,24 @@ Acceptance:
 - The trailing-slash URL returns the study HTML and its relative CSS, JS, and shader requests succeed.
 - Storybook and the application-shell catch-all behavior remain unchanged.
 
+### R10 — close range-input gestures when the pointer is canceled
+
+Problem: the Light and Tick sliders open a coalesced history gesture on `pointerdown` and close it only on `pointerup`. Touch scrolling and other browser interventions can emit `pointercancel` instead, leaving `state.gesture` active so later keyboard or control changes are folded into the abandoned gesture and cannot be undone independently.
+
+Design:
+
+1. Route both range controls through one gesture-aware binding helper so their pointer lifecycle cannot drift.
+2. End the gesture on both `pointerup` and `pointercancel`; keep `input` and `change` dispatch semantics unchanged.
+3. Add a focused event-level regression that exercises cancellation for Light and normal pointer completion for Tick, proving both controls emit the same closed gesture lifecycle.
+4. Extend rendered-browser coverage to cancel a real Light slider gesture, perform a keyboard Light change, and verify that one Undo reverses only the keyboard change.
+
+Acceptance:
+
+- `pointercancel` on either range input dispatches `{ type: 'gesture', value: 0 }`.
+- After a canceled slider interaction, the next keyboard or control mutation creates its own history entry.
+- One Undo after that later mutation returns to the canceled gesture's final value rather than the pre-gesture value.
+- Normal `pointerup`, range `input`, and range `change` behavior remains unchanged for both sliders.
+
 ## Changed-file sibling sweep
 
 The PR's complete changed-file list was searched before implementation for:
@@ -194,6 +212,7 @@ Targeted browser regression checks:
 - WebGL compile/draw and context loss/restoration with visible-mode assertions.
 - Forced shader-fetch failure with a progressing static-fallback clock.
 - Multi-mutation gesture history coalescing, including an intervening clock advance.
+- Range-input `pointercancel` closure followed by an independently undoable keyboard mutation.
 - Desktop and 320 x 568 layouts, console errors, failed resources, keyboard focus, and reduced-motion behavior.
 
 Test harness portability:
@@ -211,6 +230,6 @@ Additional scans:
 
 ## Merge gate
 
-Do not merge unless all required profile checks pass on the final source, the targeted browser checks pass or are explicitly classified with a human decision, the four review threads are superseded or resolved by the reviewer, the exact pushed head has no blocking checks or conflicts, and the visual result is reviewed at desktop and narrow viewports. A successful Vercel deployment alone is not a visual or engineering pass.
+Do not merge unless all required profile checks pass on the final source, the targeted browser checks pass or are explicitly classified with a human decision, all review threads are superseded or resolved, the exact pushed head has no blocking checks or conflicts, and the visual result is reviewed at desktop and narrow viewports. A successful Vercel deployment alone is not a visual or engineering pass.
 
 Rollback is `git revert` of the repair commits. The original study commit remains independently recoverable.
