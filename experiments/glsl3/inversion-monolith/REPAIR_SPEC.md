@@ -255,6 +255,24 @@ Acceptance:
 - WebGL2 shader compilation and representative readback checks pass.
 - No unrelated shading, march bounds, or uniform domains change.
 
+### R15 — make the rendered-browser harness deterministic on Windows
+
+Problem: a CDP navigation can leave the headless page backgrounded, throttling `requestAnimationFrame` and producing a false fallback-clock failure. Repeated Windows runs can also retain the default debugging port or keep the child-process handle attached after all evidence has been written.
+
+Design:
+
+1. Bring each navigated page to the foreground before waiting for application readiness.
+2. Allow the CDP port to be selected through `CDP_PORT`, retaining 9333 as the default.
+3. After the browser is terminated on success or failure, detach its child-process handle so Node can exit even when Windows retains a browser subprocess briefly.
+4. Do not relax any application assertion or readiness timeout.
+
+Acceptance:
+
+- The forced-shader-failure case advances its fallback clock while the active page is visible.
+- A second bounded run can select a free CDP port without changing test semantics.
+- A passing report exits the Node process after all screenshots and JSON evidence are written.
+- Existing Linux defaults and all visual, input, context-loss, and layout assertions remain unchanged.
+
 ## Changed-file sibling sweep
 
 The PR's complete changed-file list was searched before implementation for:
