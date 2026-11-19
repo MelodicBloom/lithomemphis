@@ -183,6 +183,78 @@ Acceptance:
 - One Undo after that later mutation returns to the canceled gesture's final value rather than the pre-gesture value.
 - Normal `pointerup`, range `input`, and range `change` behavior remains unchanged for both sliders.
 
+### R11 — preserve the 16:9 renderer frame on narrow viewports
+
+Problem: the narrow-layout rule independently sets `width: 100%` and `height: 200px` on the 1280 × 720 canvas and the 640 × 360 fallback. A 320 px viewport leaves a 284 × 200 content box, compressing the scene horizontally; other mobile widths stretch it until the available width happens to be about 356 px.
+
+Design:
+
+1. Keep both renderers centered and constrained to the available width, but derive height from their shared intrinsic 16:9 ratio instead of fixing it independently.
+2. Retain 200 px as the narrow stage's minimum reserved height so controls do not jump when renderer modes change.
+3. Apply the same sizing contract to the WebGL canvas and static SVG fallback.
+4. Extend the browser harness to measure the visible renderer at 320 × 568 and reject a material deviation from 16:9.
+
+Acceptance:
+
+- At a 320 px viewport, the visible renderer's CSS width-to-height ratio is 16:9 within one device pixel of rounding.
+- Neither renderer exceeds the stage's available width.
+- Switching between WebGL and fallback does not change the renderer aspect ratio.
+- Desktop sizing and the 1280 × 720 drawing buffer remain unchanged.
+
+### R12 — make invalid Puzzle seed drafts fall back without throwing
+
+Problem: the Puzzle preset passes `getState()` into `readSeed()`, but the invalid-input path calls its second argument as a function. Drafts below 0, above `0xffffffff`, non-integers, and non-numbers therefore throw instead of falling back to the canonical seed.
+
+Design:
+
+1. Pass the state getter itself to the seed validation boundary.
+2. Keep valid unsigned 32-bit integer drafts authoritative for the new puzzle.
+3. Keep invalid drafts non-authoritative: use the current canonical seed and force the input to resynchronize after dispatch.
+4. Add deterministic and rendered-control coverage for both `-1` and `4294967296`.
+
+Acceptance:
+
+- Clicking Puzzle with either boundary-invalid draft produces no exception.
+- The resulting puzzle retains the current canonical seed for invalid drafts.
+- A valid draft such as `4242` still becomes the new canonical seed.
+- After the action, the input displays the canonical seed rather than the rejected draft.
+
+### R13 — keep the amber puzzle reference visible across section changes
+
+Problem: puzzle uniforms place the amber target endpoints at the target section depth, while both the raymarched surface and amber shading are limited to the currently selected cut plane. When current and target sections differ, the guide is not on the visible surface and disappears, preventing the intended comparison.
+
+Design:
+
+1. Continue deriving the guide's X/Y endpoints from the canonical target detent and target section so it remains the exact puzzle reference.
+2. Project only those endpoints' Z coordinate onto the current visible cut plane before upload.
+3. Keep the current seam as the separately carved edge; do not alter alignment rules, target generation, or solved-state logic.
+4. Add uniform-contract coverage for a puzzle whose current and target sections differ, and capture a rendered off-target puzzle state for visual review.
+
+Acceptance:
+
+- In every puzzle section, both amber endpoints lie on the current cut plane.
+- Their X/Y coordinates remain those of the target seam, including the target section's lateral offset.
+- The carved current seam still follows the current animated section and phase.
+- Alignment, hint distance, deterministic replay, and free-explore rendering remain unchanged.
+
+### R14 — remove undefined descending-edge GLSL `smoothstep`
+
+Problem: GLSL leaves `smoothstep(edge0, edge1, x)` undefined when `edge0 >= edge1`. The cut-face cavity shading currently supplies `0.28, 0.0`; SwiftShader's observed output does not establish portable behavior on other GPU drivers.
+
+Design:
+
+1. Express the intended decreasing transition as `1.0 - smoothstep(0.0, 0.28, cavity)`.
+2. Preserve the existing `mix(1.0, 0.62, ...)` endpoints and therefore the intended visual direction.
+3. Scan every constant-edge `smoothstep` call in the fragment shader and reject non-ascending edge pairs.
+4. Recompile and render the shader through the normal browser profile after the source change.
+
+Acceptance:
+
+- No constant-edge `smoothstep` call in `monolith.frag` has equal or descending edges.
+- Cavity values at and below 0 map to the same transition endpoint as intended, and values at or above 0.28 map to the opposite endpoint.
+- WebGL2 shader compilation and representative readback checks pass.
+- No unrelated shading, march bounds, or uniform domains change.
+
 ## Changed-file sibling sweep
 
 The PR's complete changed-file list was searched before implementation for:
