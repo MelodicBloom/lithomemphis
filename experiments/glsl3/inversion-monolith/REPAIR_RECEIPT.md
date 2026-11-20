@@ -71,3 +71,41 @@ Additional checks:
 ## Remaining gates
 
 Before merge: push the repair commits, obtain a fresh Codex review on the exact pushed head, confirm current-head GitHub checks and mergeability, and record the GH Review Loop terminal receipt. A green local receipt is not a deployment or merge claim.
+
+## Final Copilot review cycle — 2026-11-20
+
+Authority and implementation:
+
+- Final-cycle specifications: `94366e0` and `8030325`.
+- Final-cycle implementation: `991657c5cb3ed6285ad31fdaad0df064cef68de5`.
+- Four current Copilot findings repaired: narrow renderer distortion, invalid Puzzle seed fallback, invisible off-section amber reference, and undefined descending-edge GLSL `smoothstep`.
+- One additional Copilot pointer-cancel thread was already superseded by `3a40c6c` and its deterministic and rendered regressions.
+
+Final behavior:
+
+1. Narrow WebGL and fallback renderers preserve their shared 16:9 intrinsic ratio while retaining the 200 px stage reservation.
+2. Invalid unsigned-32-bit seed drafts fall back to the canonical state getter without throwing, while valid drafts still commit.
+3. Puzzle target X/Y geometry is projected onto the current visible cut plane, so the amber comparison remains visible when current and target sections differ.
+4. Every constant-edge fragment-shader `smoothstep` uses ascending edges; the decreasing cavity transition is expressed as an inverted ascending transition.
+5. The Windows CDP harness uses an explicit foreground/focus state, configurable port, and bounded process-tree teardown without relaxing readiness or product assertions.
+
+Exact implementation-head verification:
+
+- `node experiments/glsl3/inversion-monolith/tests/run.mjs` — passed: 72 hint solves, 1,296 endpoint uniform cases, 10,000 invalid/extreme actions, zero false tween alignments, and ascending constant-edge shader transitions.
+- `npm.cmd exec oxlint -- experiments/glsl3/inversion-monolith/js experiments/glsl3/inversion-monolith/tests` — passed with no warnings.
+- `npm.cmd run build` — passed: token audit, TypeScript project build, and Vite production bundle.
+- `npm.cmd audit --audit-level=high` — passed; four moderate development-only Storybook/glob/minimatch advisories remain because the offered remediation is breaking.
+- `git diff --check` — passed.
+
+Chrome 158 with SwiftShader, production-preview browser report:
+
+- overall result — passed with an empty failure list;
+- off-target reference capture — current section 1/2, target section 4/5, amber guide visibly present;
+- 320 × 568 layout — visible renderer measured 284 × 159.75 px, ratio 1.7777777777777777;
+- invalid seed drafts `-1` and `4294967296` — both entered Puzzle mode with canonical seed `1001` and synchronized input;
+- forced shader-fetch fallback — clock advanced from tick 44 to 220 and closed the phase plan;
+- context loss/restoration — five stable loss cycles, visible fallback during loss, and WebGL restored each time;
+- pointer-cancel and independent Undo regression — passed;
+- headless Chrome process tree — terminated after evidence was written.
+
+Local visual evidence is stored outside the repository at `outputs/lithomemphis-pr8-final/`, including `reference.png`, `layout-320.png`, `aligned.png`, and nine morph frames. These captures prove the tested local production preview only; they are not deployment evidence.
