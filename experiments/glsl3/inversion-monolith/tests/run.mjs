@@ -17,8 +17,6 @@ import {
   evaluateVisual,
   lightDirection,
   lobes,
-  planEnd,
-  project,
   seamErrorPx,
   seamSegment,
   transmittance,
@@ -46,7 +44,7 @@ import {
   puzzleLayout,
   reduce,
 } from '../js/state.js';
-import { bindRangeGesture, keyToAction } from '../js/ui.js';
+import { bindRangeGesture, keyToAction, readSeed } from '../js/ui.js';
 import { deriveUniforms, uniformViolations } from '../js/uniforms.js';
 
 const root = dirname(dirname(fileURLToPath(import.meta.url)));
@@ -313,6 +311,14 @@ check('seek A-B-A uniforms', JSON.stringify(seekU) === JSON.stringify(seekU2));
 
 check('keys', keyToAction('ArrowRight', base).delta === 1 && keyToAction('ArrowLeft', base).delta === -1 && keyToAction('Digit2', base).index === 1 && keyToAction('KeyZ', base, { shift: true }).type === 'redo' && keyToAction('Space', base).type === 'pause');
 
+const seedDom = { seed: { value: '4242' } };
+const seedState = () => ({ seed: 1001 });
+check('valid seed draft', readSeed(seedDom, seedState) === 4242);
+seedDom.seed.value = '-1';
+check('negative seed draft falls back', readSeed(seedDom, seedState) === 1001);
+seedDom.seed.value = '4294967296';
+check('overflow seed draft falls back', readSeed(seedDom, seedState) === 1001);
+
 const camFixed = reduce(puzzlePreset, { type: 'camera', yaw: 3, pitch: 1 });
 check('puzzle camera fixed', camFixed.notice === 'Camera fixed.' && camFixed.mutated === false);
 
@@ -377,6 +383,29 @@ for (let kt = 0; kt < 24; kt += 1) {
   }
 }
 check('settled seam only aligns on target', targetOk && minFalse > 8, { minFalse, worst });
+
+const offSectionPuzzle = createPuzzle({ kStar: 7, cutStar: 2, startK: 3, startCut: 0, seed: 17 });
+const offSectionUniforms = uniformsOf(offSectionPuzzle);
+const offSectionVisual = evaluateVisual(offSectionPuzzle);
+const offSectionTarget = seamSegment(
+  (offSectionPuzzle.puzzle.kStar * Math.PI) / 12,
+  cutZ(offSectionPuzzle.puzzle.cutStar),
+  CUT_X[offSectionPuzzle.puzzle.cutStar],
+);
+const offSectionCurrent = seamSegment(
+  offSectionVisual.phaseRad,
+  offSectionVisual.cutZ,
+  offSectionVisual.cutOffset,
+);
+check('puzzle reference projects target onto visible cut',
+  offSectionUniforms.veinA[0] === offSectionTarget[0][0]
+  && offSectionUniforms.veinA[1] === offSectionTarget[0][1]
+  && offSectionUniforms.veinB[0] === offSectionTarget[1][0]
+  && offSectionUniforms.veinB[1] === offSectionTarget[1][1]
+  && offSectionUniforms.veinA[2] === offSectionVisual.cutZ
+  && offSectionUniforms.veinB[2] === offSectionVisual.cutZ
+  && JSON.stringify(offSectionUniforms.edgeA) === JSON.stringify(offSectionCurrent[0])
+  && JSON.stringify(offSectionUniforms.edgeB) === JSON.stringify(offSectionCurrent[1]));
 
 let tweenOk = true;
 let tweenIntrusions = 0;
@@ -518,6 +547,10 @@ const vert = canonicalText(join(root, 'shaders/monolith.vert'));
 check('glsl version', frag.startsWith('#version 300 es') && vert.startsWith('#version 300 es'));
 check('shader clamps', SHADER_CLAMPS.every((line) => frag.includes(line)));
 check('march bounds', frag.includes('const int MAX_STEPS = 64') && frag.includes('const int SHADOW_STEPS = 16') && frag.includes('const float MAX_DIST = 40.0'));
+const constantSmoothsteps = [...frag.matchAll(/smoothstep\(\s*(-?\d+(?:\.\d+)?)\s*,\s*(-?\d+(?:\.\d+)?)\s*,/g)];
+check('constant smoothstep edges ascend', constantSmoothsteps.length > 0
+  && constantSmoothsteps.every((match) => Number(match[1]) < Number(match[2])),
+constantSmoothsteps.map((match) => [match[1], match[2]]));
 const shaderHash = sha256(vert + '\n' + frag);
 const sourceHash = sha256(['constants.js', 'ease.js', 'geometry.js', 'sdf.js', 'sha256.js', 'state.js', 'uniforms.js', 'renderer.js', 'ui.js', 'fallback.js', 'main.js'].map((name) => canonicalText(join(root, 'js', name))).join('\n'));
 

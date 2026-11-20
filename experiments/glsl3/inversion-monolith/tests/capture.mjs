@@ -9,7 +9,7 @@ const outDir = process.env.CAPTURE_DIR ? resolve(process.env.CAPTURE_DIR) : join
 mkdirSync(outDir, { recursive: true });
 
 const base = process.argv[2] || 'http://127.0.0.1:5173/experiments/glsl3/inversion-monolith/';
-const port = 9333;
+const port = Number(process.env.CDP_PORT || 9333);
 const chromeBin = process.env.CHROME_BIN || 'google-chrome';
 const chromeProfile = join(tmpdir(), `chrome-inversion-monolith-${process.pid}`);
 
@@ -29,6 +29,27 @@ const chrome = spawn(chromeBin, [
   '--disable-extensions',
   'about:blank',
 ], { stdio: 'ignore' });
+
+async function stopChrome() {
+  if (process.platform === 'win32' && chrome.pid) {
+    await new Promise((resolveStop) => {
+      const killer = spawn('taskkill.exe', ['/PID', String(chrome.pid), '/T', '/F'], {
+        stdio: 'ignore',
+        windowsHide: true,
+      });
+      const timeout = setTimeout(resolveStop, 3000);
+      const done = () => {
+        clearTimeout(timeout);
+        resolveStop();
+      };
+      killer.once('exit', done);
+      killer.once('error', done);
+    });
+  } else {
+    chrome.kill();
+  }
+  chrome.unref();
+}
 
 let ws;
 let seq = 0;
@@ -69,6 +90,8 @@ async function evalJson(expression) {
 
 async function open(url) {
   await send('Page.navigate', { url });
+  await send('Page.bringToFront');
+  await send('Emulation.setFocusEmulationEnabled', { enabled: true });
   await waitReady();
   await sleep(80);
 }
@@ -111,7 +134,7 @@ async function main() {
   await send('Runtime.enable');
   await send('Network.enable');
 
-  const shots = ['initial', 'hybrid', 'mid', 'aligned'];
+  const shots = ['initial', 'hybrid', 'mid', 'reference', 'aligned'];
   const pages = {};
   for (const name of shots) {
     await open(`${base}?shot=${name}&readback=1`);
@@ -224,7 +247,23 @@ async function main() {
     document.querySelector('#preset-puzzle').click();
     const committed = window.__STUDY__.getState().seed;
     document.querySelector('#preset-mass').click();
-    return { preserved, committed, synchronized: seed.value };
+    const synchronized = seed.value;
+    seed.value = '-1';
+    document.querySelector('#preset-puzzle').click();
+    const underflow = {
+      mode: window.__STUDY__.getState().mode,
+      canonical: window.__STUDY__.getState().seed,
+      synchronized: seed.value,
+    };
+    document.querySelector('#preset-mass').click();
+    seed.value = '4294967296';
+    document.querySelector('#preset-puzzle').click();
+    const overflow = {
+      mode: window.__STUDY__.getState().mode,
+      canonical: window.__STUDY__.getState().seed,
+      synchronized: seed.value,
+    };
+    return { preserved, committed, synchronized, underflow, overflow };
   })()`);
 
   await evalJson(`window.__STUDY__.dispatch({ type: 'pause', value: 1 })`);
@@ -310,8 +349,12 @@ async function main() {
     && canceledRangeGesture.historyAfterUndo === canceledRangeGesture.historyAfterCancel,
   'canceled range gesture closes before an independently undoable keyboard edit');
   requireCheck(seedDraft.preserved === '4242' && seedDraft.committed === 4242
-    && seedDraft.synchronized === '1001',
-  'focused seed draft survives repaint, commits, then resynchronizes');
+    && seedDraft.synchronized === '1001'
+    && seedDraft.underflow.mode === 'puzzle' && seedDraft.underflow.canonical === 1001
+    && seedDraft.underflow.synchronized === '1001'
+    && seedDraft.overflow.mode === 'puzzle' && seedDraft.overflow.canonical === 1001
+    && seedDraft.overflow.synchronized === '1001',
+  'valid seed draft commits and boundary-invalid drafts fall back without throwing');
   requireCheck(shaderFailure.before.mode === 'fallback'
     && shaderFailure.before.stageHidden && shaderFailure.before.fallbackVisible
     && shaderFailure.before.notice.length > 0,
@@ -368,7 +411,25 @@ async function main() {
     mobile: true,
   });
   await open(`${base}?shot=initial&readback=1`);
+  const mobileLayout = await evalJson(`(() => {
+    const stageWrap = document.querySelector('.stage-wrap').getBoundingClientRect();
+    const renderer = document.querySelector('#stage').getBoundingClientRect();
+    return {
+      width: renderer.width,
+      height: renderer.height,
+      availableWidth: stageWrap.width - 36,
+      ratio: renderer.width / renderer.height,
+    };
+  })()`);
   await shot('layout-320');
+  requireCheck(Math.abs(mobileLayout.width - mobileLayout.height * 16 / 9) <= 1
+    && mobileLayout.width <= mobileLayout.availableWidth + 1,
+  '320px renderer preserves 16:9 without exceeding the stage');
+  report.mobileLayout = mobileLayout;
+  report.failures = browserFailures;
+  report.pass = browserFailures.length === 0;
+  writeFileSync(join(outDir, 'browser-report.json'), `${JSON.stringify(report, null, 2)}\n`);
+  if (!report.pass) throw new Error(`browser checks failed: ${report.failures.join('; ')}`);
   await send('Emulation.clearDeviceMetricsOverride');
 
   await open(`${base}?shot=initial&readback=1`);
@@ -384,11 +445,12 @@ async function main() {
   }
 
   ws.close();
-  chrome.kill();
+  await stopChrome();
+  process.exit(0);
 }
 
-main().catch((error) => {
+main().catch(async (error) => {
   console.error(error);
-  chrome.kill();
+  await stopChrome();
   process.exit(1);
 });

@@ -225,7 +225,7 @@ vec3 shadeSolid(vec3 p, vec3 rd, vec3 n, float tHit) {
 
   float rim = pow(1.0 - clamp(dot(n, -rd), 0.0, 1.0), 3.0);
   col += vec3(0.10, 0.08, 0.055) * rim * cutFace * 0.35;
-  if (cutFace > 0.45) col *= mix(1.0, 0.62, smoothstep(0.28, 0.0, cavity));
+  if (cutFace > 0.45) col *= mix(1.0, 0.62, 1.0 - smoothstep(0.0, 0.28, cavity));
   float opening = (1.0 - smoothstep(0.0, 0.012, abs(cavity))) * cutFace;
   col += vec3(0.05, 0.04, 0.028) * opening;
 

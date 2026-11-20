@@ -181,6 +181,11 @@ function applyShot(name) {
     notice = 'Mid seat.';
     return;
   }
+  if (name === 'reference') {
+    state = reduce(createState('puzzle', { seed: 1 }), { type: 'pause', value: 1 }).state;
+    notice = 'Off-target reference.';
+    return;
+  }
   if (name === 'aligned') {
     let s = solveByHints(createState('puzzle', { seed: 1 }));
     s = reduce(s, { type: 'advance', ticks: 200 }).state;

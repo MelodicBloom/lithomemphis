@@ -82,7 +82,7 @@ export function bindControls(dom, getState, dispatch) {
   click('presetVault', () => ({ type: 'preset', id: 'vault' }));
   click('presetAperture', () => ({ type: 'preset', id: 'aperture' }));
   click('presetPuzzle', () => {
-    const seed = readSeed(dom, getState());
+    const seed = readSeed(dom, getState);
     dom.seed.dataset.stateSeed = '';
     return { type: 'preset', id: 'puzzle', seed };
   });
@@ -126,7 +126,7 @@ export function bindControls(dom, getState, dispatch) {
   });
 }
 
-function readSeed(dom, getState) {
+export function readSeed(dom, getState) {
   const raw = Number(dom.seed.value);
   if (Number.isInteger(raw) && raw >= 0 && raw <= 0xffffffff) return raw;
   return getState().seed;

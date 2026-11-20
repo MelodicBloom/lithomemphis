@@ -33,8 +33,8 @@ export function deriveUniforms(state, view = { width: DRAW_WIDTH, height: DRAW_H
       cutZ(state.puzzle.cutStar),
       CUT_X[state.puzzle.cutStar],
     );
-    veinA = ref[0];
-    veinB = ref[1];
+    veinA = [ref[0][0], ref[0][1], visual.cutZ];
+    veinB = [ref[1][0], ref[1][1], visual.cutZ];
     edgeA = seamNow[0];
     edgeB = seamNow[1];
     carveEdge = 1;

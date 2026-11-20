@@ -124,7 +124,12 @@ input[type="number"] {
   h1 { letter-spacing: 0.08em; font-size: 16px; }
   .stage-wrap { min-height: 200px; }
   .band { padding: 12px; background: #070807; }
-  canvas, #fallback { height: 200px; width: 100%; max-width: 100%; }
+  canvas, #fallback {
+    width: min(100%, 355.5556px);
+    height: auto;
+    aspect-ratio: 16 / 9;
+    max-width: 100%;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
