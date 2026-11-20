@@ -1,0 +1,137 @@
+{
+  "pages": {
+    "initial": {
+      "center": [
+        64,
+        58,
+        50,
+        255
+      ],
+      "corner": [
+        42,
+        41,
+        39,
+        255
+      ],
+      "notice": "Initial mass.",
+      "status": "SwiftShader (software)",
+      "hash": "3205554f462f0cda7c8ec8de6aa8033c001a9d2eebed2aba65508dc1d0bc7824",
+      "aligned": false,
+      "k": 0,
+      "cut": 0,
+      "info": {
+        "vendor": "Google Inc. (Google)",
+        "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+        "software": true
+      },
+      "mode": "webgl",
+      "file": "/agent/repos/lithomemphis/experiments/glsl3/inversion-monolith/captures/initial.png"
+    },
+    "hybrid": {
+      "center": [
+        69,
+        63,
+        55,
+        255
+      ],
+      "corner": [
+        42,
+        41,
+        39,
+        255
+      ],
+      "notice": "Hybrid vault.",
+      "status": "SwiftShader (software)",
+      "hash": "1cb8f4eb929048b95fae227f21938fd66e333dd0e1ccc3738156512c8e67d1ab",
+      "aligned": false,
+      "k": 4,
+      "cut": 1,
+      "info": {
+        "vendor": "Google Inc. (Google)",
+        "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+        "software": true
+      },
+      "mode": "webgl",
+      "file": "/agent/repos/lithomemphis/experiments/glsl3/inversion-monolith/captures/hybrid.png"
+    },
+    "mid": {
+      "center": [
+        64,
+        58,
+        50,
+        255
+      ],
+      "corner": [
+        42,
+        41,
+        39,
+        255
+      ],
+      "notice": "Mid seat.",
+      "status": "SwiftShader (software)",
+      "hash": "ea9c7399d7fd39253701f915b616293ab2d7a2c4def44669fcfc5cb9480da272",
+      "aligned": false,
+      "k": 1,
+      "cut": 0,
+      "info": {
+        "vendor": "Google Inc. (Google)",
+        "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+        "software": true
+      },
+      "mode": "webgl",
+      "file": "/agent/repos/lithomemphis/experiments/glsl3/inversion-monolith/captures/mid.png"
+    },
+    "aligned": {
+      "center": [
+        68,
+        62,
+        53,
+        255
+      ],
+      "corner": [
+        42,
+        41,
+        39,
+        255
+      ],
+      "notice": "Aligned.",
+      "status": "SwiftShader (software)",
+      "hash": "376f5c31c9dd2101314ed7e430651de804f25554c85f75f2b883cf246243eebb",
+      "aligned": true,
+      "k": 16,
+      "cut": 2,
+      "info": {
+        "vendor": "Google Inc. (Google)",
+        "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+        "software": true
+      },
+      "mode": "webgl",
+      "file": "/agent/repos/lithomemphis/experiments/glsl3/inversion-monolith/captures/aligned.png"
+    }
+  },
+  "input": {
+    "before": "0fa1de96c299fd451993d71e5b61b72481332cde764e5371cd0ed96eb5cceeb6",
+    "afterClick": {
+      "hash": "8b64510baf2834606267761ee72c34f9369ea9ed80cc831e4f5f11136e853851",
+      "notice": "Detent 01. Phase +15°.",
+      "k": 1
+    },
+    "afterKey": {
+      "hash": "e03283b2e0bdd9f9312d6e19281a05d8f8b982a5f9bab5185710632fd4cc7fc4",
+      "notice": "Detent 02. Phase +15°. Queue 1.",
+      "k": 2
+    }
+  },
+  "contextLoss": {
+    "available": true,
+    "hashes": [
+      "c9343004de1a49f33ed95ba15853f1bf566cbc39550a505b6b813a5fc01342a8",
+      "c9343004de1a49f33ed95ba15853f1bf566cbc39550a505b6b813a5fc01342a8",
+      "c9343004de1a49f33ed95ba15853f1bf566cbc39550a505b6b813a5fc01342a8",
+      "c9343004de1a49f33ed95ba15853f1bf566cbc39550a505b6b813a5fc01342a8",
+      "c9343004de1a49f33ed95ba15853f1bf566cbc39550a505b6b813a5fc01342a8"
+    ],
+    "pausedHash": "c9343004de1a49f33ed95ba15853f1bf566cbc39550a505b6b813a5fc01342a8"
+  },
+  "contextLossStable": true
+}

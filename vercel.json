@@ -1,6 +1,10 @@
 { "buildCommand": "npm run build:all",
+  "redirects": [
+    { "source": "/experiments/glsl3/inversion-monolith", "destination": "/experiments/glsl3/inversion-monolith/", "permanent": true }
+  ],
   "rewrites": [
     { "source": "/storybook", "destination": "/storybook/index.html" },
     { "source": "/storybook/", "destination": "/storybook/index.html" },
-    { "source": "/((?!storybook(?:/|$)).*)", "destination": "/index.html" }
+    { "source": "/experiments/glsl3/inversion-monolith/", "destination": "/experiments/glsl3/inversion-monolith/index.html" },
+    { "source": "/((?!storybook(?:/|$)|experiments(?:/|$)).*)", "destination": "/index.html" }
   ] }
